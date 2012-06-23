@@ -1,5 +1,15 @@
 <?php
 
+# clean up $_GET and $_POST, ensure all values are strings (no arrays)
+foreach ($_GET as $k => $v) {
+    $_GET[$k] = (string)$v;
+}
+
+foreach ($_POST as $k => $v) {
+    $_POST[$k] = (string)$v;
+}
+
+# alias var_dump() to v() for ease of typing
 function v(&$var) {
     var_dump($var);
 }
@@ -23,15 +33,10 @@ function redirect($url) {
     exit;
 }
 
-function error($str) {
-    die($str);
+function error($msg) {
+    die($msg);
 }
 
-foreach ($_GET as $k => $v) {
-    $_GET[$k] = (string)$v;
+function hsc($str) {
+    return htmlspecialchars($str);
 }
-
-foreach ($_POST as $k => $v) {
-    $_POST[$k] = (string)$v;
-}
-
