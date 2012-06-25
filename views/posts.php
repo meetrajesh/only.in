@@ -2,7 +2,7 @@
 
 <body onload="document.forms[0].elements[0].focus()">
 
-<form method="post" action="post/add/">
+<form method="post" action="/post/add">
   Type in your funny lolcat image url here:<br/>
   <input type="text" size="30" name="content" />
   
@@ -19,6 +19,17 @@ while ($row = $data['posts']->fetch_assoc()) {
 }
 
 ?>
+
+<hr />
+
+<?php if (!session::logged_in()) { ?>
+  <p><a href="/user/signup">signup</a> | <a href="/user/login">login</a></p>
+<? } else { ?>
+  <p>
+    You are logged in as <em><?=hsc(session::current_username())?></em>
+    (<a href="/user/logout">logout</a>)
+  </p>
+<? } ?>
 
 </body>
 </html>

@@ -24,7 +24,7 @@ function in_str($needle, $haystack) {
 }
 
 function redirect($url) {
-    header('Location: ' . $url);
+    header('Location: ' . BASE_URL . PATH_PREFIX . $url);
     exit;
 }
 
@@ -35,4 +35,8 @@ function error($msg) {
 function hsc($str) {
     #return htmlspecialchars($str);
     return htmlentities($str, ENT_QUOTES, "UTF-8"); 
+}
+
+function pts($key, $default='') {
+    return !empty($_POST[$key]) ? hsc($_POST[$key]) : hsc($default);
 }
