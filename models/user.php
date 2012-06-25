@@ -19,11 +19,11 @@ class user {
         return security::hmac_gen(USER_PWD_SECRET, $salt . $password);
     }
 
-    public static function username_exists($username) {
+    public static function does_username_exist($username) {
         return db::has_row('SELECT null FROM users WHERE username = "%s"', $username);
     }
 
-    public static function email_exists($email) {
+    public static function does_email_exist($email) {
         return db::has_row('SELECT null FROM users WHERE email = "%s"', $email);
     }
 }

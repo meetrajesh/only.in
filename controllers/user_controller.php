@@ -25,13 +25,13 @@ class UserController extends BaseController {
         if (isset($_POST['btn_submit'])) {
 
             // check existing username
-            if (user::username_exists($_POST['username'])) {
+            if (user::does_username_exist($_POST['username'])) {
                 // username already exists
                 $this->_errors[] = 'Username already in use. Please select a different username';
             }
 
             // check existing email address
-            if (user::email_exists($_POST['email'])) {
+            if (user::does_email_exist($_POST['email'])) {
                 // email already exists
                 $this->_errors[] = 'Email already in use. Please select a different email address';
             }
