@@ -10,12 +10,12 @@ class csrf {
 
     public static function html() {
         $token = self::_token(self::_unique());
-        return '<input type="hidden" name="csrf" value="' . $token . '">';
+        return '<input type="hidden" name="csrf" value="' . hsc($token) . '">';
     }
 
     public static function param() {
         $token = self::_token(self::_unique());
-        return 'csrf=' . $token;
+        return 'csrf=' . urlencode($token);
     }
 
     private static function _unique() {

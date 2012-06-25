@@ -2,14 +2,12 @@
 
 class session {
 
-    private static $_current_user;
-
     public static function id() {
         return session_id();
     }
 
-    public static function current_user_id() {
-        return self::$_current_user ? self::$_current_user->user_id : 0;
+    public static function cuser_id() {
+        return !empty($_SESSION['cuser_id']) ? $_SESSION['cuser_id'] : 0;
     }
 
 }

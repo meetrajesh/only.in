@@ -23,7 +23,7 @@ date_default_timezone_set('America/New_York');
 // clean up $_GET and $_POST, ensure all values are strings (no arrays)
 foreach (array('_GET', '_POST', '_REQUEST') as $sglobal) {
     foreach ($$sglobal as $k => $v) {
-        $$sglobal[$k] = (string)$v;
+        $$sglobal[$k] = (string) $v;
     }
 }
 
