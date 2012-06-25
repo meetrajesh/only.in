@@ -3,7 +3,10 @@
 class PostController extends BaseController {
 
     public function add() {
-        Post::add($_POST['content']);
+        if (!empty($_POST['content'])) {
+            csrf::check();
+            Post::add($_POST['content'], Session::current_user_id());
+        }
         redirect(PATH_PREFIX);
     }
 

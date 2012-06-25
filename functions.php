@@ -1,15 +1,6 @@
 <?php
 
-# clean up $_GET and $_POST, ensure all values are strings (no arrays)
-foreach ($_GET as $k => $v) {
-    $_GET[$k] = (string)$v;
-}
-
-foreach ($_POST as $k => $v) {
-    $_POST[$k] = (string)$v;
-}
-
-# alias var_dump() to v() for ease of typing
+// alias var_dump() to v() for ease of typing
 function v(&$var) {
     var_dump($var);
 }
@@ -20,7 +11,11 @@ function __autoload($class) {
         require './controllers/' . strtolower($controller[1]) . '_controller.php';
     } else {
         // models
-        require './models/' . strtolower($class) . '.php';
+        if (file_exists($file = './models/' . strtolower($class) . '.php')) {
+            require $file;
+        } elseif (file_exists($file = './lib/' . strtolower($class) . '.php')) {
+            require $file;
+        }
     }
 }
 
@@ -38,5 +33,6 @@ function error($msg) {
 }
 
 function hsc($str) {
-    return htmlspecialchars($str);
+    #return htmlspecialchars($str);
+    return htmlentities($str, ENT_QUOTES, "UTF-8"); 
 }
