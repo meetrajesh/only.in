@@ -4,7 +4,8 @@ class IndexController extends BaseController {
 
     public static function route() {
 
-        $uri = str_replace(PATH_PREFIX, '', $_SERVER['REQUEST_URI']);
+        $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
+        $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
         $uri = ltrim($uri, '/');
 
         if (in_str('/', $uri)) {
