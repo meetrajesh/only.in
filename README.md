@@ -70,10 +70,13 @@ request_order = "GP"
 
 8. Import the mysql schema from schema.sql in the git repo into your mysql instance:
 
-# create the onlyin database
+# a) drop the onlyin database if it exists
+mysqladmin -u root -p drop onlyin 
+
+# b) create the onlyin database
 mysqladmin -u root -p create onlyin 
 
-# import the skeleton tables from the text file
+# c) import the skeleton tables from the text file
 mysql -u root -p onlyin < schema.sql
 
 9. Edit your mysql connection details inside init.php. Do not stage/commit these changes!
