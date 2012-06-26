@@ -51,11 +51,13 @@ DROP TABLE IF EXISTS `posts`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `posts` (
   `post_id` int(11) NOT NULL AUTO_INCREMENT,
+  `subin_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `content` text NOT NULL,
   `stamp` int(11) NOT NULL,
-  PRIMARY KEY (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`post_id`),
+  KEY `subin_id` (`subin_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +66,7 @@ CREATE TABLE `posts` (
 
 LOCK TABLES `posts` WRITE;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` VALUES (1,0,'',1340418702),(2,0,'shams',1340418739),(3,0,'hello',1340418856),(4,0,'hello',1340418914),(5,0,'johnny',1340418929),(6,0,'shamsyshamsy',1340419916),(7,0,'sajdhkasjd',1340419920),(8,0,'asdjasdjksa',1340419923),(9,0,'omg',1340597936),(10,0,'ads',1340598185),(11,0,'foo',1340598223),(12,0,'hello',1340598694),(13,0,'meow',1340598697),(14,0,'fooo',1340600284),(15,0,'bar',1340600286),(16,0,'as',1340600294),(17,0,'q',1340600295),(18,0,'asdas',1340600344),(19,0,'wqw',1340600345),(20,0,'asmd',1340601747),(21,0,'09',1340601749),(22,0,'12',1340601751),(23,0,'ads',1340602220),(24,0,'asd',1340638932),(25,0,'asd',1340638952),(26,0,'qwer',1340638955),(27,0,'w',1340639074),(28,0,'asd',1340639418),(29,0,'ce',1340639420),(30,4,'meow',1340645293),(31,1,'grah',1340648799),(32,1,'meow',1340648806),(33,2,'raj2',1340648821);
+INSERT INTO `posts` VALUES (1,0,0,'',1340418702),(2,0,0,'shams',1340418739),(3,0,0,'hello',1340418856),(4,0,0,'hello',1340418914),(5,0,0,'johnny',1340418929),(6,0,0,'shamsyshamsy',1340419916),(7,0,0,'sajdhkasjd',1340419920),(8,0,0,'asdjasdjksa',1340419923),(9,0,0,'omg',1340597936),(10,0,0,'ads',1340598185),(11,0,0,'foo',1340598223),(12,0,0,'hello',1340598694),(13,0,0,'meow',1340598697),(14,0,0,'fooo',1340600284),(15,0,0,'bar',1340600286),(16,0,0,'as',1340600294),(17,0,0,'q',1340600295),(18,0,0,'asdas',1340600344),(19,0,0,'wqw',1340600345),(20,0,0,'asmd',1340601747),(21,0,0,'09',1340601749),(22,0,0,'12',1340601751),(23,0,0,'ads',1340602220),(24,0,0,'asd',1340638932),(25,0,0,'asd',1340638952),(26,0,0,'qwer',1340638955),(27,0,0,'w',1340639074),(28,0,0,'asd',1340639418),(29,0,0,'ce',1340639420),(30,0,4,'meow',1340645293),(31,0,1,'grah',1340648799),(32,0,1,'meow',1340648806),(33,0,2,'raj2',1340648821),(34,0,2,'hi there',1340678397),(35,0,2,'meow',1340678399),(36,0,2,'alsjdn',1340678401),(37,0,2,'qlw;k',1340678402),(38,0,2,'qq',1340679285);
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +81,8 @@ CREATE TABLE `subins` (
   `subin_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
   `slug` varchar(100) NOT NULL,
-  PRIMARY KEY (`subin_id`)
+  PRIMARY KEY (`subin_id`),
+  KEY `slug` (`slug`)
 ) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -160,4 +163,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-06-25 21:20:08
+-- Dump completed on 2012-06-25 23:02:32
