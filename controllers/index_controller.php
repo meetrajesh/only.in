@@ -34,6 +34,11 @@ class IndexController extends BaseController {
     
     public static function api_route() {
 
+        // check api key
+        if (empty($_REQUEST['api_key']) || $_REQUEST['api_key'] != sha1(floor(time() / 1800) . API_SECRET)) {
+            die('invalid api key');
+        }
+
         $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
         $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
         $uri = preg_replace('/\?.*/', '', $uri);

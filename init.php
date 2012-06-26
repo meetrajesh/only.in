@@ -14,6 +14,7 @@ define('CSRF_SECRET', 'm2*xb23)./2nej3{3$');
 define('USER_SALT_LEN', 3);
 define('USER_PWD_SECRET', '20)(*2mn3h32119**@#21');
 define('SUBIN_MIN_LEN', 3);
+define('API_SECRET', '95dbb8238195850');
 
 session_start();
 date_default_timezone_set('America/New_York');
