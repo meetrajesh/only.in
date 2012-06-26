@@ -7,13 +7,28 @@ Setup Instructions
 
 2. Install git on your Mac and then clone the repo in some directory of your choice (I cloned it in ~/Documents/phpweb/onlyin for example): git clone git@github.com:onlyin/only.in.git
 
-3. Add onlyin.com to your hosts file to point back to localhost:
+3. Create a file called init.local.php in your root checkout directory and add the following details to it:
 
-127.0.0.1 onlyin.com 
+<?php
+
+define('BASE_URL', 'http://onlyin.com');
+define('PATH_PREFIX', ''); // eg. /onlyin
+
+// database credentials
+define('DBHOST', 'localhost');
+define('DBUSER', '');
+define('DBPASS', '');
+define('DBNAME', 'onlyin');
+
+Be sure to update your BASE_URL with whatever URL you end up using. Also be sure to update your database connection details.
+
+4. Add onlyin.com to your hosts file to point back to localhost:
+
+127.0.0.1 onlyin.com
 
 onlyin.com will point to your dev instance, whereas only.in will point to the production (linode) instance
 
-4. Add the following entry to the end of your httpd.conf:
+5. Add the following entry to the end of your httpd.conf:
 
 ### for onlyin.com ###                                                                                                                                                                                        
 NameVirtualHost *:80
@@ -31,15 +46,17 @@ NameVirtualHost *:80
 
 Replace your DocumentRoot and <Directory> directive with the correct folder name of your git repo
 
-5. Enable short_open_tags and html_errors in your /etc/php.ini, and ensure magic_quotes_gpc is Off:
+6. Enable short_open_tags and html_errors in your /etc/php.ini, ensure magic_quotes_gpc and register_globals is Off, and ensure request_order exists and is set to "GP":
 
 short_open_tag = On
 html_errors = On
 magic_quotes_gpc = Off
+register_globals = Off
+request_order = "GP"
 
-6. Install xdebug on your local mac. Will help with debugging and stack traces lot.
+7. Install xdebug on your local mac. Will help with debugging and stack traces lot.
 
-7. Import the mysql schema from schema.sql in the git repo into your mysql instance:
+8. Import the mysql schema from schema.sql in the git repo into your mysql instance:
 
 # create the onlyin database
 mysqladmin -u root create onlyin 
@@ -47,6 +64,6 @@ mysqladmin -u root create onlyin
 # import the skeleton tables from the text file
 mysql -u root onlyin < schema.sql
 
-8. Edit your mysql connection details inside init.php. Do not stage/commit these changes!
+9. Edit your mysql connection details inside init.php. Do not stage/commit these changes!
 
-9. Browse to onlyin.com !
+10. Browse to onlyin.com !
