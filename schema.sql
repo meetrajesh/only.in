@@ -57,7 +57,7 @@ CREATE TABLE `posts` (
   `stamp` int(11) NOT NULL,
   PRIMARY KEY (`post_id`),
   KEY `subin_id` (`subin_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `posts` (
 
 LOCK TABLES `posts` WRITE;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` VALUES (1,0,0,'',1340418702),(2,0,0,'shams',1340418739),(3,0,0,'hello',1340418856),(4,0,0,'hello',1340418914),(5,0,0,'johnny',1340418929),(6,0,0,'shamsyshamsy',1340419916),(7,0,0,'sajdhkasjd',1340419920),(8,0,0,'asdjasdjksa',1340419923),(9,0,0,'omg',1340597936),(10,0,0,'ads',1340598185),(11,0,0,'foo',1340598223),(12,0,0,'hello',1340598694),(13,0,0,'meow',1340598697),(14,0,0,'fooo',1340600284),(15,0,0,'bar',1340600286),(16,0,0,'as',1340600294),(17,0,0,'q',1340600295),(18,0,0,'asdas',1340600344),(19,0,0,'wqw',1340600345),(20,0,0,'asmd',1340601747),(21,0,0,'09',1340601749),(22,0,0,'12',1340601751),(23,0,0,'ads',1340602220),(24,0,0,'asd',1340638932),(25,0,0,'asd',1340638952),(26,0,0,'qwer',1340638955),(27,0,0,'w',1340639074),(28,0,0,'asd',1340639418),(29,0,0,'ce',1340639420),(30,0,4,'meow',1340645293),(31,0,1,'grah',1340648799),(32,0,1,'meow',1340648806),(33,0,2,'raj2',1340648821),(34,0,2,'hi there',1340678397),(35,0,2,'meow',1340678399),(36,0,2,'alsjdn',1340678401),(37,0,2,'qlw;k',1340678402),(38,0,2,'qq',1340679285);
+INSERT INTO `posts` VALUES (1,0,0,'',1340418702),(2,0,0,'shams',1340418739),(3,0,0,'hello',1340418856),(4,0,0,'hello',1340418914),(5,0,0,'johnny',1340418929),(6,0,0,'shamsyshamsy',1340419916),(7,0,0,'sajdhkasjd',1340419920),(8,0,0,'asdjasdjksa',1340419923),(9,0,0,'omg',1340597936),(10,0,0,'ads',1340598185),(11,0,0,'foo',1340598223),(12,0,0,'hello',1340598694),(13,0,0,'meow',1340598697),(14,0,0,'fooo',1340600284),(15,0,0,'bar',1340600286),(16,0,0,'as',1340600294),(17,0,0,'q',1340600295),(18,0,0,'asdas',1340600344),(19,0,0,'wqw',1340600345),(20,0,0,'asmd',1340601747),(21,0,0,'09',1340601749),(22,0,0,'12',1340601751),(23,0,0,'ads',1340602220),(24,0,0,'asd',1340638932),(25,0,0,'asd',1340638952),(26,0,0,'qwer',1340638955),(27,0,0,'w',1340639074),(28,0,0,'asd',1340639418),(29,0,0,'ce',1340639420),(30,0,4,'meow',1340645293),(31,0,1,'grah',1340648799),(32,0,1,'meow',1340648806),(33,0,2,'raj2',1340648821),(34,0,2,'hi there',1340678397),(35,0,2,'meow',1340678399),(36,0,2,'alsjdn',1340678401),(37,0,2,'qlw;k',1340678402),(38,0,2,'qq',1340679285),(39,0,2,'asd',1340686002),(40,0,2,'asd',1340686003);
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,10 +111,11 @@ CREATE TABLE `users` (
   `name` varchar(40) NOT NULL,
   `email` varchar(100) NOT NULL,
   `stamp` int(11) NOT NULL,
+  `is_fake_user` tinyint(1) DEFAULT '0',
   `last_login_at` int(11) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +124,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'raj','16eb6e97760ecd0224ef3e0e9cc160169b82b6cfc887a308be022ea87758dc4c','xjf','rajesh','raj@raj.com',1340648472,1340648843),(2,'raj2','2ad8ed309ea9bef8517014e353391696e0800cb6490774920105f0774b2f73d5','P_$','raj','raj2@raj.com',1340648818,1340648907);
+INSERT INTO `users` VALUES (1,'raj','16eb6e97760ecd0224ef3e0e9cc160169b82b6cfc887a308be022ea87758dc4c','xjf','rajesh','raj@raj.com',1340648472,1,1340648843),(2,'raj2','2ad8ed309ea9bef8517014e353391696e0800cb6490774920105f0774b2f73d5','P_$','raj','raj2@raj.com',1340648818,0,1340648907),(3,'raj3','74fca5be3718b5faf3ac0bca93ddf07e3a5148f31f322e049ad7771f9dcff104','Z{`','raj','raj@raj.com',1340726077,0,1340726077),(4,'raj4','c1ac76100d148d28ae9be4a1df5470401b5a0cb519d8c72a6dc0b6efadec1bb3','?&@','raj','raj@raj.com',1340726416,0,1340726416),(5,'raj5','eb8bff8d072da6b9614d5c31ae5a730c255362a9a56f3e992f157f15816e4753','&)$','raj','raj@raj.com',1340726457,1,1340726457),(6,'raj6','2fdf1768ceb619faa65ac1ccad740d9389d72366f07a8a9b7e8bcc5974c3f843','~nq','raj','raj@raj.com',1340726475,1,1340726475),(7,'raj7','d41651a8fce83d0fef57b98673dfe8d25fe6e223a9f61a2864b11e7f86c8e716','J*p','raj','raj@raj.com',1340726633,1,1340726633);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,4 +164,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-06-25 23:02:32
+-- Dump completed on 2012-06-26 12:04:07

@@ -4,6 +4,11 @@ class user {
 
     public static function add($data) {
 
+        // check if username already exists
+        if (self::does_username_exist($data['username'])) { // || self::does_email_exist($data['email'])) {
+            return 'username ' . (string) $data['username'] . ' already exists!';
+        }
+
         // generate the salt and hashed password
         $salt = security::gen_user_salt();
         $password = self::hash_password($salt, $data['password']);
@@ -13,6 +18,11 @@ class user {
 
         return db::insert_id();
 
+    }
+
+    public static function mark_fake($user_id) {
+        db::query('UPDATE users SET is_fake_user=1 WHERE user_id=%d', (int) $user_id);
+        return true;
     }
 
     public static function hash_password($salt, $password) {

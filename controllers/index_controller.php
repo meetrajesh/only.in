@@ -48,6 +48,19 @@ class IndexController extends BaseController {
         $method = str_replace('/', '_', $uri);
 
         $obj = new ApiController;
+
+        // check if api method exists
+        if (!method_exists($obj, $method)) {
+
+            $api_methods = array_map(function($method) {
+                    return '/' . preg_replace('/_/', '/', $method, 1);
+                }, get_class_methods($obj));
+
+            $errmsg = "Invalid API method: /${uri}.";
+            $errmsg .= ' Full list is: ' . implode(', ', $api_methods);
+            die(json_encode(array('error' => $errmsg)));
+        }
+
         echo json_encode($obj->$method($_REQUEST));
 
     }
