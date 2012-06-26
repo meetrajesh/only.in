@@ -2,14 +2,13 @@
 
 class post {
 
-    private $_data;
-
     public static function add($content, $user_id=0) {
         $user_id = (int) $user_id;
         $content = trim($content);
         if (!empty($content)) {
             $sql = 'INSERT INTO posts (content, user_id, stamp) VALUES ("%s", "%d", UNIX_TIMESTAMP())';
             db::query($sql, $content, $user_id);
+            return db::insert_id();
         }
     }
 
