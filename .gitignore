@@ -1,1 +1,4 @@
 init.local.php
+.DS_Store
+*~
+*.swp
