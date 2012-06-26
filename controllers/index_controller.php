@@ -6,7 +6,7 @@ class IndexController extends BaseController {
 
         $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
         $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
-        $uri = ltrim($uri, '/');
+        $uri = trim($uri, '/');
 
         $args = array();
         if (in_str('/', $uri)) {
@@ -18,9 +18,9 @@ class IndexController extends BaseController {
                 list($action, $args) = explode('/', $action, 2);
                 $args = explode('/', $args);
             }
-        } elseif (!empty($uri)) {
-            // e.g. /post
-            list($controller, $action) = array($uri, 'view');
+        } elseif (!empty($uri) && strlen($uri) > SUBIN_MIN_LEN) {
+            // e.g. /toronto
+            list($controller, $action, $args) = array('post', 'view', $uri);
         } else {
             // e.g. /
             list($controller, $action) = array('index', 'view');

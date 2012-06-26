@@ -12,9 +12,10 @@ class post {
         }
     }
 
-    public static function get_recent($limit=10) {
-        $sql = 'SELECT post_id, user_id, content, stamp FROM posts ORDER BY stamp DESC LIMIT %d';
-        return db::query($sql, $limit);
+    public static function get_recent($subin_id=0, $limit=10) {
+        $where_clause = !empty($subin_id) ? 'WHERE subin_id=%d' : '';
+        $sql = 'SELECT post_id, user_id, content, stamp FROM posts ' . $where_clause . ' ORDER BY stamp DESC LIMIT %d';
+        return !empty($subin_id) ? db::query($sql, $subin_id, $limit) : db::query($sql, $limit);
     }
 
 
