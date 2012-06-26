@@ -2,7 +2,10 @@
 
 class user {
 
-    public static function add($data) {
+    public static function add($username, $password, $name, $email, $is_fake = false) {
+
+        // set up the data
+        $data = array('username' => $username, 'password' => $password, 'name' => $name, 'email' => $email, 'is_fake' => $is_fake);
 
         // check if username already exists
         if (self::does_username_exist($data['username'])) { // || self::does_email_exist($data['email'])) {
@@ -13,16 +16,15 @@ class user {
         $salt = security::gen_user_salt();
         $password = self::hash_password($salt, $data['password']);
 
-        $sql = 'INSERT INTO users (username, password, salt, name, email, stamp, last_login_at) VALUES ("%s", "%s", "%s", "%s", "%s", %d, %d)';
-        db::query($sql, $data['username'], $password, $salt, $data['name'], $data['email'], time(), time());
+        $sql = 'INSERT INTO users (username, password, salt, name, email, stamp, last_login_at, is_fake) VALUES ("%s", "%s", "%s", "%s", "%s", %d, %d, %d)';
+        db::query($sql, $data['username'], $password, $salt, $data['name'], $data['email'], time(), time(), (int)$is_fake);
 
         return db::insert_id();
 
     }
 
-    public static function mark_fake($user_id) {
-        db::query('UPDATE users SET is_fake_user=1 WHERE user_id=%d', (int) $user_id);
-        return true;
+    public static function getid($username) {
+        return db::result_query('SELECT user_id FROM users WHERE username="%s"', $username);
     }
 
     public static function hash_password($salt, $password) {
@@ -38,6 +40,6 @@ class user {
     }
 
     public static function is_fake_user($username) {
-        return db::result_query('SELECT is_fake_user FROM users WHERE username="%s"', $username);
+        return db::result_query('SELECT is_fake FROM users WHERE username="%s"', $username);
     }
 }

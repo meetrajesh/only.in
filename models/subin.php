@@ -2,15 +2,15 @@
 
 class subin {
 
-    public static function create($subin_name) {
-        $sql = 'INSERT INTO subins (name, slug) VALUES ("%s", "%s")';
-        db::query($sql, $subin_name, self::_slug_from_name($subin_name));
+    public static function create($subin_name, $user_id) {
+        $sql = 'INSERT INTO subins (name, slug, $user_id) VALUES ("%s", "%s", %d)';
+        db::query($sql, $subin_name, self::_slug_from_name($subin_name), (int) $user_id);
         return db::insert_id();
     }
 
-    public static function create_subin_if_non_existing($subin_name) {
-        $sql = 'SELECT subin_id FROM subins WHERE name="%s"';
-        if ($subin_id = db::result_query($sql, $subin_name)) {
+    public static function create_subin_when_non_existing($subin_name) {
+        $sql = 'SELECT subin_id FROM subins WHERE LOWER(name)="%s"';
+        if ($subin_id = db::result_query($sql, strtolower($subin_name))) {
             return $subin_id;
         }
         return self::create($subin_name);

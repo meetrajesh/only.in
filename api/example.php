@@ -3,6 +3,7 @@
 define('API_SECRET', '95dbb8238195850');
 $api = new OnlyInAPI(API_SECRET);
 
+// A. Check if username exists
 $username = 'raj7';
 $json = $api->call('/user/username_exists', array('username' => $username));
 
@@ -14,7 +15,7 @@ if (!empty($json['error'])) {
 // if no api errors, then inspect the api response payload
 var_dump($json);
 
-// create the user if it doesn't exist
+// B. create the user if it doesn't exist
 $username_exists = $json['username_exists'];
 if (!$username_exists) {
     // create user
@@ -36,7 +37,27 @@ if (!$username_exists) {
     $user_id = $json['user_id'];
 }
 
+// C. create a post for that user in subin called 'toronto'
+$data = array('subin_name' => 'toronto',
+              'username' => $username,
+              'content' => ('This is an epic new post ' . time()),
+              'num_upvotes' => 4,
+              'num_downvotes' => 0);
 
+$json = $api->call('/post/create', $data);
+$post_id = $json['post_id'];
+var_dump($json);
+
+// D. create a comment for the above post
+$data = array('username' => $username,
+              'post_id' => $post_id,
+              'comment' => 'this is a test comment',
+              'num_upvotes' => 1,
+              'num_downvotes' => 4);
+
+$json = $api->call('/comment/create', $data);
+$post_id = $json['comment_id'];
+var_dump($json);
 
 
 /// --------- PHP CLIENT LIBRARY ------------- ///
@@ -54,6 +75,7 @@ class OnlyInAPI {
         $json = curl_exec($curl);
         curl_close($curl);
 
+        #return var_dump($json);
         return json_decode($json, true);
     }
 

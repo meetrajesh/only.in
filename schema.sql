@@ -81,6 +81,7 @@ CREATE TABLE `subins` (
   `subin_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
   `slug` varchar(100) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`subin_id`),
   KEY `slug` (`slug`)
 ) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
@@ -92,7 +93,7 @@ CREATE TABLE `subins` (
 
 LOCK TABLES `subins` WRITE;
 /*!40000 ALTER TABLE `subins` DISABLE KEYS */;
-INSERT INTO `subins` VALUES (1,'Acapulco','acapulco'),(2,'Aguascalientes','aguascalientes'),(3,'Austin','austin'),(4,'Calgary','calgary'),(5,'Charlotte','charlotte'),(6,'Chicago','chicago'),(7,'Chihuahua','chihuahua'),(8,'Ciudad Juárez','ciudad-juarez'),(9,'Columbus','columbus'),(10,'Culiacán','culiacan'),(11,'Dallas','dallas'),(12,'Detroit','detroit'),(13,'Ecatepec de Morelos','ecatepec-de-morelos'),(14,'Edmonton','edmonton'),(15,'El Paso','el-paso'),(16,'Fort Worth','fort-worth'),(17,'Guadalajara','guadalajara'),(18,'Guadalupe','guadalupe'),(19,'Guatemala City','guatemala-city'),(20,'Havana','havana'),(21,'Hermosillo','hermosillo'),(22,'Houston','houston'),(23,'Indianapolis','indianapolis'),(24,'Jacksonville','jacksonville'),(25,'Kingston','kingston'),(26,'León','leon'),(27,'Los Angeles','los-angeles'),(28,'Memphis','memphis'),(29,'Mérida','mérida'),(30,'Mexicali','mexicali'),(31,'Mexico City','mexico-city'),(32,'Mississauga','mississauga'),(33,'Monterrey','monterrey'),(34,'Montréal','montréal'),(35,'Naucalpan','naucalpan'),(36,'New York City','new-york-city'),(37,'Nezahualcóyotl','nezahualcoyotl'),(38,'Ottawa','ottawa'),(39,'Philadelphia','philadelphia'),(40,'Phoenix','phoenix'),(41,'Port-au-Prince','port-au-prince'),(42,'Puebla','puebla'),(43,'Saltillo','saltillo'),(44,'San Antonio','san-antonio'),(45,'San Diego','san-diego'),(46,'San Francisco','san-francisco'),(47,'San Jose','san-jose'),(48,'San Luis Potosí','san-luis-potosi'),(49,'Santiago','santiago'),(50,'Santo Domingo','santo-domingo'),(51,'Tegucigalpa','tegucigalpa'),(52,'Tijuana','tijuana'),(53,'Tlalnepantla de Baz','tlalnepantla-de-baz'),(54,'Toronto','toronto'),(55,'Winnipeg','winnipeg'),(56,'Zapopan','zapopan');
+INSERT INTO `subins` VALUES (1,'Acapulco','acapulco',0),(2,'Aguascalientes','aguascalientes',0),(3,'Austin','austin',0),(4,'Calgary','calgary',0),(5,'Charlotte','charlotte',0),(6,'Chicago','chicago',0),(7,'Chihuahua','chihuahua',0),(8,'Ciudad Juárez','ciudad-juarez',0),(9,'Columbus','columbus',0),(10,'Culiacán','culiacan',0),(11,'Dallas','dallas',0),(12,'Detroit','detroit',0),(13,'Ecatepec de Morelos','ecatepec-de-morelos',0),(14,'Edmonton','edmonton',0),(15,'El Paso','el-paso',0),(16,'Fort Worth','fort-worth',0),(17,'Guadalajara','guadalajara',0),(18,'Guadalupe','guadalupe',0),(19,'Guatemala City','guatemala-city',0),(20,'Havana','havana',0),(21,'Hermosillo','hermosillo',0),(22,'Houston','houston',0),(23,'Indianapolis','indianapolis',0),(24,'Jacksonville','jacksonville',0),(25,'Kingston','kingston',0),(26,'León','leon',0),(27,'Los Angeles','los-angeles',0),(28,'Memphis','memphis',0),(29,'Mérida','mérida',0),(30,'Mexicali','mexicali',0),(31,'Mexico City','mexico-city',0),(32,'Mississauga','mississauga',0),(33,'Monterrey','monterrey',0),(34,'Montréal','montréal',0),(35,'Naucalpan','naucalpan',0),(36,'New York City','new-york-city',0),(37,'Nezahualcóyotl','nezahualcoyotl',0),(38,'Ottawa','ottawa',0),(39,'Philadelphia','philadelphia',0),(40,'Phoenix','phoenix',0),(41,'Port-au-Prince','port-au-prince',0),(42,'Puebla','puebla',0),(43,'Saltillo','saltillo',0),(44,'San Antonio','san-antonio',0),(45,'San Diego','san-diego',0),(46,'San Francisco','san-francisco',0),(47,'San Jose','san-jose',0),(48,'San Luis Potosí','san-luis-potosi',0),(49,'Santiago','santiago',0),(50,'Santo Domingo','santo-domingo',0),(51,'Tegucigalpa','tegucigalpa',0),(52,'Tijuana','tijuana',0),(53,'Tlalnepantla de Baz','tlalnepantla-de-baz',0),(54,'Toronto','toronto',0),(55,'Winnipeg','winnipeg',0),(56,'Zapopan','zapopan',0);
 /*!40000 ALTER TABLE `subins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,7 +112,7 @@ CREATE TABLE `users` (
   `name` varchar(40) NOT NULL,
   `email` varchar(100) NOT NULL,
   `stamp` int(11) NOT NULL,
-  `is_fake_user` tinyint(1) DEFAULT '0',
+  `is_fake` tinyint(1) NOT NULL DEFAULT '0',
   `last_login_at` int(11) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`)
@@ -143,7 +144,7 @@ CREATE TABLE `votes` (
   `vote` tinyint(1) NOT NULL,
   `stamp` int(11) NOT NULL,
   PRIMARY KEY (`vote_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,6 +153,7 @@ CREATE TABLE `votes` (
 
 LOCK TABLES `votes` WRITE;
 /*!40000 ALTER TABLE `votes` DISABLE KEYS */;
+INSERT INTO `votes` VALUES (1,0,0,0,1,1340727561),(2,0,0,0,1,1340727561),(3,0,0,0,1,1340727561),(4,0,0,0,1,1340727561);
 /*!40000 ALTER TABLE `votes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -164,4 +166,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-06-26 12:04:07
+-- Dump completed on 2012-06-26 12:30:45
