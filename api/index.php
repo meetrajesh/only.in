@@ -2,4 +2,4 @@
 
 require '../init.php';
 
-IndexController::api_route();
+echo json_encode(IndexController::api_route());

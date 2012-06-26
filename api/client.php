@@ -24,11 +24,10 @@ class OnlyInAPI {
 
     private function _get_curl($method, $args) {
         $curl = curl_init();
-        $timeout = 10;
         $args['api_key'] = $this->_api_key();
 
         curl_setopt($curl, CURLOPT_URL, 'http://api.onlyin.com/' . trim($method));
-        curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $args);

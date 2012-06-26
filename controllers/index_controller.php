@@ -36,7 +36,7 @@ class IndexController extends BaseController {
 
         // check api key
         if (empty($_REQUEST['api_key']) || $_REQUEST['api_key'] != sha1(floor(time() / 1800) . API_SECRET)) {
-            die('invalid api key');
+            return array('error' => 'invalid api key');
         }
 
         $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
@@ -58,10 +58,10 @@ class IndexController extends BaseController {
 
             $errmsg = "Invalid API method: /${uri}.";
             $errmsg .= ' Full list is: ' . implode(', ', $api_methods);
-            die(json_encode(array('error' => $errmsg)));
+            return array('error' => $errmsg);
         }
 
-        echo json_encode($obj->$method($_REQUEST));
+        return $obj->$method($_REQUEST);
 
     }
 
