@@ -35,8 +35,8 @@ NameVirtualHost *:80
 <VirtualHost *:80>                                                                                                                                                                                       
   ServerName onlyin.com                                                                                                                                                                                  
   ServerAlias www.onlyin.com                                                                                                                                                                     
-  DocumentRoot "/Users/rswaminathan/Documents/phpweb/onlyin"
-  <Directory "/Users/rswaminathan/Documents/phpweb/onlyin">
+  DocumentRoot "/Users/rswaminathan/Documents/phpweb/onlyin/public"
+  <Directory "/Users/rswaminathan/Documents/phpweb/onlyin/public">
     Options +FollowSymlinks
     Order allow,deny
     Allow from all
