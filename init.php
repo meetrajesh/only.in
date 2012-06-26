@@ -4,6 +4,12 @@ ini_set('error_reporting', E_ALL | E_STRICT);
 ini_set('display_errors', true);
 ini_set('html_errors', true);
 
+chdir(dirname(__FILE__));
+
+if (file_exists('./init.local.php')) {
+    require './init.local.php';
+}
+
 define('CSRF_SECRET', 'm2*xb23)./2nej3{3$');
 define('USER_SALT_LEN', 3);
 define('USER_PWD_SECRET', '20)(*2mn3h32119**@#21');
