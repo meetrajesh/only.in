@@ -21,7 +21,7 @@ date_default_timezone_set('America/New_York');
 require './functions.php';
 
 // clean up $_GET and $_POST, ensure all values are strings (no arrays)
-foreach (array('_GET', '_POST', '_REQUEST') as $sglobal) {
+foreach (array('_GET', '_POST', '_REQUEST', '_COOKIE') as $sglobal) {
     foreach ($$sglobal as $k => $v) {
         $$sglobal[$k] = trim((string) $v);
     }

@@ -8,6 +8,14 @@ class subin {
         return db::insert_id();
     }
 
+    public static function create_subin_if_non_existing($subin_name) {
+        $sql = 'SELECT subin_id FROM subins WHERE name="%s"';
+        if ($subin_id = db::result_query($sql, $subin_name)) {
+            return $subin_id;
+        }
+        return self::create($subin_name);
+    }
+
     public static function get_subin_from_name($subin_name) {
         $sql = 'SELECT subin_id, name FROM subins WHERE slug="%s"';
         return db::fetch_query($sql, $subin_name);

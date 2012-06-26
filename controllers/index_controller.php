@@ -31,6 +31,21 @@ class IndexController extends BaseController {
         $obj->$action($args);
 
     }
+    
+    public static function api_route() {
+
+        $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
+        $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
+        $uri = preg_replace('/\?.*/', '', $uri);
+        $uri = trim($uri, '/');
+
+        list($controller) = explode('/', $uri);
+        $method = str_replace('/', '_', $uri);
+
+        $obj = new ApiController;
+        echo json_encode($obj->$method($_REQUEST));
+
+    }
 
     public function view() {
         $data['posts'] = post::get_recent();

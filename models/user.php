@@ -6,10 +6,10 @@ class user {
 
         // generate the salt and hashed password
         $salt = security::gen_user_salt();
-        $password = self::hash_password($salt, $_POST['password']);
+        $password = self::hash_password($salt, $data['password']);
 
         $sql = 'INSERT INTO users (username, password, salt, name, email, stamp, last_login_at) VALUES ("%s", "%s", "%s", "%s", "%s", %d, %d)';
-        db::query($sql, $_POST['username'], $password, $salt, $_POST['name'], $_POST['email'], time(), time());
+        db::query($sql, $data['username'], $password, $salt, $data['name'], $data['email'], time(), time());
 
         return db::insert_id();
 
@@ -20,10 +20,14 @@ class user {
     }
 
     public static function does_username_exist($username) {
-        return db::has_row('SELECT null FROM users WHERE username = "%s"', $username);
+        return db::has_row('SELECT null FROM users WHERE username="%s"', $username);
     }
 
     public static function does_email_exist($email) {
-        return db::has_row('SELECT null FROM users WHERE email = "%s"', $email);
+        return db::has_row('SELECT null FROM users WHERE email="%s"', $email);
+    }
+
+    public static function is_fake_user($username) {
+        return db::result_query('SELECT is_fake_user FROM users WHERE username="%s"', $username);
     }
 }

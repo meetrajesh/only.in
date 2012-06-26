@@ -4,7 +4,7 @@ class PostController extends BaseController {
 
     public function add() {
         if (!empty($_POST['content'])) {
-            post::add($_POST['content'], session::cuser_id());
+            post::add(0, session::cuser_id(), $_POST['content']);
         }
         redirect('/');
     }

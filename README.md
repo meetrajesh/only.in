@@ -30,10 +30,10 @@ onlyin.com will point to your dev instance, whereas only.in will point to the pr
 
 5. Add the following entry to the end of your httpd.conf:
 
-### for onlyin.com ###                                                                                                                                                                                        
+### for onlyin.com ###
 NameVirtualHost *:80
-<VirtualHost *:80>                                                                                                                                                                                       
-  ServerName onlyin.com                                                                                                                                                                                  
+<VirtualHost *:80>
+  ServerName onlyin.com
   ServerAlias www.onlyin.com                                                                                                                                                                     
   DocumentRoot "/Users/rswaminathan/Documents/phpweb/onlyin/public"
   <Directory "/Users/rswaminathan/Documents/phpweb/onlyin/public">
@@ -43,6 +43,18 @@ NameVirtualHost *:80
     AllowOverride All
   </Directory>                                                                                                                                                                                                
 </VirtualHost>
+
+### for api.onlyin.com ###                                                                                                                                                                                    
+<VirtualHost *:80>                                                                                                                                                                                            
+  ServerName api.onlyin.com                                                                                                                                                                                   
+  DocumentRoot "/Users/rswaminathan/Documents/phpweb/onlyin/api"                                                                                                                                              
+  <Directory "/Users/rswaminathan/Documents/phpweb/onlyin/api">                                                                                                                                               
+    Options +FollowSymlinks                                                                                                                                                                                   
+    Order allow,deny                                                                                                                                                                                          
+    Allow from all                                                                                                                                                                                            
+    AllowOverride All                                                                                                                                                                                         
+  </Directory>                                                                                                                                                                                                
+</VirtualHost>                                                                                                                                                                                                
 
 Replace your DocumentRoot and <Directory> directive with the correct folder name of your git repo
 
