@@ -23,7 +23,7 @@ class csrf {
     }
 
     private static function _token() {
-        return Security::hmac_gen(CSRF_SECRET, self::_unique());
+        return security::hmac_gen(CSRF_SECRET, self::_unique());
     }
 
     private static function _check_token($token) {

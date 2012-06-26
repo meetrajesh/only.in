@@ -25,5 +25,3 @@ foreach (array('_GET', '_POST', '_REQUEST') as $sglobal) {
         $$sglobal[$k] = trim((string) $v);
     }
 }
-
-
