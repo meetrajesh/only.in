@@ -1,2 +1,4 @@
  - implement db migration strategy
- - API for creating posts
+ + API for creating posts
+ - implement imgur api example
+ - deploy steps

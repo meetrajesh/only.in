@@ -43,10 +43,13 @@ class UserController extends BaseController {
 
             if (empty($this->_errors)) {
                 // all good, insert the user
-                if ($user_id = user::add($_POST['username'], $_POST['password'], $_POST['name'], $_POST['email']);
+                $user_id = user::add($_POST['username'], $_POST['password'], $_POST['name'], $_POST['email']);
+                if (ctype_digit((string) $user_id)) {
+                    // success
                     session::login($user_id);
                     redirect('/');
                 } else {
+                    // user add failure
                     $this->_errors[] = 'Something went wrong with signup';
                     return false;
                 }
