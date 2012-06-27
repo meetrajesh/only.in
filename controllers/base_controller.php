@@ -4,14 +4,18 @@ class BaseController {
 
     protected $_errors = array();
     protected $_msgs = array();
+    protected $_tpl;
 
     protected function __construct() {
+        $this->_tpl = new template();
+
         if (!empty($_POST) || !empty($_GET) || !empty($_REQUEST)) {
             csrf::check();
         }
     }
 
     protected function _render($template, $data=array()) {
+        $t = $this->_tpl;
         $data['errors'] = $this->_errors;
         require './views/' . $template . '.php';
     }
