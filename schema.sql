@@ -41,9 +41,10 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `img_url` varchar(100) NOT NULL,
   `imgur_raw_json` text NOT NULL,
   `stamp` int(11) NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`post_id`),
-  KEY `subin_id` (`subin_id`)
+  KEY `subin_id` (`subin_id`),
+  KEY `is_deleted` (`is_deleted`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
