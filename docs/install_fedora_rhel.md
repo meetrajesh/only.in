@@ -74,7 +74,7 @@ Installing Only.in on Fedora/RHEL
 	$ sudo gedit /etc/php.ini
 
 	# make sure the following are correctly set
-	auto_globals_jit = Off
+    auto_globals_jit = Off
     short_open_tag = On
     html_errors = On
     magic_quotes_gpc = Off
