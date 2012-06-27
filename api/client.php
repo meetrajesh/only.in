@@ -26,7 +26,7 @@ class OnlyInAPI {
         $curl = curl_init();
         $args['api_key'] = $this->_api_key();
 
-        curl_setopt($curl, CURLOPT_URL, 'http://api.onlyin.com/' . trim($method));
+        curl_setopt($curl, CURLOPT_URL, API_BASE_URL . '/' . trim($method));
         curl_setopt($curl, CURLOPT_TIMEOUT, 10);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
