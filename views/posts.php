@@ -11,6 +11,7 @@
   <input type="file" name="photo" />
   
   <?=csrf::html()?>
+  <input type="hidden" name="MAX_FILE_SIZE" value="<?=UPLOAD_MAX_SIZE?>" />
   <input type="submit" name="btn_submit" value="Submit!" />
 </form>
 

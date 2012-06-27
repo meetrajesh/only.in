@@ -13,7 +13,7 @@ class post {
 
         if (!empty($photo['tmp_name'])) {
             list($imgur_raw_json, $img_url) = self::_upload_img($photo);
-        } elseif (preg_match('~^https?://~', $content)) {
+        } elseif (preg_match('~^https?://.+(png|jpg|gif)~iU', $content)) {
             list($imgur_raw_json, $img_url) = self::_upload_img($content);
         }
 
@@ -27,8 +27,13 @@ class post {
 
     public static function get_recent($subin_id=0, $limit=10) {
         $where_clause = !empty($subin_id) ? 'WHERE subin_id=%d' : '';
-        $sql = 'SELECT post_id, user_id, content, img_url, stamp FROM posts ' . $where_clause . ' ORDER BY stamp DESC LIMIT %d';
+        $sql = 'SELECT post_id, user_id, content, img_url, stamp FROM posts ' . $where_clause . ' WHERE is_deleted=0 ORDER BY stamp DESC LIMIT %d';
         return !empty($subin_id) ? db::query($sql, $subin_id, $limit) : db::query($sql, $limit);
+    }
+
+    public static function delete_by_img_url($img_url) {
+        db::query('UPDATE posts SET is_deleted=1 WHERE img_url="%s"', $img_url);
+        return db::affected_rows() > 0;
     }
 
     private static function _upload_img($photo) {
@@ -40,12 +45,18 @@ class post {
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_URL, 'http://api.imgur.com/2/upload.json');
-        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $pvars);
 
         $raw_json = curl_exec($curl);
+
+        var_dump($raw_json);
+        if (false === $raw_json) {
+            die(curl_error($curl));
+        }
+
         curl_close($curl);
 
         // delete the file if it exists, may not exist if file uploaded by url
@@ -54,6 +65,12 @@ class post {
         }
 
         $json = json_decode($raw_json, true);
+
+        // handle imgur failure
+        if (is_null($json) || empty($json['upload']['links']['large_thumbnail'])) {
+            return array($raw_json, '');
+        }
+
         return array($raw_json, $json['upload']['links']['large_thumbnail']);
 
     }
