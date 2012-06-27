@@ -8,7 +8,7 @@ class PostController extends BaseController {
             $_FILES['photo'] = !empty($_FILES['photo']) ? $_FILES['photo'] : array();
             post::add(0, session::cuser_id(), $_POST['content'], $_FILES['photo']);
         }
-        redirect('/');
+        $this->_redirect('/');
     }
 
     public function view($subin_name) {

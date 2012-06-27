@@ -4,7 +4,7 @@ class UserController extends BaseController {
 
     public function logout() {
         session::logout();
-        redirect('/');
+        $this->_redirect('/');
     }
 
     public function login() {
@@ -13,7 +13,7 @@ class UserController extends BaseController {
             if (!session::validate_login($_POST['username'], $_POST['password'])) {
                 $this->_errors[] = 'Invalid username/password combination';
             } else {
-                redirect('/');
+                $this->_redirect('/');
             }
         }
 
@@ -47,7 +47,7 @@ class UserController extends BaseController {
                 if (ctype_digit((string) $user_id)) {
                     // success
                     session::login($user_id);
-                    redirect('/');
+                    $this->_redirect('/');
                 } else {
                     // user add failure
                     $this->_errors[] = 'Something went wrong with signup';

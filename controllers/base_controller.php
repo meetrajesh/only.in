@@ -30,4 +30,9 @@ class BaseController {
         }
     }
 
+    protected function _redirect($path) {
+        header('Location: ' . BASE_URL . PATH_PREFIX . $path);
+        exit;
+    }
+
 }

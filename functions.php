@@ -23,11 +23,6 @@ function in_str($needle, $haystack) {
     return false !== strpos($haystack, $needle);
 }
 
-function redirect($url) {
-    header('Location: ' . BASE_URL . PATH_PREFIX . $url);
-    exit;
-}
-
 function error($msg) {
     die($msg);
 }

@@ -12,9 +12,9 @@ class post {
         $imgur_raw_json = '';
 
         if (!empty($photo['tmp_name'])) {
-            list($imgur_raw_json, $img_url) = self::_upload_img($photo);
-        } elseif (preg_match('~^https?://.+(png|jpg|gif)~iU', $content)) {
-            list($imgur_raw_json, $img_url) = self::_upload_img($content);
+            list($imgur_raw_json, $img_url) = self::_upload_img($photo, false);
+        } elseif (preg_match('~^https?://.+\.(png|jpg|gif)$~iU', $content)) {
+            list($imgur_raw_json, $img_url) = self::_upload_img($content, true);
         }
 
         if (strlen($content . $img_url) > 0) {
@@ -36,9 +36,9 @@ class post {
         return db::affected_rows() > 0;
     }
 
-    private static function _upload_img($photo) {
+    private static function _upload_img($photo, $is_url=false) {
 
-        $data = is_array($photo) ? base64_encode(file_get_contents($photo['tmp_name'])) : $photo;
+        $data = !$is_url && is_array($photo) && !empty($photo['tmp_name']) ? base64_encode(file_get_contents($photo['tmp_name'])) : $photo;
 
         // $data is file data
         $pvars = array('image' => $data, 'key' => IMGUR_API_KEY);
@@ -52,23 +52,23 @@ class post {
 
         $raw_json = curl_exec($curl);
 
-        var_dump($raw_json);
-        if (false === $raw_json) {
-            die(curl_error($curl));
-        }
-
-        curl_close($curl);
-
-        // delete the file if it exists, may not exist if file uploaded by url
-        if (!empty($photo['tmp_name']) && file_exists($photo['tmp_name'])) {
+        // delete the uploaded tmp file if it exists, may not exist if file was uploaded by url
+        if (!$is_url && !empty($photo['tmp_name']) && file_exists($photo['tmp_name'])) {
             unlink($photo['tmp_name']);
         }
 
         $json = json_decode($raw_json, true);
 
+        if (false === $raw_json || is_null($json)) {
+            var_dump($raw_json);
+            $error = curl_error($curl);
+            curl_close($curl);
+            die($error);
+        }
+
         // handle imgur failure
         if (is_null($json) || empty($json['upload']['links']['large_thumbnail'])) {
-            return array($raw_json, '');
+            return array((string) $raw_json, '');
         }
 
         return array($raw_json, $json['upload']['links']['large_thumbnail']);
