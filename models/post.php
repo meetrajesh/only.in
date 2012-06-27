@@ -11,8 +11,10 @@ class post {
         $img_url = '';
         $imgur_raw_json = '';
 
-        if (!empty($photo)) {
+        if (!empty($photo['tmp_name'])) {
             list($imgur_raw_json, $img_url) = self::_upload_img($photo);
+        } elseif (preg_match('~^https?://~', $content)) {
+            list($imgur_raw_json, $img_url) = self::_upload_img($content);
         }
 
         if (strlen($content . $img_url) > 0) {
