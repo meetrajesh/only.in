@@ -47,7 +47,11 @@ class post {
 
         $raw_json = curl_exec($curl);
         curl_close($curl);
-        unlink($photo['tmp_name']);
+
+        // delete the file if it exists, may not exist if file uploaded by url
+        if (!empty($photo['tmp_name']) && file_exists($photo['tmp_name'])) {
+            unlink($photo['tmp_name']);
+        }
 
         $json = json_decode($raw_json, true);
         return array($raw_json, $json['upload']['links']['large_thumbnail']);
