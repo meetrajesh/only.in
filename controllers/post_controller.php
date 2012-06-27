@@ -3,8 +3,10 @@
 class PostController extends BaseController {
 
     public function add() {
-        if (!empty($_POST['content'])) {
-            post::add(0, session::cuser_id(), $_POST['content']);
+
+        if (!empty($_POST['content']) || !empty($_FILES['photo']['tmp_name'])) {
+            $_FILES['photo'] = !empty($_FILES['photo']) ? $_FILES['photo'] : array();
+            post::add(0, session::cuser_id(), $_POST['content'], $_FILES['photo']);
         }
         redirect('/');
     }

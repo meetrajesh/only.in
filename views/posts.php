@@ -5,9 +5,10 @@
 
 <body onload="document.forms[0].elements[0].focus()">
 
-<form method="post" action="/post/add">
+<form method="post" action="/post/add" enctype="multipart/form-data">
   Type in your funny lolcat image url here:<br/>
-  <input type="text" size="30" name="content" />
+  <input type="text" size="30" name="content" /> or
+  <input type="file" name="photo" />
   
   <?=csrf::html()?>
   <input type="submit" name="btn_submit" value="Submit!" />
@@ -19,6 +20,9 @@
 
 while ($row = $data['posts']->fetch_assoc()) {
     echo '<p>User ' . hsc($row['user_id']) . ' says: <em>' . hsc($row['content']) . '</em> at ' . date('r', $row['stamp']) . '</p>';
+    if (!empty($row['img_url'])) {
+        echo '<img src="' . $row['img_url'] . '" />';
+    }
 }
 
 ?>
