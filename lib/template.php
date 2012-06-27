@@ -21,7 +21,7 @@ class template {
             echo $this->_blocks[$this->_block];
         }
 
-        $this->_block = null;
+        unset($this->_block);
     }
 
 }
