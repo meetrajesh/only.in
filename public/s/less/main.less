@@ -1,0 +1,49 @@
+@import 'vendors.less';
+@import 'colors.less';
+@import 'normalize.less';
+@import 'grid.less';
+@import 'buttons.less';
+
+html, body {
+  background: url('../img/bg_grey.png') top left repeat #efefef;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+header {
+  background: url('../img/bg_blue.png') top left repeat @lightBlue;
+  height: 130px;
+
+  h1 {
+    color: #fff;
+    float: left;
+    font-family: 'Bree Serif', Arial, Helvetica, sans-serif;
+    font-size: 36px;
+    font-weight: normal;
+    height: 36px;
+    line-height: 36px;
+    margin: 34px 0 0 0;
+  }
+}
+
+#main-content {
+  margin-top: -20px;
+}
+
+#main-filter {
+  .box-shadow(2px, 2px, 5px, 0, rgba(0, 0, 0, 0.1));
+  float: none;
+  font-size: 16px;
+  font-weight: 600;
+  width: ((@gridColumnWidth + @gridGutterWidth) * 8) - @gridGutterWidth - 2;
+
+  > li {
+    padding: 0;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
+    width: 153px;
+
+    &:first-of-type, &:last-of-type {
+      width: 152px;
+    }
+  }
+}

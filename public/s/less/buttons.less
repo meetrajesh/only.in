@@ -1,0 +1,36 @@
+.pillbox {
+  border: 1px solid #999;
+  .border-radius(6px);
+  color: #666;
+  float: left;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    .linear-gradient(#e0e0e0, #cdcdcd);
+    border-bottom: 1px solid #b8b8b8;
+    border-left: 1px solid #f0f0f0;
+    border-right: 1px solid #999;
+    border-top: 1px solid #f0f0f0;
+    cursor: pointer;
+    float: left;
+    height: 36px;
+    line-height: 34px;
+
+    &:first-of-type {
+      .border-radius(5px 0 0 5px);
+    }
+
+    &:last-of-type {
+      .border-radius(0 5px 5px 0);
+      border-right: 1px solid #c3c3c3;
+    }
+
+    &:hover {
+      .linear-gradient(#e8e8e8, #dadada);
+      border-left-color: #f4f4f4;
+      border-top-color: #f4f4f4;
+    }
+  }
+}

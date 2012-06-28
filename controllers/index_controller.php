@@ -67,7 +67,7 @@ class IndexController extends BaseController {
 
     public function view() {
         $data['posts'] = post::get_recent();
-        $this->_render('posts', $data);
+        $this->_render('posts/base', $data);
     }
 
 
