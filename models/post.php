@@ -13,7 +13,7 @@ class post {
 
         if (!empty($photo['tmp_name'])) {
             list($imgur_raw_json, $img_url) = self::_upload_img($photo, false);
-        } elseif (preg_match('~^https?://.+\.(png|jpg|gif)$~iU', $content)) {
+        } elseif (preg_match('~^https?://.+\.(png|jpg|jpeg|gif)$~iU', $content)) {
             list($imgur_raw_json, $img_url) = self::_upload_img($content, true);
         }
 
