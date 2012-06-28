@@ -4,6 +4,7 @@ class BaseController {
 
     protected $_errors = array();
     protected $_msgs = array();
+    protected $_stylesheets = array();
     protected $_tpl;
 
     protected function __construct() {
@@ -18,6 +19,19 @@ class BaseController {
         $t = $this->_tpl;
         $data['errors'] = $this->_errors;
         require './views/' . $template . '.php';
+    }
+
+    protected function _enqueue_stylesheets($files) {
+        if (is_array($files)) {
+            foreach ($files as $file) {
+                $path = STATIC_PREFIX . '/' . $file;
+                if (file_exists(WEB_ROOT . '/'. $path)) {
+                    array_unshift($this->_stylesheets, $path);
+                }
+            }
+        } else {
+            $this->_enqueue_stylesheets(array($files));
+        }
     }
 
     protected function _display_errors($escape_html=true) {
