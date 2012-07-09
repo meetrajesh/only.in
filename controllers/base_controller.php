@@ -17,6 +17,7 @@ class BaseController {
     protected function _render($template, $data=array()) {
         $t = $this->_tpl;
         $data['errors'] = $this->_errors;
+        $data['msgs'] = $this->_msgs;
         require './views/' . $template . '.php';
     }
 
