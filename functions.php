@@ -35,3 +35,22 @@ function hsc($str) {
 function pts($key, $default='') {
     return !empty($_POST[$key]) ? hsc($_POST[$key]) : hsc($default);
 }
+
+function ago($time) {
+    $units = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year');
+    $lengths = array(60, 60, 24, 7, 4.3, 12);
+    $delta = time() - $time;
+
+    if ($delta < 0) {
+        return 'right now';
+    } else {
+        while (($delta > $lengths[0]) && (count($lengths))) {
+            $delta /= array_shift($lengths);
+            array_shift($units);
+        }
+
+        $pluralize = ($delta > 1)?'s':'';
+
+        return sprintf('%d %s%s ago', ceil($delta), $units[0], $pluralize);
+    }
+}

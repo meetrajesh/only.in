@@ -35,7 +35,9 @@
             <div class="grid_8">
                 <h1>Only.in</h1>
             </div>
-            <div class="grid_4"></div>
+            <div class="grid_4">
+                <input id="main-search" type="text" placeholder="Search Only.in">
+            </div>
         </div>
     </header>
 
@@ -50,6 +52,31 @@
 
             <? $t->block('content'); ?>
             <? $t->endblock(true); ?>
+        </div>
+
+        <div class="grid_4">
+            <ul class="pillbox cf" id="auth-buttons">
+                <li>Sign In</li>
+                <li>Register</li>
+            </ul>
+
+            <aside id="quickpost">
+                <h3>Post Something</h3>
+                <div>
+                    <form method="post" action="/post/add" enctype="multipart/form-data">
+                        <?=csrf::html()?>
+                        <input type="hidden" name="MAX_FILE_SIZE" value="<?=UPLOAD_MAX_SIZE?>">
+                        <input type="submit" style="display: none;">
+                        <input type="text" name="place" placeholder="Place">
+                        <input type="text" name="content" placeholder="URL">
+                    </form>
+                </div>
+            </aside>
+
+            <aside>
+                <h3>Popular Places</h3>
+                <div></div>
+            </aside>
         </div>
     </div>
 

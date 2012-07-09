@@ -1,13 +1,31 @@
-@import 'vendors.less';
+@import 'inc/common.less';
 
 .post {
   background: #fff;
   border: 1px solid #ccc;
   .border-radius(6px);
-  margin: 40px 0 0 0;
+  color: #666;
+  margin: 40px 0;
   padding: 20px;
 
-  > img {
-    max-width: 578px;
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+  }
+
+  .post-image {
+    text-align: center;
+
+    img {
+      max-width: 578px;
+    }
+  }
+
+  .post-meta {
+    background: url('../img/icons_grey.png') -10px -62px no-repeat;
+    display: block;
+    margin: 0 0 20px 0;
+    padding: 0 0 0 18px;
   }
 }
