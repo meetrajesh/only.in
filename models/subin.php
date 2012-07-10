@@ -12,7 +12,7 @@ class subin {
     }
 
     public static function create_subin_when_non_existing($subin_name, $user_id=0) {
-        $sql = 'SELECT subin_id FROM subins WHERE LOWER(name)="%s"';
+        $sql = 'SELECT subin_id FROM subins WHERE LOWER(name) = LOWER("%s")';
         if ($subin_id = db::result_query($sql, strtolower($subin_name))) {
             return $subin_id;
         }
@@ -21,7 +21,7 @@ class subin {
 
     // lookup subin from slug in db
     public static function slug_to_subin($subin_name) {
-        $sql = 'SELECT subin_id, name FROM subins WHERE slug="%s"';
+        $sql = 'SELECT subin_id, name FROM subins WHERE LOWER(slug) = LOWER("%s")';
         return db::fetch_query($sql, $subin_name);
     }
 

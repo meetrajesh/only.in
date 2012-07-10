@@ -12,12 +12,12 @@
     <link href='http://fonts.googleapis.com/css?family=Bree+Serif|Open+Sans:400,400italic,600,700' rel='stylesheet' type='text/css'>
 
     <?
-        $this->_enqueue_stylesheets(array(
+        $this->_add_css(array(
             'less/main.less',
         ));
     ?>
 
-    <? foreach ($this->_stylesheets as $stylesheet) : ?>
+    <? foreach ($this->_stylesheets as $stylesheet): ?>
         <link rel="stylesheet/less" href="<?= PATH_PREFIX . $stylesheet; ?>">
     <? endforeach; ?>
     <script>

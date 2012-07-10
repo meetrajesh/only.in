@@ -22,16 +22,12 @@ class BaseController {
         require './views/' . $template . '.php';
     }
 
-    protected function _enqueue_stylesheets($files) {
-        if (is_array($files)) {
-            foreach ($files as $file) {
-                $path = STATIC_PREFIX . '/' . $file;
-                if (file_exists(WEB_ROOT . '/'. $path)) {
-                    array_unshift($this->_stylesheets, $path);
-                }
+    protected function _add_css($files) {
+        foreach ((array) $files as $file) {
+            $path = STATIC_PREFIX . '/' . $file;
+            if (file_exists(WEB_ROOT . '/'. $path)) {
+                array_unshift($this->_stylesheets, $path);
             }
-        } else {
-            $this->_enqueue_stylesheets(array($files));
         }
     }
 
