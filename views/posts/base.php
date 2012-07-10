@@ -5,7 +5,7 @@
 <? $t->block('content'); ?>
     <? while ($row = $data['posts']->fetch_assoc()) : ?>
         <section class="post" data-id="<?= $row['post_id']; ?>">
-            <h2>Only in <?=$row['subin_name']?><?= (!empty($row['content'])) ? ': ' . hsc($row['content']) : ''; ?></h2>
+            <h2>Only in <?=$row['subin_name']?><?= (!empty($row['title'])) ? ': ' . hsc($row['title']) : ''; ?></h2>
             <span class="post-meta">
                 posted <?= ago($row['stamp']); ?>
                 <? if (!empty($row['user_id'])) : ?>

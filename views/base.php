@@ -68,6 +68,7 @@
                         <input type="hidden" name="MAX_FILE_SIZE" value="<?=UPLOAD_MAX_SIZE?>">
                         <input type="submit" name="btn_submit" value="Add Post" />
                         <input type="text" name="place" placeholder="Place">
+                        <input type="text" name="title" placeholder="Title">
                         <input type="text" name="content" placeholder="URL">
                     </form>
                 </div>

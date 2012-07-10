@@ -2,10 +2,11 @@
 
 class post {
 
-    public static function add($subin_id, $user_id=0, $content, $photo=array(), $stamp=0) {
+    public static function add($subin_id, $user_id=0, $content, $photo=array(), $stamp=0, $title='') {
 
         $subin_id = (int) $subin_id;
         $user_id = (int) $user_id;
+        $title = trim($title);
         $content = trim($content);
         $stamp = (!empty($stamp) && $stamp > 0) ? (int) $stamp : time();
         $img_url = '';
@@ -18,8 +19,8 @@ class post {
         }
 
         if (strlen($content . $img_url) > 0) {
-            $sql = 'INSERT INTO posts (subin_id, user_id, content, img_url, imgur_raw_json, stamp) VALUES ("%d", "%d", "%s", "%s", "%s", %d)';
-            db::query($sql, $subin_id, $user_id, $content, $img_url, $imgur_raw_json, $stamp);
+            $sql = 'INSERT INTO posts (subin_id, user_id, title, content, img_url, imgur_raw_json, stamp) VALUES ("%d", "%d", "%s", "%s", "%s", "%s", %d)';
+            db::query($sql, $subin_id, $user_id, $title, $content, $img_url, $imgur_raw_json, $stamp);
             return db::insert_id();
         }
 
@@ -27,7 +28,7 @@ class post {
 
     public static function get_recent($subin_id=0, $limit=10) {
         $where_clause = !empty($subin_id) ? 'subin_id=%d AND ' : '';
-        $sql = 'SELECT p.post_id, p.user_id, p.content, p.img_url, p.stamp, s.name AS subin_name FROM posts p INNER JOIN subins s USING (subin_id) WHERE  ' . $where_clause . ' p.is_deleted=0 ORDER BY stamp DESC LIMIT %d';
+        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, s.name AS subin_name FROM posts p INNER JOIN subins s USING (subin_id) WHERE  ' . $where_clause . ' p.is_deleted=0 ORDER BY stamp DESC LIMIT %d';
         return !empty($subin_id) ? db::query($sql, $subin_id, $limit) : db::query($sql, $limit);
     }
 
