@@ -66,6 +66,12 @@ class template {
         }
     }
 
+    public function notempty($value, $prefix='', $suffix='') {
+        if (!empty($value)) {
+            echo $prefix.$value.$suffix;
+        }
+    }
+
     public function pluralize($count, $plural='s', $singular='') {
         if (is_array($count)) {
             $count = count($count);
