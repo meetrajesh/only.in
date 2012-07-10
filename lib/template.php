@@ -24,4 +24,24 @@ class template {
         unset($this->_block);
     }
 
+    public function cycle($pointer, $list=array()) {
+        $list = func_get_args();
+        $pointer = array_shift($list);
+
+        if (count($list)) {
+            $pointer %= count($list);
+            return $list[$pointer];
+        } else {
+            return false;
+        }
+    }
+
+    public function pluralize($count, $plural='s', $singular='') {
+        if (is_array($count)) {
+            $count = count($count);
+        }
+
+        return ((int)$count == 1) ? $singular : $plural;
+    }
+
 }
