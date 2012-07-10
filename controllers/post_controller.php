@@ -22,4 +22,8 @@ class PostController extends BaseController {
         }
     }
 
+    public function add_comment($user_id=0, $post_id, $parent_comment_id=0, $comment) {
+        comment::add($user_id, $post_id, $parent_comment_id, $comment);
+    }
+
 }
