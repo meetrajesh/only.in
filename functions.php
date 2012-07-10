@@ -20,6 +20,14 @@ function __autoload($class) {
 }
 
 function in_str($needle, $haystack) {
+    if (is_array($needle)) {
+        foreach ($needle as $each_needle) {
+            if (!in_str($each_needle, $haystack)) {
+                return false;
+            }
+        }
+        return true;
+    }
     return false !== strpos($haystack, $needle);
 }
 
@@ -48,9 +56,7 @@ function ago($time) {
             $delta /= array_shift($lengths);
             array_shift($units);
         }
-
         $pluralize = ($delta > 1)?'s':'';
-
         return sprintf('%d %s%s ago', ceil($delta), $units[0], $pluralize);
     }
 }

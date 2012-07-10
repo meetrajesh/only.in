@@ -9,7 +9,7 @@ class IndexController extends BaseController {
         $uri = trim($uri, '/');
 
         $args = array();
-        if (in_str('/', $uri)) {
+        if (in_str('/', $uri) && !in_str(array('/latest'), $uri)) {
             // e.g. /user/signup
             list($controller, $action) = explode('/', $uri, 2);
             // if the action has additional params passed in, parse those as controller args
@@ -19,8 +19,8 @@ class IndexController extends BaseController {
                 $args = explode('/', $args);
             }
         } elseif (!empty($uri) && strlen($uri) > SUBIN_MIN_LEN) {
-            // e.g. /toronto
-            list($controller, $action, $args) = array('post', 'view', $uri);
+            // e.g. /toronto or /toronto/latest
+            list($controller, $action, $args) = array('post', 'view', explode('/', $uri));
         } else {
             // e.g. /
             list($controller, $action) = array('index', 'view');

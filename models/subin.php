@@ -2,25 +2,35 @@
 
 class subin {
 
-    public static function create($subin_name, $user_id) {
-        $sql = 'INSERT INTO subins (name, slug, $user_id) VALUES ("%s", "%s", %d)';
+    public static function create($subin_name, $user_id=0) {
+        if (strlen($subin_name) < SUBIN_MIN_LEN) {
+            die('subin name too short!');
+        }
+        $sql = 'INSERT INTO subins (name, slug, user_id) VALUES ("%s", "%s", %d)';
         db::query($sql, $subin_name, self::_slug_from_name($subin_name), (int) $user_id);
         return db::insert_id();
     }
 
-    public static function create_subin_when_non_existing($subin_name) {
+    public static function create_subin_when_non_existing($subin_name, $user_id=0) {
         $sql = 'SELECT subin_id FROM subins WHERE LOWER(name)="%s"';
         if ($subin_id = db::result_query($sql, strtolower($subin_name))) {
             return $subin_id;
         }
-        return self::create($subin_name);
+        return self::create($subin_name, $user_id);
     }
 
-    public static function get_subin_from_name($subin_name) {
+    // lookup subin from slug in db
+    public static function slug_to_subin($subin_name) {
         $sql = 'SELECT subin_id, name FROM subins WHERE slug="%s"';
         return db::fetch_query($sql, $subin_name);
     }
 
+    public static function slug_from_subin_id($subin_id) {
+        $sql = 'SELECT slug FROM subins WHERE subin_id=%d';
+        return db::result_query($sql, $subin_id);
+    }
+
+    // convert subin name to slug 
     private static function _slug_from_name($subin_name) {
 
         $subin_name = trim(strtolower($subin_name));
@@ -38,7 +48,8 @@ class subin {
         return $subin_name;
     }
 
-    public static function name_from_slug($slug) {
+    // reverse operation of previous function
+    public static function slug_to_name($slug) {
         $slug = urldecode($slug);
         $slug = str_replace('-', ' ', $slug);
         return ucwords($slug);
