@@ -3,20 +3,22 @@
 ?>
 
 <? $t->block('content'); ?>
-    <? while ($row = $data['posts']->fetch_assoc()) : ?>
-        <section class="post" data-id="<?= $row['post_id']; ?>">
-            <h2>Only in <?=hsc(ucwords($row['subin_name']))?><?=hsc($t->notempty($row['title'], ': '))?></h2>
+    <? foreach ($data['posts'] as $post): ?>
+        <section class="post" data-id="<?= $post['post_id']; ?>">
+            <h2>Only in <?=hsc(ucwords($post['subin_name']))?><?=hsc($t->notempty($post['title'], ': '))?></h2>
             <span class="post-meta">
-                posted <?= ago($row['stamp']); ?>
-                <? if (!empty($row['user_id'])) : ?>
-                    by <?= hsc($row['user_id']); ?>
+                id is <?=$post['post_id']?>,
+                <?=isset($post['rank']) ? 'rank is ' . $post['rank'] . ', ' : ''?>
+                posted <?= ago($post['stamp']); ?>
+                <? if (!empty($post['user_id'])) : ?>
+                    by <?= hsc($post['user_id']); ?>
                 <? endif; ?>
             </span>
-            <? if (!empty($row['img_url'])) : ?>
-                <div class="post-image"><img src="<?=hsc($row['img_url'])?>" alt=""></div>
+            <? if (!empty($post['img_url'])) : ?>
+                <div class="post-image"><img src="<?=hsc($post['img_url'])?>" alt=""></div>
             <? endif ?>
         </section>
-    <? endwhile; ?>
+    <? endforeach; ?>
 <? $t->endblock(); ?>
 
 <? $this->_render('base', $data); ?>

@@ -26,10 +26,46 @@ class post {
 
     }
 
-    public static function get_recent($subin_id=0, $limit=10) {
+    public static function get_popular($subin_id=0, $limit=10) {
+        $result = self::get_latest($subin_id, 30);
+
+        // set the rank for each post
+        foreach ($result as $i => $row) {
+            $result[$i]['rank'] = self::_calc_rank($row);
+        }
+
+        // reverse sort the posts based on rank
+        usort($result, function($post1, $post2) {
+                if ($post2['rank'] != $post1['rank']) {
+                    return strcmp($post2['rank'], $post1['rank']);
+                } else {
+                    return strcmp($post2['stamp'], $post1['stamp']);
+                }
+            });
+
+        return array_slice($result, 0, $limit);
+    }
+    
+    private static function _calc_rank($post) {
+        $s = $post['score'];
+        $order = log(max(abs($s), 1), 10);
+        $sign = ($s == 0) ? 0 : abs($s) / $s;
+        $secs = $post['stamp'] - 1134028003;
+        return round($order + $sign*$secs / 45000, 7);
+    }
+
+    public static function get_latest($subin_id=0, $limit=10) {
         $where_clause = !empty($subin_id) ? 'subin_id=%d AND ' : '';
-        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, s.name AS subin_name FROM posts p INNER JOIN subins s USING (subin_id) WHERE  ' . $where_clause . ' p.is_deleted=0 ORDER BY stamp DESC LIMIT %d';
-        return !empty($subin_id) ? db::query($sql, $subin_id, $limit) : db::query($sql, $limit);
+        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, IFNULL(SUM(v.vote), 0) AS score, s.name AS subin_name 
+                FROM posts p
+                INNER JOIN subins s USING (subin_id)
+                LEFT JOIN votes v ON p.post_id=v.post_id 
+                WHERE  ' . $where_clause . ' p.is_deleted=0
+                GROUP BY p.post_id
+                ORDER BY stamp DESC
+                LIMIT %d';
+        $result = !empty($subin_id) ? db::query($sql, $subin_id, $limit) : db::query($sql, $limit);
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public static function delete_by_img_url($img_url) {

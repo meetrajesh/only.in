@@ -14,23 +14,6 @@ class PostController extends BaseController {
         $this->_redirect(empty($slug) ? '/' : '/' . $slug . '/latest');
     }
 
-    public function view($subin) {
-        // grab the tab name if it exists
-        if (count($subin) == 1) {
-            list($subin_name) = $subin;
-        } else {
-            list($subin_name, $tab) = $subin;
-        }
-        if ($subin = subin::slug_to_subin($subin_name)) {
-            // subin does exist
-            $data['posts'] = post::get_recent($subin['subin_id']);
-            $this->_render('posts/base', $data);
-        } else {
-            // subin does not exist, but pretend like it does
-            die('viewing subin name = ' . subin::slug_to_name($subin_name));
-        }
-    }
-
     public function add_comment($user_id=0, $post_id, $parent_comment_id=0, $comment) {
         comment::add($user_id, $post_id, $parent_comment_id, $comment);
     }

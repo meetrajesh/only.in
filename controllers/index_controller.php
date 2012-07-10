@@ -9,7 +9,7 @@ class IndexController extends BaseController {
         $uri = trim($uri, '/');
 
         $args = array();
-        if (in_str('/', $uri) && !in_str(array('/latest'), $uri)) {
+        if (in_str('/', $uri) && !in_str(array('/latest', '/popular'), $uri)) {
             // e.g. /user/signup
             list($controller, $action) = explode('/', $uri, 2);
             // if the action has additional params passed in, parse those as controller args
@@ -20,10 +20,10 @@ class IndexController extends BaseController {
             }
         } elseif (!empty($uri) && strlen($uri) > SUBIN_MIN_LEN) {
             // e.g. /toronto or /toronto/latest
-            list($controller, $action, $args) = array('post', 'view', explode('/', $uri));
+            list($controller, $action, $args) = array('subin', 'view', explode('/', $uri));
         } else {
             // e.g. /
-            list($controller, $action) = array('index', 'view');
+            list($controller, $action) = array('index', 'view', 'popular');
         }
 
         $class = ucwords($controller) . 'Controller';
@@ -65,10 +65,16 @@ class IndexController extends BaseController {
 
     }
 
-    public function view() {
-        $data['posts'] = post::get_recent();
+    public function view($tab='popular') {
+
+        if ($tab == 'popular') {
+            $data['posts'] = post::get_popular();
+        } elseif ($tab == 'latest') {
+            $data['posts'] = post::get_latest();
+        } else {
+            $data['posts'] = array();
+        }
+
         $this->_render('posts/base', $data);
     }
-
-
 }

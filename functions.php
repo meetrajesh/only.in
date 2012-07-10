@@ -21,12 +21,13 @@ function __autoload($class) {
 
 function in_str($needle, $haystack) {
     if (is_array($needle)) {
+        // OR search - must have at least one needle in haystack
         foreach ($needle as $each_needle) {
-            if (!in_str($each_needle, $haystack)) {
-                return false;
+            if (in_str($each_needle, $haystack)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
     return false !== strpos($haystack, $needle);
 }
