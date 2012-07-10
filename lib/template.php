@@ -4,6 +4,7 @@ class template {
 
     protected $_block;
     protected $_blocks = array();
+    protected $_lastchange;
 
     public function block($name) {
         $this->_block = $name;
@@ -24,7 +25,7 @@ class template {
         unset($this->_block);
     }
 
-    public function cycle($pointer, $list=array()) {
+    public function cycle(&$pointer, $list=array()) {
         $list = func_get_args();
         $pointer = array_shift($list);
 
@@ -34,6 +35,35 @@ class template {
         } else {
             return false;
         }
+
+        $pointer++;
+    }
+
+    public function firstof($list=array()) {
+        $list = func_get_args();
+        foreach ($list as $item) {
+            if ($item) {
+                return $item;
+            }
+        }
+        return false;
+    }
+
+    public function flush() {
+        unset($this->_lastchange);
+    }
+
+    public function ifchanged() {
+        ob_start();
+    }
+
+    public function endifchanged() {
+        $content = ob_get_clean();
+
+        if (md5($content) != $this->_lastchange) {
+            echo $content;
+            $this->_lastchange = md5($content);
+        }
     }
 
     public function pluralize($count, $plural='s', $singular='') {
@@ -42,6 +72,25 @@ class template {
         }
 
         return ((int)$count == 1) ? $singular : $plural;
+    }
+
+    public function regroup($list, $groupby) {
+        $regroup = array();
+
+        if (is_array($list)) {
+            foreach ($list as $item) {
+                if (!is_array($regroup[$item[$groupby]])) {
+                    $regroup[$item[$groupby]] = array();
+                }
+
+                unset($item[$groupby]);
+                $regroup[$item[$groupby]][] = $item;
+            }
+
+            return $regroup;
+        } else {
+            return $list;
+        }
     }
 
 }
