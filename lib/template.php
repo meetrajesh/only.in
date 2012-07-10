@@ -68,8 +68,9 @@ class template {
 
     public function notempty($value, $prefix='', $suffix='') {
         if (!empty($value)) {
-            echo $prefix.$value.$suffix;
+            return $prefix . $value . $suffix;
         }
+        return '';
     }
 
     public function pluralize($count, $plural='s', $singular='') {

@@ -2,7 +2,7 @@
 
 class post {
 
-    public static function add($subin_id, $user_id=0, $content, $photo=array(), $stamp=0, $title='') {
+    public static function add($subin_id, $user_id=0, $title='', $content, $photo=array(), $stamp=0) {
 
         $subin_id = (int) $subin_id;
         $user_id = (int) $user_id;
@@ -18,7 +18,7 @@ class post {
             list($imgur_raw_json, $img_url) = self::_upload_img($content, true);
         }
 
-        if (strlen($content . $img_url) > 0) {
+        if (strlen($title . $content . $img_url) > 0) {
             $sql = 'INSERT INTO posts (subin_id, user_id, title, content, img_url, imgur_raw_json, stamp) VALUES ("%d", "%d", "%s", "%s", "%s", "%s", %d)';
             db::query($sql, $subin_id, $user_id, $title, $content, $img_url, $imgur_raw_json, $stamp);
             return db::insert_id();

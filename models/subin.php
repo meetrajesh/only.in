@@ -12,10 +12,13 @@ class subin {
     }
 
     public static function create_subin_when_non_existing($subin_name, $user_id=0) {
+        // check if the subin exists first
         $sql = 'SELECT subin_id FROM subins WHERE LOWER(name) = LOWER("%s")';
         if ($subin_id = db::result_query($sql, strtolower($subin_name))) {
+            // return subin_id if subin already exists
             return $subin_id;
         }
+        // create the subin since it doesn't exist
         return self::create($subin_name, $user_id);
     }
 

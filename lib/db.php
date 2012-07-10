@@ -9,26 +9,38 @@ class db {
         $db = self::get();
         $args = func_get_args();
         $sql = array_shift($args);
-        if (isset($args[0])) {
-            if (is_array($args[0])) {
-                $args = $args[0];
-            } else {
-                foreach ($args as $key => $val) {
-                    $args[$key] = $db->escape_string($val);
-                }
-            }
-        }
-        if (count($args) > 0) {
-            $sql = vsprintf($sql, $args);
-        }
+        $sql = self::_bind_args($sql, $args);
         // increment the db query count
         self::$num_queries++;
-        #v($sql);
         $result = $db->query($sql);
         if (!$result) {
             error('SQL error: ' . $db->error);
         }
         return $result;
+    }
+
+    public static function die_query($sql, $args=array()) {
+        $args = func_get_args();
+        $sql = array_shift($args);
+        $sql = self::_bind_args($sql, $args);
+        v($sql);
+        exit;
+    }
+
+    private static function _bind_args($sql, $args) {
+        $db = self::get();
+        if (isset($args[0])) {
+            if (is_array($args[0])) {
+                $args = $args[0];
+            }
+            foreach ($args as $key => $val) {
+                $args[$key] = $db->escape_string($val);
+            }
+        }
+        if (count($args) > 0) {
+            $sql = vsprintf($sql, $args);
+        }
+        return $sql;
     }
     
     public static function fetch_query($sql, $args=array()) {
