@@ -144,11 +144,18 @@ input {
     border: 1px solid #999;
     display: block;
     margin: 0 0 20px 0;
+    overflow: hidden;
     padding: 5px;
     width: 244px;
 
     &:last-of-type {
       margin: 0;
     }
+  }
+
+  input[type="submit"] {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
   }
 }
