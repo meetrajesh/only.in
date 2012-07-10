@@ -51,7 +51,7 @@ class post {
         $order = log(max(abs($s), 1), 10);
         $sign = ($s == 0) ? 0 : abs($s) / $s;
         $secs = $post['stamp'] - 1134028003;
-        return round($order + $sign*$secs / 45000, 7);
+        return round($order + ($sign * $secs / 45000), 7);
     }
 
     public static function get_latest($subin_id=0, $limit=10) {
