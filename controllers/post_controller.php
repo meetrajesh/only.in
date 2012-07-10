@@ -8,7 +8,7 @@ class PostController extends BaseController {
             $_FILES['photo'] = !empty($_FILES['photo']) ? $_FILES['photo'] : array();
             // create the subin if it doesn't exist
             $subin_id = subin::create_subin_when_non_existing($_POST['place'], session::cuser_id());
-            post::add(0, session::cuser_id(), $_POST['content'], $_FILES['photo']);
+            post::add($subin_id, session::cuser_id(), $_POST['content'], $_FILES['photo']);
         }
         $this->_redirect('/' . subin::slug_from_subin_id($subin_id) . '/latest');
     }

@@ -18,8 +18,8 @@ class post {
         }
 
         if (strlen($content . $img_url) > 0) {
-            $sql = 'INSERT INTO posts (user_id, content, img_url, imgur_raw_json, stamp) VALUES ("%d", "%s", "%s", "%s", %d)';
-            db::query($sql, $user_id, $content, $img_url, $imgur_raw_json, $stamp);
+            $sql = 'INSERT INTO posts (subin_id, user_id, content, img_url, imgur_raw_json, stamp) VALUES ("%d", "%d", "%s", "%s", "%s", %d)';
+            db::query($sql, $subin_id, $user_id, $content, $img_url, $imgur_raw_json, $stamp);
             return db::insert_id();
         }
 
