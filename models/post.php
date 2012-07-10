@@ -27,7 +27,7 @@ class post {
 
     public static function get_recent($subin_id=0, $limit=10) {
         $where_clause = !empty($subin_id) ? 'WHERE subin_id=%d' : '';
-        $sql = 'SELECT post_id, user_id, content, img_url, stamp FROM posts ' . $where_clause . ' WHERE is_deleted=0 ORDER BY stamp DESC LIMIT %d';
+        $sql = 'SELECT p.post_id, p.user_id, p.content, p.img_url, p.stamp, s.name AS subin_name FROM posts p ' . $where_clause . ' INNER JOIN subins s USING (subin_id) WHERE p.is_deleted=0 ORDER BY stamp DESC LIMIT %d';
         return !empty($subin_id) ? db::query($sql, $subin_id, $limit) : db::query($sql, $limit);
     }
 
