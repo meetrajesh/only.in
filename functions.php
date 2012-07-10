@@ -56,7 +56,7 @@ function ago($time) {
             $delta /= array_shift($lengths);
             array_shift($units);
         }
-        $pluralize = ($delta > 1)?'s':'';
+        $pluralize = ($delta == 1)?'':'s';
         return sprintf('%d %s%s ago', ceil($delta), $units[0], $pluralize);
     }
 }
