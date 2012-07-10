@@ -66,7 +66,7 @@
                     <form method="post" action="/post/add" enctype="multipart/form-data">
                         <?=csrf::html()?>
                         <input type="hidden" name="MAX_FILE_SIZE" value="<?=UPLOAD_MAX_SIZE?>">
-                        <input type="submit" style="display: none;">
+                        <input type="submit" name="btn_submit" value="Add Post" />
                         <input type="text" name="place" placeholder="Place">
                         <input type="text" name="content" placeholder="URL">
                     </form>
