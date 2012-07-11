@@ -27,7 +27,7 @@ class post {
     }
 
     public static function get_popular($subin_id=0, $limit=10) {
-        $result = self::get_latest($subin_id, 30);
+        $result = self::get_latest($subin_id, $limit*3);
 
         // set the rank for each post
         foreach ($result as $i => $row) {
@@ -55,17 +55,19 @@ class post {
     }
 
     public static function get_latest($subin_id=0, $limit=10) {
-        $where_clause = !empty($subin_id) ? 'subin_id=%d AND ' : '';
+        $where_clause = !empty($subin_id) ? 'subin_id=%d' : '1';
         $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, IFNULL(SUM(v.vote), 0) AS score, s.name AS subin_name 
                 FROM posts p
                 INNER JOIN subins s USING (subin_id)
                 LEFT JOIN votes v ON p.post_id=v.post_id 
-                WHERE  ' . $where_clause . ' p.is_deleted=0
+                WHERE  ' . $where_clause . ' AND p.is_deleted=0
                 GROUP BY p.post_id
                 ORDER BY stamp DESC
                 LIMIT %d';
         $result = !empty($subin_id) ? db::query($sql, $subin_id, $limit) : db::query($sql, $limit);
-        return $result->fetch_all(MYSQLI_ASSOC);
+        # can't use fetch_all() since it is only available as mysqlnd (nd=native driver)
+        # return $result->fetch_all(MYSQLI_ASSOC);
+        return db::fetch_all($result);
     }
 
     public static function delete_by_img_url($img_url) {

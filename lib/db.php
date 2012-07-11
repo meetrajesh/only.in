@@ -49,6 +49,11 @@ class db {
         return self::query($sql, $args)->fetch_assoc();
     }
 
+    public static function fetch_all($result) {
+        while ($row[] = $result->fetch_assoc());
+        return array_slice($row, 0, -1);
+    }
+
     // assumes either one or two columns
     // if one column, then returns an array of all the rows in that column
     // if two columns, then retuns a hash where the 1st row is the key and 2nd row is value (beware of duplicate keys!)

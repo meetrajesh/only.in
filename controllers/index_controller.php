@@ -23,7 +23,7 @@ class IndexController extends BaseController {
             list($controller, $action, $args) = array('subin', 'view', explode('/', $uri));
         } else {
             // e.g. /
-            list($controller, $action) = array('index', 'view', 'popular');
+            list($controller, $action, $args) = array('index', 'view', 'popular');
         }
 
         $class = ucwords($controller) . 'Controller';
