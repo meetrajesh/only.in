@@ -55,6 +55,15 @@ class post {
     }
 
     public static function get_latest($subin_id=0, $page=1, $limit=10) {
+        // sanitize input
+        $subin_id = (int)$subin_id;
+        $page = (int)$page;
+        $limit = (int)$limit;
+
+        // set defaults
+        $page = $page > 0 ? $page : 1;
+        $limit = $limit > 0 ? $limit : 10;
+
         $where_clause = !empty($subin_id) ? 'subin_id=%d' : '1';
         $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, IFNULL(SUM(v.vote), 0) AS score, s.name AS subin_name 
                 FROM posts p

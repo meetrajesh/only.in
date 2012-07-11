@@ -15,6 +15,11 @@ function v(&$var1, &$var2=null, &$var3=null) {
     }
 }
 
+function d(&$var) {
+    var_dump($var);
+    exit;
+}
+
 function __autoload($class) {
     if (preg_match('/(.+)controller$/i', $class, $controller)) {
         // controllers

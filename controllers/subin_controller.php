@@ -2,32 +2,26 @@
 
 class SubinController extends BaseController {
 
-    public function view($subin) {
-        // grab the tab name if it exists
-        $tab = 'popular';
-        $page = 1;
-        if (count($subin) == 1) {
-            list($subin_name) = $subin;
-        } elseif (count($subin) == 2) {
-            list($subin_name, $tab) = $subin;
-        } elseif (count($subin) == 3) {
-            list($subin_name, $tab, $page) = $subin;
+    public function view($args) {
+        // grab the args
+        $args = array_pad($args, 3, '');
+        list($subin_name, $tab, $page) = $args;
+
+        // set default tab if not provided
+        if (!in_array($tab, array('popular', 'latest'))) {
+            $tab = 'popular';
         }
 
-        if (in_array($subin_name, array('popular', 'latest'))) {
-            $subin['subin_id'] = 0;
-            $tab = $subin_name;
-        } else {
-            $subin = subin::slug_to_subin($subin_name);
-            if (empty($subin['subin_id'])) {
-                $subin['subin_id'] = -1;
-            }
-        }
+        // default page number
+        $page = (int)$page > 0 ? $page : 1;
+
+        $subin = subin::slug_to_subin($subin_name);
+        $subin_id = empty($subin['subin_id']) ? -1 : $subin['subin_id'];
 
         if ($tab == 'popular') {
-            $data['posts'] = post::get_popular($subin['subin_id'], $page);
+            $data['posts'] = post::get_popular($subin_id, $page);
         } elseif ($tab == 'latest') {
-            $data['posts'] = post::get_latest($subin['subin_id'], $page);
+            $data['posts'] = post::get_latest($subin_id, $page);
         } else {
             $data['posts'] = array();
         }

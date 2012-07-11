@@ -6,43 +6,32 @@ class IndexController extends BaseController {
 
         $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
         $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
-        $uri = rtrim($uri, '/');
         
-        $routes = array('$' => array('index', 'view', array('popular')),
+        $routes = array('/$' => array('index', 'view', array('popular')), // empty route, just root domain
                         '/latest' => array('index', 'view', array('latest')),
                         '/popular' => array('index', 'view', array('popular')),
+                        '/post/add' => array('post', 'add', array()),
+                        '/post/add_comment' => array('post', 'add_comment', array()),
+                        '/admin/delete' => array('admin', 'delete', array()),
+                        '/user/signup' => array('user', 'signup', array()),
+                        '/user/login' => array('user', 'login', array()),
+                        '/user/logout' => array('user', 'logout', array()),
+                        '/' . str_repeat('.', SUBIN_MIN_LEN) . '+/?' => array('subin', 'view', array()), // arbitrary subin
                         );
 
         foreach ($routes as $route => $dest) {
             if (preg_match("~^(${route})~", $uri, $match)) {
                 list($controller, $action, $args) = $dest;
                 // look for more args
-                $uri = trim(str_replace($match[0], '', $uri), '/');
+                if (!empty($args)) {
+                    $uri = str_replace($match[0], '', $uri);
+                }
+                $uri = trim($uri, '/');
                 if (!empty($uri)) {
                     $args = array_merge($args, explode('/', $uri));
-            }
+                }
                 break;
             }
-        }
-
-        $all_controllers = array('admin', 'user', 'subin', 'post');
-
-        if (empty($controller)) {
-            foreach ($all_controllers as $cont) {
-                if (preg_match("~^/${cont}/~", $uri)) {
-                    $args = explode('/', $uri);
-                    $controller = array_shift($args);
-                    $action = array_shift($args);
-                    break;
-                }
-            }
-        }
-
-        // look for subin
-        if (empty($controller) && strlen($uri) > SUBIN_MIN_LEN) {
-            $uri = trim($uri, '/');
-            // e.g. /toronto or /toronto/latest
-            list($controller, $action, $args) = array('subin', 'view', explode('/', $uri));
         }
 
         #v($controller, $action, $args);
@@ -88,12 +77,11 @@ class IndexController extends BaseController {
 
     public function view($args) {
 
-        $page = 1;
-        if (count($args) == 1) {
-            list($tab) = $args;
-        } elseif (ctype_digit($args[1])) {
-            list($tab, $page) = $args;
-        }
+        // grab the args
+        $args = array_pad($args, 2, '');
+        list($tab, $page) = $args;
+
+        $page = !empty($page) && ctype_digit((string) $page) ? (int) $page : 1;
 
         if ($tab == 'popular') {
             $data['posts'] = post::get_popular(0, $page);
