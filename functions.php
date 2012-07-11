@@ -1,8 +1,18 @@
 <?php
 
 // alias var_dump() to v() for ease of typing
-function v(&$var) {
-    var_dump($var);
+function v(&$var1, &$var2=null, &$var3=null) {
+    switch (func_num_args()) {
+    case 1:
+        var_dump($var1);
+        break;
+    case 2:
+        var_dump($var1, $var2);
+        break;
+    case 3:
+        var_dump($var1, $var2, $var3);
+        break;
+    }
 }
 
 function __autoload($class) {

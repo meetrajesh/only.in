@@ -6,25 +6,46 @@ class IndexController extends BaseController {
 
         $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
         $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
-        $uri = trim($uri, '/');
+        $uri = rtrim($uri, '/');
+        
+        $routes = array('$' => array('index', 'view', array('popular')),
+                        '/latest' => array('index', 'view', array('latest')),
+                        '/popular' => array('index', 'view', array('popular')),
+                        );
 
-        $args = array();
-        if (in_str('/', $uri) && !in_str(array('/latest', '/popular'), $uri)) {
-            // e.g. /user/signup
-            list($controller, $action) = explode('/', $uri, 2);
-            // if the action has additional params passed in, parse those as controller args
-            if (in_str('/', $action)) {
-                // e.g. /post/view/32
-                list($action, $args) = explode('/', $action, 2);
-                $args = explode('/', $args);
+        foreach ($routes as $route => $dest) {
+            if (preg_match("~^(${route})~", $uri, $match)) {
+                list($controller, $action, $args) = $dest;
+                // look for more args
+                $uri = trim(str_replace($match[0], '', $uri), '/');
+                if (!empty($uri)) {
+                    $args = array_merge($args, explode('/', $uri));
             }
-        } elseif (!empty($uri) && strlen($uri) > SUBIN_MIN_LEN) {
+                break;
+            }
+        }
+
+        $all_controllers = array('admin', 'user', 'subin', 'post');
+
+        if (empty($controller)) {
+            foreach ($all_controllers as $cont) {
+                if (preg_match("~^/${cont}/~", $uri)) {
+                    $args = explode('/', $uri);
+                    $controller = array_shift($args);
+                    $action = array_shift($args);
+                    break;
+                }
+            }
+        }
+
+        // look for subin
+        if (empty($controller) && strlen($uri) > SUBIN_MIN_LEN) {
+            $uri = trim($uri, '/');
             // e.g. /toronto or /toronto/latest
             list($controller, $action, $args) = array('subin', 'view', explode('/', $uri));
-        } else {
-            // e.g. /
-            list($controller, $action, $args) = array('index', 'view', 'popular');
         }
+
+        #v($controller, $action, $args);
 
         $class = ucwords($controller) . 'Controller';
         $obj = new $class;
@@ -65,12 +86,19 @@ class IndexController extends BaseController {
 
     }
 
-    public function view($tab='popular') {
+    public function view($args) {
+
+        $page = 1;
+        if (count($args) == 1) {
+            list($tab) = $args;
+        } elseif (ctype_digit($args[1])) {
+            list($tab, $page) = $args;
+        }
 
         if ($tab == 'popular') {
-            $data['posts'] = post::get_popular();
+            $data['posts'] = post::get_popular(0, $page);
         } elseif ($tab == 'latest') {
-            $data['posts'] = post::get_latest();
+            $data['posts'] = post::get_latest(0, $page);
         } else {
             $data['posts'] = array();
         }
