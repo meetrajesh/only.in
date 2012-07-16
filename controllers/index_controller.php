@@ -16,7 +16,7 @@ class IndexController extends BaseController {
                         '/user/signup' => array('user', 'signup', array()),
                         '/user/login' => array('user', 'login', array()),
                         '/user/logout' => array('user', 'logout', array()),
-                        '/' . str_repeat('.', SUBIN_MIN_LEN) . '+/?' => array('subin', 'view', array()), // arbitrary subin
+                        '/.{' . SUBIN_MIN_LEN . ',}/?' => array('subin', 'view', array()), // arbitrary subin
                         );
 
         foreach ($routes as $route => $dest) {
@@ -35,6 +35,11 @@ class IndexController extends BaseController {
         }
 
         #v($controller, $action, $args);
+
+        // 404
+        if (empty($controller)) {
+            die('404');
+        }
 
         $class = ucwords($controller) . 'Controller';
         $obj = new $class;
