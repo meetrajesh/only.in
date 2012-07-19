@@ -5,6 +5,7 @@ class BaseController {
     protected $_errors = array();
     protected $_msgs = array();
     protected $_stylesheets = array();
+    protected $_scripts = array();
     protected $_tpl;
 
     protected function __construct() {
@@ -27,6 +28,15 @@ class BaseController {
             $path = STATIC_PREFIX . '/' . $file;
             if (file_exists(WEB_ROOT . '/'. $path)) {
                 array_unshift($this->_stylesheets, $path);
+            }
+        }
+    }
+
+    protected function _add_js($files) {
+        foreach ((array) $files as $file) {
+            $path = STATIC_PREFIX . '/' . $file;
+            if (file_exists(WEB_ROOT . '/'. $path)) {
+                array_unshift($this->_scripts, $path);
             }
         }
     }
