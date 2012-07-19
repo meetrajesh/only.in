@@ -83,7 +83,8 @@ function api_key($api_secret) {
 
 function absolutize($relative) {
     $url = BASE_URL;
-    if (!empty(PATH_PREFIX)) {
+    $prefix = PATH_PREFIX;
+    if (!empty($prefix)) {
         $url .= '/' . PATH_PREFIX;
     }
     $url .= '/' . $relative;
