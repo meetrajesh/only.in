@@ -19,7 +19,7 @@ class api {
                     return '/' . preg_replace('/_/', '/', $method, 1);
                 }, get_class_methods($obj));
 
-            $errmsg = "Invalid API method: /${uri}.";
+            $errmsg = "Invalid API method: /${method}.";
             $errmsg .= ' Full list is: ' . implode(', ', $api_methods);
             return array('error' => $errmsg);
         }

@@ -4,7 +4,7 @@
       api_key: $(document).data('api_key'),
       post_id: id,
       vote: score
-    }, 'json');
+    });
   }
 
   $('.post-upvote').on('click', function(){
@@ -12,7 +12,7 @@
     var $post = $this.parents('.post').first();
     $.when(vote($post.attr('data-id'), 1)).then(function(data){
       console.log(data);
-      $post.find('.post-votebox > span').html(data.score)
+      $post.find('.post-votebox > span').html(data.score);
     });
   });
 
@@ -20,7 +20,7 @@
     var $this = $(this);
     var $post = $this.parents('.post').first();
     $.when(vote($post.attr('data-id'), -1)).then(function(data){
-      $post.find('.post-votebox > span').html(data.score)
+      $post.find('.post-votebox > span').html(data.score);
     });
   });
 })(jQuery);

@@ -88,7 +88,7 @@
         $(document).data('api_key', '<?= api_key(API_SECRET); ?>')
     </script>
     <? foreach ($this->_scripts as $script): ?>
-        <script src="<?= PATH_PREFIX . $script; ?>"></script>
+        <script src="<?=PATH_PREFIX . $script;?>"></script>
     <? endforeach; ?>
 </body>
 </html>
