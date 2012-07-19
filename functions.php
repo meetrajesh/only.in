@@ -80,3 +80,12 @@ function ago($time) {
 function api_key($api_secret) {
     return $api_secret;
 }
+
+function absolutize($relative) {
+    $url = BASE_URL;
+    if (!empty(PATH_PREFIX)) {
+        $url .= '/' . PATH_PREFIX;
+    }
+    $url .= '/' . $relative;
+    return $url;
+}
