@@ -11,7 +11,6 @@
     var $this = $(this);
     var $post = $this.parents('.post').first();
     $.when(vote($post.attr('data-id'), 1)).then(function(data){
-      console.log(data);
       $post.find('.post-votebox > span').html(data.score);
     });
   });
