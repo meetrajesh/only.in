@@ -76,3 +76,7 @@ function ago($time) {
         return sprintf('%d %s%s ago', ceil($delta), $units[0], $pluralize);
     }
 }
+
+function api_key($secret) {
+    return $secret;
+}
