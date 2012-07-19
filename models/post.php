@@ -2,6 +2,8 @@
 
 class post {
 
+    private static $_confidences;
+
     public static function add($subin_id, $user_id=0, $title='', $content, $photo=array(), $stamp=0) {
 
         $subin_id = (int) $subin_id;
@@ -37,11 +39,25 @@ class post {
     }
 
     public static function get_popular($subin_id=0, $page=1, $limit=10) {
+        return self::_get_tab_posts('popular', $subin_id, $page, $limit);
+    }
+
+    public static function get_debated($subin_id=0, $page=1, $limit=10) {
+        return self::_get_tab_posts('debated', $subin_id, $page, $limit);
+    }
+
+    public static function get_top($subin_id=0, $page=1, $limit=10) {
+        return self::_get_tab_posts('top', $subin_id, $page, $limit);
+    }
+
+    private static function _get_tab_posts($tab, $subin_id=0, $page=1, $limit=10) {
+
         $result = self::get_latest($subin_id, 1, $page*$limit*3);
 
         // set the rank for each post
+        $rank_func = "_calc_${tab}_rank";
         foreach ($result as $i => $row) {
-            $result[$i]['rank'] = self::_calc_rank($row);
+            $result[$i]['rank'] = self::$rank_func($row);
         }
 
         // reverse sort the posts based on rank
@@ -53,15 +69,67 @@ class post {
                 }
             });
 
+        // grab the top n posts
         return array_slice($result, ($page-1)*$limit, $limit);
     }
     
-    private static function _calc_rank($post) {
+    private static function _calc_popular_rank($post) {
+        // from reddit popular sort: https://github.com/reddit/reddit/blob/master/r2/r2/lib/db/_sorts.pyx
         $s = $post['score'];
         $order = log(max(abs($s), 1), 10);
         $sign = ($s == 0) ? 0 : abs($s) / $s;
         $secs = $post['stamp'] - 1134028003;
         return round($order + ($sign * $secs / 45000), 7);
+    }
+
+    private static function _calc_debated_rank($post) {
+        // from reddit controversy sort: https://github.com/reddit/reddit/blob/master/r2/r2/lib/db/_sorts.pyx
+        return ($post['ups'] + $post['downs']) / max(abs($post['score']), 1);
+    }
+
+    private static function _calc_top_rank($post) {
+        // from reddit top sort: https://github.com/reddit/reddit/blob/master/r2/r2/lib/db/_sorts.pyx
+        $up_range = 400;
+        $down_range = 100;
+
+        // initialize condidences
+        if (!isset(self::$_confidences)) {
+            self::$_confidences = array();
+            foreach (range(0, $up_range) as $ups) {
+                foreach (range(0, $down_range) as $downs) {
+                    self::$_confidences[] = self::_calc_confidence($ups, $downs);
+                }
+            }
+        }
+
+        $ups = $post['ups'];
+        $downs = $post['downs'];
+
+        if ($ups + $downs == 0) {
+            return 0;
+        } elseif ($ups <= $up_range && $downs <= $down_range) {
+            return self::$_confidences[$downs + $ups*$down_range];
+        } else {
+            return self::_calc_confidence($ups, $downs);
+        }
+
+    }
+
+    private static function _calc_confidence($ups, $downs) {
+        // The confidence sort. from http://www.evanmiller.org/how-not-to-sort-by-average-rating.html"""
+        $n = $ups + $downs;
+
+        if ($n == 0) {
+            return 0;
+        }
+
+        $z = 1.281551565545; // 80% confidence
+        $p = $ups / $n;
+        $left = $p + 1/(2*$n)*$z*$z;
+        $right = $z*sqrt($p*(1-$p)/$n + $z*$z/(4*$n*$n));
+        $under = 1+1/$n*$z*$z;
+
+        return ($left - $right) / $under;
     }
 
     public static function get_latest($subin_id=0, $page=1, $limit=10) {
@@ -75,7 +143,7 @@ class post {
         $limit = $limit > 0 ? $limit : 10;
 
         $where_clause = !empty($subin_id) ? 'subin_id=%d' : '1';
-        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, IFNULL(SUM(v.vote), 0) AS score, s.name AS subin_name 
+        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, IFNULL(SUM(v.vote), 0) AS score, IFNULL(SUM(IF(v.vote=1, 1, 0)), 0) AS ups, IFNULL(SUM(IF(v.vote=-1, 1, 0)), 0) AS downs, s.name AS subin_name 
                 FROM posts p
                 INNER JOIN subins s USING (subin_id)
                 LEFT JOIN votes v ON p.post_id=v.post_id 
