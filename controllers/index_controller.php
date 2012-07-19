@@ -50,33 +50,14 @@ class IndexController extends BaseController {
     public static function api_route() {
 
         // check api key
-        if (empty($_REQUEST['api_key']) || $_REQUEST['api_key'] != sha1(floor(time() / 1800) . API_SECRET)) {
+        if (empty($_REQUEST['api_key']) || $_REQUEST['api_key'] != api_key(API_SECRET)) {
             return array('error' => 'invalid api key');
         }
 
         $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
-        $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
-        $uri = preg_replace('/\?.*/', '', $uri);
-        $uri = trim($uri, '/');
+        $method = preg_replace($regex, '', $_SERVER['REQUEST_URI']); // strip the prefix hostname
 
-        list($controller) = explode('/', $uri);
-        $method = str_replace('/', '_', $uri);
-
-        $obj = new ApiController;
-
-        // check if api method exists
-        if (!method_exists($obj, $method)) {
-
-            $api_methods = array_map(function($method) {
-                    return '/' . preg_replace('/_/', '/', $method, 1);
-                }, get_class_methods($obj));
-
-            $errmsg = "Invalid API method: /${uri}.";
-            $errmsg .= ' Full list is: ' . implode(', ', $api_methods);
-            return array('error' => $errmsg);
-        }
-
-        return $obj->$method($_REQUEST);
+        return json_encode(api::call($method, $_REQUEST));
 
     }
 

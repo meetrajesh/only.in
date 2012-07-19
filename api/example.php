@@ -1,9 +1,18 @@
 <?php
 
+require dirname(__FILE__) . '/../init.php';
 require dirname(__FILE__) . '/client.php';
 
-define('API_SECRET', '95dbb8238195850');
 $api = new OnlyInAPI(API_SECRET);
+
+// =====================================================================================================
+// VOTE FOR A POST
+
+$post_id = 43;
+$json = $api->call('/post/vote', array('post_id' => $post_id, 'vote' => '1'));
+
+var_dump($json);
+exit;
 
 // =====================================================================================================
 

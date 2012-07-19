@@ -1,7 +1,7 @@
 <?php
 
 // alias var_dump() to v() for ease of typing
-function v(&$var1, &$var2=null, &$var3=null) {
+function v($var1, $var2=null, $var3=null) {
     switch (func_num_args()) {
     case 1:
         var_dump($var1);
@@ -75,4 +75,8 @@ function ago($time) {
         $pluralize = ($delta == 1) ? '' : 's';
         return sprintf('%d %s%s ago', ceil($delta), $units[0], $pluralize);
     }
+}
+
+function api_key($api_secret) {
+    return $api_secret;
 }

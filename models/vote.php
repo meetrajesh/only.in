@@ -10,13 +10,18 @@ class vote {
         $vote = (int) $vote;
 
         // check if vote is either 1 or -1
-        if (!in_array($vote, array(-1, 1))) {
-            $vote = 0;
+        if (abs($vote) !== 1) {
+            return -1;
         }
 
         $sql = 'INSERT INTO votes (user_id, post_id, comment_id, vote, stamp) VALUES (%d, %d, %d, "%s", %d)';
         db::query($sql, $user_id, $post_id, $comment_id, $vote, time());
         return db::insert_id();
+    }
+
+    public static function get_score($post_id) {
+        $sql = 'SELECT IFNULL(SUM(vote), 0) AS score FROM votes WHERE post_id=%d';
+        return db::result_query($sql, (int)$post_id);
     }
 
 }

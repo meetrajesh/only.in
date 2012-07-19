@@ -77,5 +77,26 @@ class ApiController {
 
     }
 
+    public function post_vote($data) {
+        
+        $user_id = !empty($data['user_id']) ? (int)$data['user_id'] : 0;
+        $post_id = !empty($data['post_id']) ? (int)$data['post_id'] : 0;
+        $vote = isset($data['vote']) ? (int) $data['vote'] : 0;
+
+        // check if vote is either -1 or 1
+        if (abs($vote) !== 1) {
+            return array('error' => 'vote is either missing or must be either -1 or 1');
+        }
+
+        // check if posts exists
+        if (empty($post_id) || !post::exists($post_id)) {
+            return array('error' => 'invalid post id');
+        }
+
+        $vote_id = vote::add($user_id, $post_id, 0, $vote);
+        return array('vote_id' => $vote_id, 'score' => vote::get_score($data['post_id']));
+
+    }
+
 }
 

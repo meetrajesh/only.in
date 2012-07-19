@@ -160,6 +160,7 @@ CREATE TABLE IF NOT EXISTS `votes` (
   `post_id` int(11) NOT NULL,
   `comment_id` int(11) NOT NULL,
   `vote` tinyint(1) NOT NULL,
+  `ip` varchar(15) NOT NULL,
   `stamp` int(11) NOT NULL,
   PRIMARY KEY (`vote_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

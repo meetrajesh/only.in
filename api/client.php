@@ -1,5 +1,7 @@
 <?php
 
+ini_set('html_errors', false);
+
 class OnlyInAPI {
 
     private $_api_secret;
@@ -9,22 +11,26 @@ class OnlyInAPI {
     }
 
     public function call($method, $args) {
-        $curl = $this->_get_curl($method, (array) $args);
 
-        $json = curl_exec($curl);
-        curl_close($curl);
+        if (defined('IS_DEV') && IS_DEV) {
+            return api::call($method, $args);
+        } else {
+            $curl = $this->_get_curl($method, (array) $args);
+            $json = curl_exec($curl);
+            curl_close($curl);
+            return json_decode($json, true);
+        }
 
-        #return var_dump($json);
-        return json_decode($json, true);
     }
 
     private function _api_key() {
-        return sha1(floor(time() / 1800) . $this->_api_secret);
+        return api_key($this->_api_secret);
     }
 
     private function _get_curl($method, $args) {
         $curl = curl_init();
         $args['api_key'] = $this->_api_key();
+        $method = ltrim($method, '/');
 
         curl_setopt($curl, CURLOPT_URL, API_BASE_URL . '/' . trim($method));
         curl_setopt($curl, CURLOPT_TIMEOUT, 10);

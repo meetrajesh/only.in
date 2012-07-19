@@ -27,6 +27,14 @@ class post {
         }
 
     }
+    
+    public static function exists($post_id) {
+        $post_id = (int) $post_id;
+        if (empty($post_id)) {
+            return false;
+        }
+        return db::has_row('SELECT null FROM posts WHERE post_id=%d AND is_deleted=0', (int)$post_id);
+    }
 
     public static function get_popular($subin_id=0, $page=1, $limit=10) {
         $result = self::get_latest($subin_id, 1, $page*$limit*3);
