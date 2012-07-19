@@ -92,7 +92,7 @@ class post {
         $up_range = 400;
         $down_range = 100;
 
-        // initialize condidences
+        // initialize confidences
         if (!isset(self::$_confidences)) {
             self::$_confidences = array();
             foreach (range(0, $up_range) as $ups) {
@@ -105,14 +105,13 @@ class post {
         $ups = $post['ups'];
         $downs = $post['downs'];
 
-        if ($ups + $downs == 0) {
+        if (($ups + $downs) == 0) {
             return 0;
         } elseif ($ups <= $up_range && $downs <= $down_range) {
             return self::$_confidences[$downs + $ups*$down_range];
         } else {
             return self::_calc_confidence($ups, $downs);
         }
-
     }
 
     private static function _calc_confidence($ups, $downs) {
