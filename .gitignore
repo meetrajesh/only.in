@@ -3,3 +3,6 @@ init.local.php
 .idea
 *~
 *.swp
+.buildpath
+.project
+.settings

@@ -44,10 +44,10 @@
     <div class="container_12" id="main-content">
         <div class="grid_8">
             <ul class="pillbox cf" id="main-filter">
-                <li class="btn">Popular</li>
-                <li class="btn">Latest</li>
-                <li class="btn">Debated</li>
-                <li class="btn">Top</li>
+                <li><a class="btn" href="posts/popular">Popular</a></li>
+                <li><a class="btn" href="posts/latest">Latest</a></li>
+                <li><a class="btn" href="posts/debated">Debated</a></li>
+                <li><a class="btn" href="posts/top">Top</a></li>
             </ul>
 
             <? $t->block('content'); ?>
