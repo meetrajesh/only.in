@@ -17,6 +17,7 @@ class vote {
         $sql = 'INSERT INTO votes (user_id, post_id, comment_id, vote, ip, stamp) VALUES (%d, %d, %d, "%s", "%s", %d)';
         $ip = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
         db::query($sql, $user_id, $post_id, $comment_id, $vote, $ip, time());
+
         return db::insert_id();
     }
 
@@ -26,7 +27,7 @@ class vote {
     }
 
     public static function format_score($score) {
-        return ($score > 0 ? '+' : '') . (string)$score;
+        return ($score > 0 ? '+' : '') . number_format($score);
     }
 
 }
