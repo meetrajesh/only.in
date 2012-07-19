@@ -24,4 +24,8 @@ class vote {
         return db::result_query($sql, (int)$post_id);
     }
 
+    public static function format_score($score) {
+        return ($score > 0 ? '+' : '') . (string)$score;
+    }
+
 }
