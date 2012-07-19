@@ -15,6 +15,6 @@
   });
 
   $('.post-downvote').on('click', function() {
-    vote(this -1);
+    vote(this, -1);
   });
 })(jQuery);
