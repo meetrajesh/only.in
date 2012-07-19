@@ -57,7 +57,7 @@ class IndexController extends BaseController {
         $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
         $method = preg_replace($regex, '', $_SERVER['REQUEST_URI']); // strip the prefix hostname
 
-        return json_encode(api::call($method, $_REQUEST));
+        return api::call($method, $_REQUEST);
 
     }
 

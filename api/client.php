@@ -23,13 +23,9 @@ class OnlyInAPI {
 
     }
 
-    private function _api_key() {
-        return api_key($this->_api_secret);
-    }
-
     private function _get_curl($method, $args) {
         $curl = curl_init();
-        $args['api_key'] = $this->_api_key();
+        $args['api_key'] = api_key($this->_api_secret);
         $method = ltrim($method, '/');
 
         curl_setopt($curl, CURLOPT_URL, API_BASE_URL . '/' . trim($method));
