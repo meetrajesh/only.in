@@ -8,8 +8,10 @@ class IndexController extends BaseController {
         $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
         
         $routes = array('/$' => array('index', 'view', array('popular')), // empty route, just root domain
-                        '/latest' => array('index', 'view', array('latest')),
                         '/popular' => array('index', 'view', array('popular')),
+                        '/latest' => array('index', 'view', array('latest')),
+                        '/debated' => array('index', 'view', array('debated')),
+                        '/top' => array('index', 'view', array('top')),
                         '/post/add' => array('post', 'add', array()),
                         '/post/add_comment' => array('post', 'add_comment', array()),
                         '/admin/delete' => array('admin', 'delete', array()),
@@ -69,10 +71,9 @@ class IndexController extends BaseController {
 
         $page = !empty($page) && ctype_digit((string) $page) ? (int) $page : 1;
 
-        if ($tab == 'popular') {
-            $data['posts'] = post::get_popular(0, $page);
-        } elseif ($tab == 'latest') {
-            $data['posts'] = post::get_latest(0, $page);
+        if (in_array($tab, array('popular', 'latest', 'debated', 'top'))) {
+            $func = 'get_' . $tab;
+            $data['posts'] = post::$func(0, $page);
         } else {
             $data['posts'] = array();
         }
