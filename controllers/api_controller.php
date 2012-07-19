@@ -88,7 +88,7 @@ class ApiController {
             return array('error' => 'vote is either missing or must be either -1 or 1');
         }
 
-        // check if posts exists
+        // check if post exists
         if (empty($post_id) || !post::exists($post_id)) {
             return array('error' => 'invalid post id');
         }

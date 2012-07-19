@@ -44,10 +44,10 @@
     <div class="container_12" id="main-content">
         <div class="grid_8">
             <ul class="pillbox cf" id="main-filter">
-                <li><a class="btn" href="<?=absolutize('popular')?>">Popular</a></li>
-                <li><a class="btn" href="<?=absolutize('latest')?>">Latest</a></li>
-                <li><a class="btn" href="<?=absolutize('debated')?>">Debated</a></li>
-                <li><a class="btn" href="<?=absolutize('top')?>">Top</a></li>
+                <li><a class="btn" href="<?=absolutize('/popular')?>">Popular</a></li>
+                <li><a class="btn" href="<?=absolutize('/latest')?>">Latest</a></li>
+                <li><a class="btn" href="<?=absolutize('/debated')?>">Debated</a></li>
+                <li><a class="btn" href="<?=absolutize('/top')?>">Top</a></li>
             </ul>
 
             <? $t->block('content'); ?>
@@ -84,11 +84,11 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.7.2.min.js"><\/script>')</script>
     <script>
-        $(document).data('api_url', '<?= API_BASE_URL; ?>');
-        $(document).data('api_key', '<?= api_key(API_SECRET); ?>')
+        $(document).data('api_url', '<?=API_BASE_URL?>');
+        $(document).data('api_key', '<?=api_key(API_SECRET)?>')
     </script>
     <? foreach ($this->_scripts as $script): ?>
-        <script src="<?=PATH_PREFIX . $script;?>"></script>
+        <script src="<?=PATH_PREFIX . $script?>"></script>
     <? endforeach; ?>
 </body>
 </html>
