@@ -28,4 +28,51 @@
     margin: 0 0 20px 0;
     padding: 0 0 0 18px;
   }
+
+  .post-votebox {
+    .linear-gradient(#fff, #f3f3f3);
+    border: 1px solid #ccc;
+    .border-radius(2px);
+    float: left;
+    margin-top: 20px;
+
+    > div {
+      background-image: url('../img/icons.png');
+      background-repeat: no-repeat;
+      border-color: #fff #e6e6e6 #e6e6e6 #fff;
+      border-style: solid;
+      border-width: 1px;
+      cursor: pointer;
+      height: 30px;
+      line-height: 28px;
+      text-indent: -9999px;
+      width: 30px;
+    }
+
+    > span {
+      border-color: #fff #ccc #e6e6e6 #ccc;
+      border-style: solid;
+      border-width: 1px;
+      display: block;
+      font-family: "Bree Serif", Arial, Helvetica, sans-serif;
+      font-size: 20px;
+      height: 30px;
+      line-height: 27px;
+      margin: 0 32px;
+      padding: 0 10px;
+    }
+
+    .post-downvote {
+      background-position: -33px -129px;
+      .border-radius(0 1px 1px 0);
+      float: right;
+
+    }
+
+    .post-upvote {
+      background-position: -33px -34px;
+      .border-radius(1px 0 0 1px);
+      float: left;
+    }
+  }
 }
