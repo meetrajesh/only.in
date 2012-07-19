@@ -6,3 +6,4 @@ init.local.php
 .buildpath
 .project
 .settings
+scripts/db/version.txt

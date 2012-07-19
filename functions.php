@@ -87,6 +87,6 @@ function absolutize($relative) {
     if (!empty($prefix)) {
         $url .= '/' . PATH_PREFIX;
     }
-    $url .= '/' . $relative;
+    $url .= '/' . ltrim($relative, '/');
     return $url;
 }
