@@ -1,6 +1,5 @@
 <?
     $this->_add_css('less/posts.less');
-
     $this->_add_js('js/posts.js')
 ?>
 

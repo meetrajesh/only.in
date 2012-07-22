@@ -15,7 +15,7 @@ function v($var1, $var2=null, $var3=null) {
     }
 }
 
-function d(&$var) {
+function d($var) {
     var_dump($var);
     exit;
 }

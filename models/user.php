@@ -2,7 +2,7 @@
 
 class user {
 
-    public static function add($username, $password, $name, $email, $is_fake = false) {
+    public static function create($username, $password, $name, $email, $is_fake = false) {
 
         // set up the data
         $data = array('username' => $username, 'password' => $password, 'name' => $name, 'email' => $email, 'is_fake' => $is_fake);

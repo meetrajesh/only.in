@@ -43,7 +43,7 @@ class UserController extends BaseController {
 
             if (empty($this->_errors)) {
                 // all good, insert the user
-                $user_id = user::add($_POST['username'], $_POST['password'], $_POST['name'], $_POST['email']);
+                $user_id = user::create($_POST['username'], $_POST['password'], $_POST['name'], $_POST['email']);
                 if (ctype_digit((string) $user_id)) {
                     // success
                     session::login($user_id);
