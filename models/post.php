@@ -142,18 +142,33 @@ class post {
         $limit = $limit > 0 ? $limit : 10;
 
         $where_clause = !empty($subin_id) ? 'subin_id=%d' : '1';
-        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, IFNULL(SUM(v.vote), 0) AS score, IFNULL(SUM(IF(v.vote=1, 1, 0)), 0) AS ups, IFNULL(SUM(IF(v.vote=-1, 1, 0)), 0) AS downs, s.name AS subin_name 
+        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, s.name AS subin_name, s.slug, u.username,
+                       (SELECT COUNT(*) FROM comments c WHERE c.post_id=p.post_id) AS num_comments,
+                       IFNULL(SUM(v.vote), 0) AS score, IFNULL(SUM(IF(v.vote=1, 1, 0)), 0) AS ups, IFNULL(SUM(IF(v.vote=-1, 1, 0)), 0) AS downs
                 FROM posts p
-                INNER JOIN subins s USING (subin_id)
-                LEFT JOIN votes v ON p.post_id=v.post_id 
+                LEFT JOIN subins s USING (subin_id)
+                LEFT JOIN votes v USING (post_id)
+                LEFT JOIN users u ON p.user_id=u.user_id
                 WHERE  ' . $where_clause . ' AND p.is_deleted=0
-                GROUP BY p.post_id
+                GROUP BY v.post_id
                 ORDER BY stamp DESC
                 LIMIT %d, %d';
         $result = !empty($subin_id) ? db::query($sql, $subin_id, ($page-1)*$limit, $limit) : db::query($sql, ($page-1)*$limit, $limit);
         # can't use fetch_all() since it is only available as mysqlnd (nd=native driver)
         # return $result->fetch_all(MYSQLI_ASSOC);
-        return db::fetch_all($result);
+        $result = db::fetch_all($result);
+
+        // augment the result set with a permalink for each post
+        foreach ($result as $i => $row) {
+            $result[$i]['permalink'] = self::_get_permalink($row);
+        }
+
+        return $result;
+
+    }
+
+    private static function _get_permalink($post) {
+        return sprintf('/%s/%d', $post['subin_name'], $post['post_id']);
     }
 
     public static function delete_by_img_url($img_url) {
