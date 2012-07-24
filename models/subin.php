@@ -66,7 +66,7 @@ class subin {
         $result = db::fetch_all($sql, $num_days, $limit);
         // augment with subin url
         foreach ($result as &$row) {
-            $row['link'] = '/' . $row['slug'];
+            $row['permalink'] = '/' . $row['slug'];
             unset($row['slug']);
         }
         return $result;

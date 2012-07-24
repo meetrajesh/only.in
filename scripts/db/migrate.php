@@ -14,7 +14,7 @@ function run_migrations($mig_id) {
 
     while (file_exists('./migrations/' . $mig_id . '.sql')) {
         echo 'Executing migration: ' . $mig_id . "\n";
-        $cmd = sprintf('mysql -u%s -p%s %s < ./migrations/%d.sql 2>&1', DBUSER, DBPASS, DBNAME, $mig_id);
+        $cmd = sprintf('mysql -u%s -p"%s" %s < ./migrations/%d.sql 2>&1', DBUSER, DBPASS, DBNAME, $mig_id);
         $out = trim(shell_exec($cmd));
         if (!empty($out)) {
             echo $out . "\n";
