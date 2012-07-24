@@ -13,7 +13,7 @@
         <div class="post-upvote" role="button">Like</div>
         <div class="post-downvote" role="button">Dislike</div>
         <span>
-            <?= ($post['score'] < 0)?'-':($post['score'] > 0)?'+':''; ?><?= number_format($post['score']); ?>
+            <?= ($post['score'] > 0) ? '+' : '' ?><?= number_format($post['score']); ?>
         </span>
     </div>
     <div class="post-socialbox">
