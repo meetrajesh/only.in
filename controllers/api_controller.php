@@ -85,7 +85,11 @@ class ApiController {
         // return the comment id
         return array('comment_id' => $comment_id, 
                      'comment_count' => count(comment::get_all($data['post_id'])),
-                     'comment_html' => $this->_buffer('posts/comment'));
+                     'comment_html' => $this->_buffer('posts/comment', array('comment_id' => $comment_id,
+                                                                             'user_id' => $data['user_id'],
+                                                                             'username' => user::get($data['user_id']),
+                                                                             'content' => $data['comment'],
+                                                                             'stamp' => $data['stamp'])));
 
     }
 

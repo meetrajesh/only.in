@@ -42,4 +42,9 @@ class user {
     public static function is_fake_user($username) {
         return db::result_query('SELECT is_fake FROM users WHERE username="%s"', $username);
     }
+
+    public static function get_username($user_id) {
+        return db::result_query('SELECT username FROM users WHERE user_id=%d', (int) $user_id);
+    }
+
 }
