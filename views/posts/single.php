@@ -1,8 +1,20 @@
+<?
+    $post = $data['posts'][0];
+?>
+
+<? if (!empty($post['title'])) : ?>
+    <? $t->block('title'); ?>
+        <?= hsc($post['title']) ?> | Only.in
+    <? $t->endblock(); ?>
+<? endif; ?>
+
+<? $t->block('meta') ?>
+    <meta property="og:image" content="<?= hsc($post['img_url']); ?>"/>
+    <meta property="og:title" content="<?= hsc($t->notempty($post['title'], '', ' | ')); ?>Only in <?= hsc(ucwords($post['subin_name'])); ?>"/>
+<? $t->endblock(); ?>
+
 <? $t->block('content'); ?>
-    <?
-        $post = $data['posts'][0];
-        include('partial/post.php');
-    ?>
+    <? include('partial/post.php'); ?>
 
     <div class="comments-form cf">
         <h3>Post a new comment</h3>

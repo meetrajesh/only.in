@@ -21,5 +21,13 @@
             <span>Comments</span>
         </a>
         <a href="<?= hsc(absolutize($post['permalink'])); ?>#comments" class="post-comment-count"><?= $post['num_comments']; ?></a>
+
+        <div class="post-share-btn btn">
+            <span>Share</span>
+            <div>
+                <a href="http://www.facebook.com/sharer.php?u=<?= hsc(urlencode(absolutize($post['permalink']))); ?>" target="_blank">Facebook</a> |
+                <a href="http://twitter.com/home?status=<?= hsc(urlencode(sprintf('Only in %s: %s #OnlyIn', ucwords($post['subin_name']), absolutize($post['permalink'])))); ?>" target="_blank">Twitter</a>
+            </div>
+        </div>
     </div>
 </section>
