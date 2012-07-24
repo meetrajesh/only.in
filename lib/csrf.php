@@ -2,28 +2,28 @@
 
 class csrf {
 
-    public static function check() {
-        if (empty($_REQUEST['csrf']) || !security::hmac_check(CSRF_SECRET, self::_unique(), $_REQUEST['csrf'])) {
+    public static function check($unique = null) {
+        $unique = (empty($unique))?self::_unique():$unique;
+        if (empty($_REQUEST['csrf']) || !security::hmac_check(CSRF_SECRET, $unique, $_REQUEST['csrf'])) {
             die('csrf check fail');
         }
     }
 
     public static function html() {
-        $token = self::_token(self::_unique());
-        return '<input type="hidden" name="csrf" value="' . hsc($token) . '">' . "\n";
+        return '<input type="hidden" name="csrf" value="' . hsc(self::token()) . '">' . "\n";
     }
 
     public static function param() {
-        $token = self::_token(self::_unique());
-        return 'csrf=' . urlencode($token);
+        return 'csrf=' . urlencode(self::token());
     }
 
     private static function _unique() {
         return session::id();
     }
 
-    private static function _token() {
-        return security::hmac_gen(CSRF_SECRET, self::_unique());
+    public static function token($unique = null) {
+        $unique = (empty($unique))?self::_unique():$unique;
+        return security::hmac_gen(CSRF_SECRET, $unique);
     }
 
     private static function _check_token($token) {

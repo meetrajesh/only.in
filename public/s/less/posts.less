@@ -5,7 +5,7 @@
   border: 1px solid #ccc;
   .border-radius(6px);
   color: #666;
-  margin: 40px 0;
+  margin: 40px 0 0 0;
   padding: 20px;
 
   h2 {
@@ -139,5 +139,37 @@
       .border-radius(1px 0 0 1px);
       float: left;
     }
+  }
+}
+
+.comments {
+  margin-top: 40px;
+
+  .comment {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+
+    > em {
+      color: #aaa;
+      display: block;
+      font-size: 11px;
+      margin-top: 8px;
+    }
+
+    > strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.comments-form {
+  margin-top: 40px;
+
+  textarea {
+    border: 1px solid #999;
+    display: block;
+    margin-bottom: 10px;
+    padding: 5px;
   }
 }

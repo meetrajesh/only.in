@@ -23,6 +23,12 @@ class BaseController {
         require './views/' . $template . '.php';
     }
 
+    protected function _buffer($template, $data=array()) {
+        ob_start();
+        $this->_render($template, $data);
+        return ob_get_clean();
+    }
+
     protected function _add_css($files) {
         foreach ((array) $files as $file) {
             $path = STATIC_PREFIX . '/' . $file;

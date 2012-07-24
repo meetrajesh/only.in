@@ -1,6 +1,10 @@
 <?php
 
-class ApiController {
+class ApiController extends BaseController {
+
+    public function __construct() {
+        csrf::check(API_SECRET);
+    }
 
     public function user_username_exists($data) {
         return array('username_exists' => user::does_username_exist($data['username']));
@@ -55,25 +59,41 @@ class ApiController {
         // use the current timestamp if it doesn't exist
         $data['stamp'] = empty($data['stamp']) ? time() : (int) $data['stamp'];
         $data['parent_comment_id'] = empty($data['parent_comment_id']) ? 0 : (int) $data['parent_comment_id'];
-        
-        // get the userid from the username
-        $data['user_id'] = user::getid($data['username']);
+        $data['post_id'] = !empty($data['post_id']) ? (int) $data['post_id'] : 0;
+
+        // get the userid from the username if it exists
+        $data['user_id'] = (!isset($data['user_id']) && !empty($data['username'])) ? user::getid($data['username']) : 0;
+        $data['user_id'] = (int)$data['user_id'];
 
         // add the comment to the given post id
-        $comment_id = comment::add($data['user_id'], $data['post_id'], $data['parent_comment_id'], $data['comment']);
+        if (!empty($data['post_id']) && post::exists($data['post_id'])) {
+            $comment_id = comment::add($data['user_id'], $data['post_id'], $data['parent_comment_id'], $data['comment']);
+        } else {
+            return array('comment_id' => -1, 'error' => 'invalid post id');
+        }
 
         // insert the upvotes
-        for ($i=0; $i < $data['num_upvotes']; $i++) {
-            vote::add($data['user_id'], 0, $comment_id, 1);
+        if (isset($data['num_upvotes']) && $data['num_upvotes'] > 0) {
+            for ($i=0; $i < $data['num_upvotes']; $i++) {
+                vote::add($data['user_id'], 0, $comment_id, 1);
+            }
         }
 
         // insert the downvotes
-        for ($i=0; $i < $data['num_downvotes']; $i++) {
-            vote::add($data['user_id'], 0, $comment_id, -1);
+        if (isset($data['num_downvotes']) && $data['num_downvotes'] > 0) {
+            for ($i=0; $i < $data['num_downvotes']; $i++) {
+                vote::add($data['user_id'], 0, $comment_id, -1);
+            }
         }
 
         // return the comment id
-        return array('comment_id' => $comment_id);
+        return array('comment_id' => $comment_id, 
+                     'comment_count' => count(comment::get_all($data['post_id'])),
+                     'comment_html' => $this->_buffer('posts/comment', array('comment_id' => $comment_id,
+                                                                             'user_id' => $data['user_id'],
+                                                                             'username' => user::get_username($data['user_id']),
+                                                                             'content' => $data['comment'],
+                                                                             'stamp' => $data['stamp'])));
 
     }
 
