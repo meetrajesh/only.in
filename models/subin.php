@@ -72,4 +72,8 @@ class subin {
         return $result;
     }
 
+    public static function all_places() {
+        return db::fetch_all('SELECT subin_id, slug AS permalink, name FROM subins ORDER BY name ASC');
+    }
+
 }
