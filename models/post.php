@@ -177,7 +177,7 @@ class post {
     }
 
     private static function _get_permalink($post) {
-        return sprintf('/%s/%d', $post['subin_slug'], $post['post_id']);
+        return sprintf('/%s/%d/%s', $post['subin_slug'], $post['post_id'], slug_from_name($post['title']));
     }
 
     public static function delete_by_img_url($img_url) {
