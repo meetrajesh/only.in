@@ -3,3 +3,4 @@
  + deploy steps
  + implement db migrations
  + reddit algorithm for debated and top
+ - investigate api security and have a way to not send api secret and csrf in JS
