@@ -28,8 +28,10 @@ class PostController extends BaseController {
 
         if (!empty($post_id)) {
             $data['posts'] = post::get_latest(0, $post_id);
+            $data['comments'] = comment::get_latest($post_id);
         } else {
             $data['posts'] = array();
+            $data['comments'] = array();
         }
 
         $this->_render('posts/base', $data);

@@ -8,4 +8,9 @@ class comment {
         return db::insert_id();
     }
 
+    public static function get_all($post_id) {
+        $sql = 'SELECT comment_id, content, stamp FROM comments WHERE post_id=%d';
+        return db::fetch_all($sql, (int)$post_id);
+    }
+
 }
