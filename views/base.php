@@ -86,6 +86,7 @@
                             <li><a href="<?= hsc(absolutize($place['permalink'])) ?>"><?= hsc($place['name']); ?></a></li>
                         <? endforeach; ?>
                     </ul>
+                    <a href="<?= absolutize('/places'); ?>">List of all places</a>
                 </div>
             </aside>
         </div>
