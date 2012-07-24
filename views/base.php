@@ -9,6 +9,10 @@
     <title><? $t->block('title'); ?>Only.in<? $t->endblock(true); ?></title>
     <meta name="description" content="">
 
+    <meta property="og:site_name" content="Only.in" />
+    <? $t->block('meta'); ?>
+    <? $t->endblock(true); ?>
+
     <link href='http://fonts.googleapis.com/css?family=Bree+Serif|Open+Sans:400,400italic,600,700' rel='stylesheet' type='text/css'>
 
     <?
