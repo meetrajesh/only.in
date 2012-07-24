@@ -84,8 +84,9 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.7.2.min.js"><\/script>')</script>
     <script>
-        $(document).data('api_url', '<?=API_BASE_URL?>');
-        $(document).data('api_key', '<?=api_key(API_SECRET)?>')
+        $(document).data('api_url', '<?= API_BASE_URL; ?>');
+        $(document).data('api_key', '<?= api_key(API_SECRET); ?>');
+        $(document).data('csrf', '<?= csrf::token(API_SECRET); ?>');
     </script>
     <? foreach ($this->_scripts as $script): ?>
         <script src="<?=PATH_PREFIX . $script?>"></script>
