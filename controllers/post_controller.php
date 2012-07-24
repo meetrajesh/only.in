@@ -34,7 +34,7 @@ class PostController extends BaseController {
             $data['comments'] = array();
         }
 
-        $this->_render('posts/base', $data);
+        $this->_render('posts/single', $data);
   
     }
 

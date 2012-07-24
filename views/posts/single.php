@@ -4,9 +4,10 @@
 ?>
 
 <? $t->block('content'); ?>
-    <? foreach ($data['posts'] as $post): ?>
-        <? include 'partial/post.php'; ?>
-    <? endforeach; ?>
+    <?
+        $post = $data['posts'][0];
+        include('partial/post.php');
+    ?>
 <? $t->endblock(); ?>
 
 <? $this->_render('base', $data); ?>
