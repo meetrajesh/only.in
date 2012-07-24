@@ -18,15 +18,23 @@ class IndexController extends BaseController {
                         '/user/signup' => array('user', 'signup', array()),
                         '/user/login' => array('user', 'login', array()),
                         '/user/logout' => array('user', 'logout', array()),
+                        '/.{' . SUBIN_MIN_LEN . ',}/(\d+)/?' => array('post', 'view', array()),
                         '/.{' . SUBIN_MIN_LEN . ',}/?' => array('subin', 'view', array()), // arbitrary subin
                         );
 
         foreach ($routes as $route => $dest) {
-            if (preg_match("~^(${route})~", $uri, $match)) {
+            if (preg_match("#^${route}#", $uri, $match)) {
                 list($controller, $action, $args) = $dest;
-                // look for more args
+                $route_match = array_shift($match);
+
+                // grab any regex matches if they exist
+                if (!empty($match)) {
+                    $args = array_merge($args, $match);
+                }
+
+                // parse the rest of the uri for additional args
                 if (!empty($args)) {
-                    $uri = str_replace($match[0], '', $uri);
+                    $uri = str_replace($route_match, '', $uri);
                 }
                 $uri = trim($uri, '/');
                 if (!empty($uri)) {
