@@ -76,7 +76,13 @@
 
             <aside>
                 <h3>Popular Places</h3>
-                <div><?=subin::get_popular()?></div>
+                <div>
+                    <ul id="popular-place-list">
+                        <? foreach (subin::get_popular() as $place) : ?>
+                            <li><a href="<?= hsc(absolutize($place['permalink'])) ?>"><?= hsc($place['name']); ?></a></li>
+                        <? endforeach; ?>
+                    </ul>
+                </div>
             </aside>
         </div>
     </div>

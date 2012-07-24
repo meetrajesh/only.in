@@ -146,6 +146,25 @@ input, textarea {
   width: 264px;
 }
 
+#popular-place-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    margin-top: 6px;
+
+    a:link, a:visited {
+      color: #333;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 #quickpost {
   input[type="text"] {
     background: #fff;
