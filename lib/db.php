@@ -10,6 +10,7 @@ class db {
         $args = func_get_args();
         $sql = array_shift($args);
         $sql = self::_bind_args($sql, $args);
+        # echo $sql;
         // increment the db query count
         self::$num_queries++;
         $result = $db->query($sql);

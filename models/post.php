@@ -52,6 +52,13 @@ class post {
 
     private static function _get_tab_posts($tab, $subin_id=0, $page=1, $limit=10) {
 
+        $page = (int)$page;
+        $limit = (int)$limit;
+
+        // set defaults
+        $page = $page > 0 ? $page : 1;
+        $limit = $limit > 0 ? $limit : 10;
+
         $result = self::get_latest($subin_id, 0, 1, $page*$limit*3);
 
         // set the rank for each post
@@ -152,10 +159,9 @@ class post {
                 LEFT JOIN votes v USING (post_id)
                 LEFT JOIN users u ON p.user_id=u.user_id
                 WHERE  ' . $where_clause . ' AND p.is_deleted=0
-                GROUP BY v.post_id
+                GROUP BY p.post_id
                 ORDER BY stamp DESC
                 LIMIT %d, %d';
-
 
         # can't use fetch_all() since it is only available as mysqlnd (nd=native driver)
         # return $result->fetch_all(MYSQLI_ASSOC);

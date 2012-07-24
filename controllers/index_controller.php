@@ -79,9 +79,11 @@ class IndexController extends BaseController {
 
         $page = !empty($page) && ctype_digit((string) $page) ? (int) $page : 1;
 
-        if (in_array($tab, array('popular', 'latest', 'debated', 'top'))) {
+        if ($tab == 'latest') {
+            $data['posts'] = post::get_latest(0, 0, $page);
+        } elseif (in_array($tab, array('popular', 'debated', 'top'))) {
             $func = 'get_' . $tab;
-            $data['posts'] = post::$func(0, 0, $page);
+            $data['posts'] = post::$func(0, $page);
         } else {
             $data['posts'] = array();
         }
