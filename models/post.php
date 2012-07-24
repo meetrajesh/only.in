@@ -52,7 +52,7 @@ class post {
 
     private static function _get_tab_posts($tab, $subin_id=0, $page=1, $limit=10) {
 
-        $result = self::get_latest($subin_id, 1, $page*$limit*3);
+        $result = self::get_latest($subin_id, 0, 1, $page*$limit*3);
 
         // set the rank for each post
         $rank_func = "_calc_${tab}_rank";
@@ -131,7 +131,7 @@ class post {
         return ($left - $right) / $under;
     }
 
-    public static function get_latest($subin_id=0, $page=1, $limit=10) {
+    public static function get_latest($subin_id=0, $post_id=0, $page=1, $limit=10) {
         // sanitize input
         $subin_id = (int)$subin_id;
         $page = (int)$page;
@@ -141,7 +141,9 @@ class post {
         $page = $page > 0 ? $page : 1;
         $limit = $limit > 0 ? $limit : 10;
 
-        $where_clause = !empty($subin_id) ? 'subin_id=%d' : '1';
+        $where_clause  = !empty($post_id) ? 'p.post_id=%d AND ' : '(%d OR 1) AND ';
+        $where_clause .= !empty($subin_id) ? 'p.subin_id=%d' : '(%d OR 1)';
+
         $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, s.name AS subin_name, s.slug, u.username,
                        (SELECT COUNT(*) FROM comments c WHERE c.post_id=p.post_id) AS num_comments,
                        IFNULL(SUM(v.vote), 0) AS score, IFNULL(SUM(IF(v.vote=1, 1, 0)), 0) AS ups, IFNULL(SUM(IF(v.vote=-1, 1, 0)), 0) AS downs
@@ -153,7 +155,9 @@ class post {
                 GROUP BY v.post_id
                 ORDER BY stamp DESC
                 LIMIT %d, %d';
-        $result = !empty($subin_id) ? db::query($sql, $subin_id, ($page-1)*$limit, $limit) : db::query($sql, ($page-1)*$limit, $limit);
+
+
+        $result = db::query($sql, $post_id, $subin_id, ($page-1)*$limit, $limit);
         # can't use fetch_all() since it is only available as mysqlnd (nd=native driver)
         # return $result->fetch_all(MYSQLI_ASSOC);
         $result = db::fetch_all($result);

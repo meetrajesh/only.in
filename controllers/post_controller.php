@@ -22,7 +22,18 @@ class PostController extends BaseController {
     }
 
     public function view($args) {
-        v($args);
+        
+        $post_id = array_shift($args);
+        $post_id = !empty($post_id) && ctype_digit((string) $post_id) ? (int) $post_id : 0;
+
+        if (!empty($post_id)) {
+            $data['posts'] = post::get_latest(0, $post_id);
+        } else {
+            $data['posts'] = array();
+        }
+
+        $this->_render('posts/base', $data);
+  
     }
 
 }

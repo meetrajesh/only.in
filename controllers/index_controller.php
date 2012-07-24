@@ -81,7 +81,7 @@ class IndexController extends BaseController {
 
         if (in_array($tab, array('popular', 'latest', 'debated', 'top'))) {
             $func = 'get_' . $tab;
-            $data['posts'] = post::$func(0, $page);
+            $data['posts'] = post::$func(0, 0, $page);
         } else {
             $data['posts'] = array();
         }
