@@ -94,3 +94,21 @@ function absolutize($relative) {
 function filter_text($text) {
     return '<p>' . str_replace(array("\n\n", "\n"), array('</p><p>', '<br>'), $text) . '</p>';
 }
+
+// convert text to slug 
+function slug_from_name($name) {
+    $name = trim(strtolower($name));
+    // get rid of funky chars
+    $name = str_replace(array("\r", "\n", "\t"), '', $name);
+    // replace sequence of white-space or underscores with hyphen
+    $name = preg_replace('/[\s_]+/', '-', $name);
+    // get rid of all non-word chars
+    $name = preg_replace('/[^\w-]/', '', $name);
+    // replace underscores with hyphens
+    $name = str_replace('_', '-', $name);
+    // replace multiple hyphens with single hyphen
+    $name = preg_replace('/-+/', '-', $name);
+
+    return $name;
+}
+
