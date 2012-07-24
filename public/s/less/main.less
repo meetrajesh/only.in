@@ -16,6 +16,16 @@ h3 {
   margin: 0 0 20px 0;
 }
 
+a:link,
+a:visited {
+  color: #06f;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 aside {
   .linear-gradient(#e0e0e0, #cdcdcd);
   .box-shadow(2px, 2px, 5px, 0, rgba(0, 0, 0, 0.1));
@@ -112,6 +122,10 @@ input, textarea {
   }
 }
 
+.page {
+  margin-top: 40px;
+}
+
 #main-content {
   margin-top: -20px;
 }
@@ -153,6 +167,10 @@ input, textarea {
 
   > li {
     margin-top: 6px;
+
+    &:first-of-type {
+      margin: 0;
+    }
 
     a:link, a:visited {
       color: #333;

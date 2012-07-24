@@ -30,4 +30,9 @@ class SubinController extends BaseController {
 
     }
 
+    public function browse() {
+        $data['places'] = subin::all_places();
+        $this->_render('places/base', $data);
+    }
+
 }
