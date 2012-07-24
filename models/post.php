@@ -144,7 +144,7 @@ class post {
         $where_clause  = !empty($post_id) ? 'p.post_id=%d AND ' : '(%d OR 1) AND ';
         $where_clause .= !empty($subin_id) ? 'p.subin_id=%d' : '(%d OR 1)';
 
-        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, s.name AS subin_name, s.slug, u.username,
+        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, s.name AS subin_name, s.slug AS subin_slug, u.username,
                        (SELECT COUNT(*) FROM comments c WHERE c.post_id=p.post_id) AS num_comments,
                        IFNULL(SUM(v.vote), 0) AS score, IFNULL(SUM(IF(v.vote=1, 1, 0)), 0) AS ups, IFNULL(SUM(IF(v.vote=-1, 1, 0)), 0) AS downs
                 FROM posts p
@@ -171,7 +171,7 @@ class post {
     }
 
     private static function _get_permalink($post) {
-        return sprintf('/%s/%d', $post['subin_name'], $post['post_id']);
+        return sprintf('/%s/%d', $post['subin_slug'], $post['post_id']);
     }
 
     public static function delete_by_img_url($img_url) {

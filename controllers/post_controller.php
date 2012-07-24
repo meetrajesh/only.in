@@ -32,7 +32,7 @@ class PostController extends BaseController {
             $data['posts'] = array();
         }
 
-        $this->_render('posts/base', $data);
+        $this->_render('posts/single', $data);
   
     }
 

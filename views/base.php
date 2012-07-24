@@ -44,10 +44,10 @@
     <div class="container_12" id="main-content">
         <div class="grid_8">
             <ul class="pillbox cf" id="main-filter">
-                <li><a class="btn" href="<?=absolutize('/popular')?>">Popular</a></li>
-                <li><a class="btn" href="<?=absolutize('/latest')?>">Latest</a></li>
-                <li><a class="btn" href="<?=absolutize('/debated')?>">Debated</a></li>
-                <li><a class="btn" href="<?=absolutize('/top')?>">Top</a></li>
+                <li><a href="<?=absolutize('/popular')?>">Popular</a></li>
+                <li><a href="<?=absolutize('/latest')?>">Latest</a></li>
+                <li><a href="<?=absolutize('/debated')?>">Debated</a></li>
+                <li><a href="<?=absolutize('/top')?>">Top</a></li>
             </ul>
 
             <? $t->block('content'); ?>

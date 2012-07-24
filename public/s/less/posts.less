@@ -12,6 +12,16 @@
     font-size: 24px;
     font-weight: 600;
     margin: 0 0 10px 0;
+
+    > a:link,
+    > a:visited {
+      color: #666;
+      text-decoration: none;
+    }
+
+    > a:hover {
+      text-decoration: underline;
+    }
   }
 
   .post-image {
@@ -29,6 +39,60 @@
     padding: 0 0 0 18px;
   }
 
+  .post-socialbox {
+    float: right;
+    margin-top: 20px;
+
+    > a {
+      float: left;
+    }
+
+    .post-comment-count,
+    .post-comment-count:visited {
+      background: #fff;
+      border: 1px solid #ccc;
+      .border-radius(6px);
+      color: #666;
+      font-size: 14px;
+      font-weight: bold;
+      height: 32px;
+      line-height: 31px;
+      margin: 0 0 0 10px;
+      padding: 0 10px;
+      position: relative;
+      text-decoration: none;
+    }
+
+    .post-comment-count:hover {
+      color: #666;
+      text-decoration: underline;
+    }
+
+    .post-comment-count:before,
+    .post-comment-count:after {
+      border-style: solid;
+      content: '';
+      display: block;
+      height: 0;
+      position: absolute;
+      width: 0;
+    }
+
+    .post-comment-count:after {
+      border-color: transparent #fff transparent transparent;
+      border-width: 7px 7px 7px 0;
+      left: -7px;
+      top: 9px;
+    }
+
+    .post-comment-count:before {
+      border-color: transparent #ccc transparent transparent;
+      border-width: 8px 8px 8px 0;
+      left: -8px;
+      top: 8px;
+    }
+  }
+
   .post-votebox {
     .linear-gradient(#fff, #f3f3f3);
     border: 1px solid #ccc;
@@ -44,7 +108,7 @@
       border-width: 1px;
       cursor: pointer;
       height: 30px;
-      line-height: 28px;
+      line-height: 29px;
       text-indent: -9999px;
       width: 30px;
     }
@@ -54,10 +118,11 @@
       border-style: solid;
       border-width: 1px;
       display: block;
-      font-family: "Bree Serif", Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       font-size: 20px;
+      font-weight: bold;
       height: 30px;
-      line-height: 27px;
+      line-height: 30px;
       margin: 0 32px;
       padding: 0 10px;
     }
