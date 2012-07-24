@@ -98,5 +98,8 @@ class ApiController {
 
     }
 
-}
+    public function subins_popular($data) {
+        return array('popular' => subins::get_popular());
+    }
 
+}

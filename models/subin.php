@@ -58,4 +58,18 @@ class subin {
         return ucwords($slug);
     }
 
+    public static function get_popular($num_days=7, $limit=10) {
+        $num_days = (int) $num_days;
+        $limit = (int) $limit;
+        // return the list of subins post to the most in the last 7 days
+        $sql = 'SELECT s.subin_id, s.slug, s.name, COUNT(p.subin_id) AS num_posts FROM subins s LEFT JOIN posts p ON s.subin_id=p.subin_id WHERE p.stamp <= (UNIX_TIMESTAMP() - %d*86400) GROUP BY s.subin_id ORDER BY 2 DESC, p.stamp DESC LIMIT %d';
+        $result = db::fetch_all($sql, $num_days, $limit);
+        // augment with subin url
+        foreach ($result as &$row) {
+            $row['link'] = '/' . $row['slug'];
+            unset($row['slug']);
+        }
+        return $result;
+    }
+
 }

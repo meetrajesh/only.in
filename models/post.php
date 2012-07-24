@@ -157,10 +157,9 @@ class post {
                 LIMIT %d, %d';
 
 
-        $result = db::query($sql, $post_id, $subin_id, ($page-1)*$limit, $limit);
         # can't use fetch_all() since it is only available as mysqlnd (nd=native driver)
         # return $result->fetch_all(MYSQLI_ASSOC);
-        $result = db::fetch_all($result);
+        $result = db::fetch_all($sql, $post_id, $subin_id, ($page-1)*$limit, $limit);
 
         // augment the result set with a permalink for each post
         foreach ($result as $i => $row) {

@@ -76,7 +76,7 @@
 
             <aside>
                 <h3>Popular Places</h3>
-                <div></div>
+                <div><?=subin::get_popular()?></div>
             </aside>
         </div>
     </div>
