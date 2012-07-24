@@ -19,6 +19,10 @@ class session {
         return !empty($_SESSION['user_id']);
     }
 
+    public static function get_ip() {
+        return !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+    }
+
     public static function validate_login($username, $password) {
         // check if username exists
         $creds = db::fetch_query('SELECT user_id, salt, password FROM users WHERE username="%s"', trim($username));

@@ -6,6 +6,16 @@ require dirname(__FILE__) . '/client.php';
 $api = new OnlyInAPI(API_SECRET);
 
 // =====================================================================================================
+// ADD A COMMENT
+$data = array('post_id' => 46,
+              'comment' => 'this is a test comment');
+
+$json = $api->call('/comment/create', $data);
+$post_id = $json['comment_id'];
+var_dump($json);
+exit;
+
+// =====================================================================================================
 // VOTE FOR A POST
 
 $post_id = 43;
