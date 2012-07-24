@@ -90,3 +90,7 @@ function absolutize($relative) {
     $url .= '/' . ltrim($relative, '/');
     return $url;
 }
+
+function filter_text($text) {
+    return '<p>' . str_replace(array("\n\n", "\n"), array('</p><p>', '<br>'), $text) . '</p>';
+}
