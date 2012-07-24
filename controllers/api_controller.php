@@ -1,6 +1,10 @@
 <?php
 
-class ApiController {
+class ApiController extends BaseController {
+
+    public function __construct() {
+        csrf::check(API_SECRET);
+    }
 
     public function user_username_exists($data) {
         return array('username_exists' => user::does_username_exist($data['username']));
@@ -87,7 +91,7 @@ class ApiController {
                      'comment_count' => count(comment::get_all($data['post_id'])),
                      'comment_html' => $this->_buffer('posts/comment', array('comment_id' => $comment_id,
                                                                              'user_id' => $data['user_id'],
-                                                                             'username' => user::get($data['user_id']),
+                                                                             'username' => user::get_username($data['user_id']),
                                                                              'content' => $data['comment'],
                                                                              'stamp' => $data['stamp'])));
 
