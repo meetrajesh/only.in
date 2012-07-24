@@ -52,7 +52,14 @@ class post {
 
     private static function _get_tab_posts($tab, $subin_id=0, $page=1, $limit=10) {
 
-        $result = self::get_latest($subin_id, 1, $page*$limit*3);
+        $page = (int)$page;
+        $limit = (int)$limit;
+
+        // set defaults
+        $page = $page > 0 ? $page : 1;
+        $limit = $limit > 0 ? $limit : 10;
+
+        $result = self::get_latest($subin_id, 0, 1, $page*$limit*3);
 
         // set the rank for each post
         $rank_func = "_calc_${tab}_rank";
@@ -92,7 +99,7 @@ class post {
         $up_range = 400;
         $down_range = 100;
 
-        // initialize condidences
+        // initialize confidences
         if (!isset(self::$_confidences)) {
             self::$_confidences = array();
             foreach (range(0, $up_range) as $ups) {
@@ -105,14 +112,13 @@ class post {
         $ups = $post['ups'];
         $downs = $post['downs'];
 
-        if ($ups + $downs == 0) {
+        if (($ups + $downs) == 0) {
             return 0;
         } elseif ($ups <= $up_range && $downs <= $down_range) {
             return self::$_confidences[$downs + $ups*$down_range];
         } else {
             return self::_calc_confidence($ups, $downs);
         }
-
     }
 
     private static function _calc_confidence($ups, $downs) {
@@ -132,7 +138,7 @@ class post {
         return ($left - $right) / $under;
     }
 
-    public static function get_latest($subin_id=0, $page=1, $limit=10) {
+    public static function get_latest($subin_id=0, $post_id=0, $page=1, $limit=10) {
         // sanitize input
         $subin_id = (int)$subin_id;
         $page = (int)$page;
@@ -142,19 +148,36 @@ class post {
         $page = $page > 0 ? $page : 1;
         $limit = $limit > 0 ? $limit : 10;
 
-        $where_clause = !empty($subin_id) ? 'subin_id=%d' : '1';
-        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, IFNULL(SUM(v.vote), 0) AS score, IFNULL(SUM(IF(v.vote=1, 1, 0)), 0) AS ups, IFNULL(SUM(IF(v.vote=-1, 1, 0)), 0) AS downs, s.name AS subin_name 
+        $where_clause  = !empty($post_id) ? 'p.post_id=%d AND ' : '(%d OR 1) AND ';
+        $where_clause .= !empty($subin_id) ? 'p.subin_id=%d' : '(%d OR 1)';
+
+        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, s.name AS subin_name, s.slug AS subin_slug, u.username,
+                       (SELECT COUNT(*) FROM comments c WHERE c.post_id=p.post_id) AS num_comments,
+                       IFNULL(SUM(v.vote), 0) AS score, IFNULL(SUM(IF(v.vote=1, 1, 0)), 0) AS ups, IFNULL(SUM(IF(v.vote=-1, 1, 0)), 0) AS downs
                 FROM posts p
-                INNER JOIN subins s USING (subin_id)
-                LEFT JOIN votes v ON p.post_id=v.post_id 
+                LEFT JOIN subins s USING (subin_id)
+                LEFT JOIN votes v USING (post_id)
+                LEFT JOIN users u ON p.user_id=u.user_id
                 WHERE  ' . $where_clause . ' AND p.is_deleted=0
                 GROUP BY p.post_id
                 ORDER BY stamp DESC
                 LIMIT %d, %d';
-        $result = !empty($subin_id) ? db::query($sql, $subin_id, ($page-1)*$limit, $limit) : db::query($sql, ($page-1)*$limit, $limit);
+
         # can't use fetch_all() since it is only available as mysqlnd (nd=native driver)
         # return $result->fetch_all(MYSQLI_ASSOC);
-        return db::fetch_all($result);
+        $result = db::fetch_all($sql, $post_id, $subin_id, ($page-1)*$limit, $limit);
+
+        // augment the result set with a permalink for each post
+        foreach ($result as $i => $row) {
+            $result[$i]['permalink'] = self::_get_permalink($row);
+        }
+
+        return $result;
+
+    }
+
+    private static function _get_permalink($post) {
+        return sprintf('/%s/%d', $post['subin_slug'], $post['post_id']);
     }
 
     public static function delete_by_img_url($img_url) {

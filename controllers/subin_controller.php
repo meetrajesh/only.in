@@ -21,7 +21,7 @@ class SubinController extends BaseController {
         if ($tab == 'popular') {
             $data['posts'] = post::get_popular($subin_id, $page);
         } elseif ($tab == 'latest') {
-            $data['posts'] = post::get_latest($subin_id, $page);
+            $data['posts'] = post::get_latest($subin_id, 0, $page);
         } else {
             $data['posts'] = array();
         }

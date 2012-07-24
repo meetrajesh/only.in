@@ -21,11 +21,13 @@ class vote {
         return db::insert_id();
     }
 
+    // return upvotes - downvotes for given post_id
     public static function get_score($post_id) {
         $sql = 'SELECT IFNULL(SUM(vote), 0) AS score FROM votes WHERE post_id=%d';
         return db::result_query($sql, (int)$post_id);
     }
 
+    // add a + in front of positive score, return number as comma separated
     public static function format_score($score) {
         return ($score > 0 ? '+' : '') . number_format($score);
     }

@@ -10,6 +10,7 @@ class db {
         $args = func_get_args();
         $sql = array_shift($args);
         $sql = self::_bind_args($sql, $args);
+        # echo $sql;
         // increment the db query count
         self::$num_queries++;
         $result = $db->query($sql);
@@ -49,8 +50,11 @@ class db {
         return self::query($sql, $args)->fetch_assoc();
     }
 
-    public static function fetch_all($result) {
-        while ($row[] = $result->fetch_assoc());
+    public static function fetch_all($sql, $args=array()) {
+        $args = func_get_args();
+        $sql = array_shift($args);
+        $res = self::query($sql, $args);
+        while ($row[] = $res->fetch_assoc());
         return array_slice($row, 0, -1);
     }
 

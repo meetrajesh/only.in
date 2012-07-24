@@ -21,4 +21,21 @@ class PostController extends BaseController {
         comment::add($user_id, $post_id, $parent_comment_id, $comment);
     }
 
+    public function view($args) {
+        
+        $post_id = array_shift($args);
+        $post_id = !empty($post_id) && ctype_digit((string) $post_id) ? (int) $post_id : 0;
+
+        if (!empty($post_id)) {
+            $data['posts'] = post::get_latest(0, $post_id);
+            $data['comments'] = comment::get_all($post_id);
+        } else {
+            $data['posts'] = array();
+            $data['comments'] = array();
+        }
+
+        $this->_render('posts/single', $data);
+  
+    }
+
 }

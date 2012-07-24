@@ -13,7 +13,7 @@ class ApiController {
     public function user_create($data) {
 
         $is_fake_user = true;
-        $user_id = user::add($data['username'], $data['password'], $data['name'], $data['email'], $is_fake_user);
+        $user_id = user::create($data['username'], $data['password'], $data['name'], $data['email'], $is_fake_user);
 
         if (false === $user_id || $user_id == 0 || !ctype_digit((string) $user_id)) {
             return array('error' => $user_id);
@@ -98,5 +98,8 @@ class ApiController {
 
     }
 
-}
+    public function subins_popular($data) {
+        return array('popular' => subins::get_popular());
+    }
 
+}
