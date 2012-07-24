@@ -78,7 +78,7 @@ class ApiController {
         }
 
         // return the comment id
-        return array('comment_id' => $comment_id);
+        return array('comment_id' => $comment_id, 'comment_count' => count(comment::get_all($data['post_id'])));
 
     }
 
