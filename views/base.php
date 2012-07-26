@@ -1,7 +1,4 @@
-<?
-
-    $TEMPLATE_ROOT = dirname(__FILE__);
-    include($TEMPLATE_ROOT . '/inc/vars.php');
+<?php
 
     $this->_add_js('js/searchbox.js');
 
@@ -37,7 +34,6 @@
         localStorage.clear();
     </script>
     <script src="<?= PATH_PREFIX . STATIC_PREFIX ?>/js/libs/less-1.3.0.min.js"></script>
-
     <script src="<?= PATH_PREFIX . STATIC_PREFIX ?>/js/libs/modernizr-2.5.3.min.js"></script>
 </head>
 <body>
@@ -55,10 +51,10 @@
     <div class="container_12" id="main-content">
         <div class="grid_8">
             <ul class="pillbox cf" id="main-filter">
-                <? foreach ($CONTENT_FILTERS as $k=>$v) : ?>
-                    <li class="<?= ($data['tab'] == $k)?'selected':''; ?>">
-                        <a href="<?= hsc(absolutize($t->notempty($data['subin_slug'], '/') . '/' . $k)); ?>">
-                            <?= hsc($v) ?>
+                <? foreach (post::$PAGE_TABS as $tab => $tab_name): ?>
+                    <li class="<?= (isset($data['tab']) && $data['tab'] == $tab) ? 'selected' : ''; ?>">
+                        <a href="<?= hsc(absolutize($t->notempty($data['subin_slug'], '/') . '/' . $tab)); ?>">
+                            <?=hsc($tab_name)?>
                         </a>
                     </li>
                 <? endforeach; ?>
@@ -80,7 +76,9 @@
                     <form method="post" action="/post/add" enctype="multipart/form-data">
                         <?=csrf::html()?>
                         <input type="hidden" name="MAX_FILE_SIZE" value="<?=UPLOAD_MAX_SIZE?>">
-                        <input type="text" name="place" placeholder="Place">
+                        <div id="qp-place-field">
+                            <input type="text" name="place" placeholder="Place">
+                        </div>
                         <input type="text" name="title" placeholder="Title (Optional)">
                         <input type="text" name="content" placeholder="URL">
                         <button type="submit" class="btn"><span>Submit</span></button>
@@ -89,7 +87,7 @@
             </aside>
 
             <aside id="popular-places">
-                <h3>Popular Places <span>(<a href="">See all places</a>)</span></h3>
+                <h3>Popular Places <span>(<a href="/places">See all places</a>)</span></h3>
                 <div>
                     <ul id="popular-place-list">
                         <? foreach (subin::get_popular() as $place) : ?>

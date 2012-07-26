@@ -116,8 +116,13 @@ class ApiController extends BaseController {
             return array('error' => 'invalid post id');
         }
 
+        // check if already voted before
+        if (vote::has_voted_before($post_id)) {
+            return array('error' => 'already voted', 'score' => vote::format_score(vote::get_score($post_id)));
+        }
+
         $vote_id = vote::add($user_id, $post_id, 0, $vote);
-        return array('vote_id' => $vote_id, 'score' => vote::format_score(vote::get_score($data['post_id'])));
+        return array('vote_id' => $vote_id, 'score' => vote::format_score(vote::get_score($post_id)));
 
     }
 

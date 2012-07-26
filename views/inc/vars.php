@@ -1,2 +1,0 @@
-<?
-    $CONTENT_FILTERS = post::$PAGE_TABS;

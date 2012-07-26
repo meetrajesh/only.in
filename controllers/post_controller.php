@@ -29,11 +29,15 @@ class PostController extends BaseController {
         if (!empty($post_id)) {
             $data['posts'] = post::get_latest(0, $post_id);
             $data['comments'] = comment::get_all($post_id);
-            $data['subin_slug'] = $data['posts'][0]['subin_slug'];
-            $data['subin_name'] = $data['posts'][0]['subin_name'];
+            $data['tab'] = '';
+            $data['subin_name'] = isset($data['posts'][0]['subin_name']) ? $data['posts'][0]['subin_name'] : '';
+            $data['subin_slug'] = isset($data['posts'][0]['subin_slug']) ? $data['posts'][0]['subin_slug'] : '';
         } else {
             $data['posts'] = array();
             $data['comments'] = array();
+            $data['tab'] = '';
+            $data['subin_name'] = '';
+            $data['subin_slug'] = '';
         }
 
         $this->_render('posts/single', $data);
