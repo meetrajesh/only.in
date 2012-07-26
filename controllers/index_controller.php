@@ -82,7 +82,7 @@ class IndexController extends BaseController {
 
         if ($tab == 'latest') {
             $data['posts'] = post::get_latest(0, 0, $page);
-        } elseif (in_array($tab, array('popular', 'debated', 'top'))) {
+        } elseif (in_array($tab, array_keys(post::$PAGE_TABS))) {
             $func = 'get_' . $tab;
             $data['posts'] = post::$func(0, $page);
         } else {
