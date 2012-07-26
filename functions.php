@@ -112,3 +112,11 @@ function slug_from_name($name) {
     return $name;
 }
 
+function first($data) {
+    $func = is_array($data) ? 'array_slice' : 'substr';
+    return $func($data, 0, 1);
+}
+
+function left($str, $n) {
+    return substr($str, 0, $n);
+}
