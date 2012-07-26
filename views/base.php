@@ -34,7 +34,6 @@
         localStorage.clear();
     </script>
     <script src="<?= PATH_PREFIX . STATIC_PREFIX ?>/js/libs/less-1.3.0.min.js"></script>
-
     <script src="<?= PATH_PREFIX . STATIC_PREFIX ?>/js/libs/modernizr-2.5.3.min.js"></script>
 </head>
 <body>
@@ -53,7 +52,7 @@
         <div class="grid_8">
             <ul class="pillbox cf" id="main-filter">
                 <? foreach (post::$PAGE_TABS as $tab => $tab_name): ?>
-                    <li class="<?= ($data['tab'] == $tab) ? 'selected' : ''; ?>">
+                    <li class="<?= (isset($data['tab']) && $data['tab'] == $tab) ? 'selected' : ''; ?>">
                         <a href="<?= hsc(absolutize($t->notempty($data['subin_slug'], '/') . '/' . $tab)); ?>">
                             <?=hsc($tab_name)?>
                         </a>
