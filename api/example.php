@@ -6,6 +6,13 @@ require dirname(__FILE__) . '/client.php';
 $api = new OnlyInAPI(API_SECRET);
 
 // =====================================================================================================
+// SEARCH FOR A SUBIN
+
+$json = $api->call('/subin/search', array('search_str' => 'foo'));
+var_dump($json);
+exit;
+
+// =====================================================================================================
 // ADD A COMMENT
 $data = array('post_id' => 46,
               'comment' => 'this is a test comment');

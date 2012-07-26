@@ -8,7 +8,7 @@ class SubinController extends BaseController {
         list($subin_name, $tab, $page) = $args;
 
         // set default tab if not provided
-        if (!in_array($tab, array('popular', 'latest'))) {
+        if (!in_array($tab, array_keys(post::$PAGE_TABS))) {
             $tab = 'popular';
         }
 
@@ -25,6 +25,9 @@ class SubinController extends BaseController {
         } else {
             $data['posts'] = array();
         }
+
+        $data['tab'] = $tab;
+        $data['subin_slug'] = $subin['slug'];
 
         $this->_render('posts/base', $data);
 

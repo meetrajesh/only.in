@@ -12,6 +12,8 @@ class OnlyInAPI {
 
     public function call($method, $args) {
 
+        $args['csrf'] = csrf::token($this->_api_secret);
+
         if (defined('IS_DEV') && IS_DEV) {
             return api::call($method, $args);
         } else {

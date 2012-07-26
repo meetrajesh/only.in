@@ -2,6 +2,11 @@
 
 class post {
 
+    public static $PAGE_TABS = array('popular' => 'Popular',
+                                     'latest' => 'Latest',
+                                     'debated' => 'Debated',
+                                     'top' => 'Top');
+
     private static $_confidences;
 
     public static function add($subin_id, $user_id=0, $title='', $content, $photo=array(), $stamp=0) {

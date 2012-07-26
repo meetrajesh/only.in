@@ -27,9 +27,11 @@
       comment: $('#new-comment').val(),
       csrf: $(document).data('csrf')
     }, function(data) {
-      $('#new-comment').val('');
-      $('.comments').find('h3').after(data['comment_html']);
-      $post.find('.post-comment-count').html(data['comment_count']);
+      if (data.comment_id !== -1) {
+        $('#new-comment').val('');
+        $('.comments').find('h3').after(data.comment_html);
+        $post.find('.post-comment-count').html(data.comment_count);
+      }
     });
   });
 })(jQuery);

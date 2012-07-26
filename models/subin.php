@@ -24,7 +24,7 @@ class subin {
 
     // lookup subin from slug in db
     public static function slug_to_subin($subin_name) {
-        $sql = 'SELECT subin_id, name FROM subins WHERE LOWER(slug) = LOWER("%s")';
+        $sql = 'SELECT subin_id, slug, name FROM subins WHERE LOWER(slug) = LOWER("%s")';
         return db::fetch_query($sql, $subin_name);
     }
 
@@ -61,6 +61,10 @@ class subin {
 
     public static function all_places() {
         return db::fetch_all('SELECT s.subin_id, s.slug AS permalink, s.name, (SELECT COUNT(*) FROM posts p WHERE s.subin_id=p.subin_id) AS num_posts FROM subins s HAVING num_posts > 0 ORDER BY s.name ASC');
+    }
+
+    public static function search($str) {
+        return db::fetch_all('SELECT subin_id, slug AS permalink, name FROM subins WHERE name LIKE "%s%%" OR slug LIKE "%1$s%%"', $str);
     }
 
 }

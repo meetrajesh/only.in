@@ -1,4 +1,7 @@
-<!doctype html>
+<?
+    $TEMPLATE_ROOT = dirname(__FILE__);
+    include($TEMPLATE_ROOT . '/inc/vars.php');
+?><!doctype html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
@@ -48,10 +51,14 @@
     <div class="container_12" id="main-content">
         <div class="grid_8">
             <ul class="pillbox cf" id="main-filter">
-                <li><a href="<?=absolutize('/popular')?>">Popular</a></li>
-                <li><a href="<?=absolutize('/latest')?>">Latest</a></li>
-                <li><a href="<?=absolutize('/debated')?>">Debated</a></li>
-                <li><a href="<?=absolutize('/top')?>">Top</a></li>
+                <? $data['tab'] = (empty($data['tab'])) ? first(array_keys($CONTENT_FILTERS)) : $data['tab']; ?>
+                <? foreach ($CONTENT_FILTERS as $k=>$v) : ?>
+                    <li class="<?= ($data['tab'] == $k)?'selected':''; ?>">
+                        <a href="<?= hsc(absolutize($t->notempty($data['subin_slug'], '/') . '/' . $k)); ?>">
+                            <?= hsc($v) ?>
+                        </a>
+                    </li>
+                <? endforeach; ?>
             </ul>
 
             <? $t->block('content'); ?>
