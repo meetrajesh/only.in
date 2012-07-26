@@ -88,7 +88,7 @@
             </aside>
 
             <aside id="popular-places">
-                <h3>Popular Places <span>(<a href="">See all places</a>)</span></h3>
+                <h3>Popular Places <span>(<a href="/places">See all places</a>)</span></h3>
                 <div>
                     <ul id="popular-place-list">
                         <? foreach (subin::get_popular() as $place) : ?>
