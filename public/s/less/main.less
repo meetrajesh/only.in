@@ -95,6 +95,36 @@ input, textarea {
   }
 }
 
+ul {
+  &.ui-autocomplete {
+    background: #fff;
+    border: 1px solid #999;
+    .box-shadow(2px, 2px, 5px, 0, rgba(0, 0, 0, 0.1));
+    list-style: none;
+    margin: 0 10px;
+    max-height: 200px;
+    overflow: auto;
+    padding: 0;
+    position: absolute;
+
+    a,
+    a:link,
+    a:visited, {
+      color: #666;
+      cursor: pointer;
+      display: block;
+      padding: 4px 10px;
+      text-decoration: none;
+    }
+
+    a:hover,
+    a.ui-state-hover {
+      background-color: #f0faff;
+      text-decoration: none;
+    }
+  }
+}
+
 #auth-buttons {
   border-color: #993300;
   .box-shadow(2px, 2px, 5px, 0, rgba(0, 0, 0, 0.1));
