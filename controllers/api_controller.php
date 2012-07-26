@@ -60,13 +60,16 @@ class ApiController extends BaseController {
         $data['stamp'] = empty($data['stamp']) ? time() : (int) $data['stamp'];
         $data['parent_comment_id'] = empty($data['parent_comment_id']) ? 0 : (int) $data['parent_comment_id'];
         $data['post_id'] = !empty($data['post_id']) ? (int) $data['post_id'] : 0;
+        $data['comment'] = trim($data['comment']);
 
         // get the userid from the username if it exists
         $data['user_id'] = (!isset($data['user_id']) && !empty($data['username'])) ? user::getid($data['username']) : 0;
         $data['user_id'] = (int)$data['user_id'];
 
         // add the comment to the given post id
-        if (!empty($data['post_id']) && post::exists($data['post_id'])) {
+        if (empty($data['comment'])) {
+            return array('comment_id' => -1, 'error' => 'empty comment body');
+        } elseif (!empty($data['post_id']) && post::exists($data['post_id'])) {
             $comment_id = comment::add($data['user_id'], $data['post_id'], $data['parent_comment_id'], $data['comment']);
         } else {
             return array('comment_id' => -1, 'error' => 'invalid post id');
