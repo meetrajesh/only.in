@@ -112,6 +112,7 @@ class db {
             if (!self::$db) {
                 error('failed to obtain db connection');
             }
+            self::$db->set_charset('utf8');
         }
         return self::$db;
     }
