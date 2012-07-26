@@ -147,6 +147,22 @@ input, textarea {
     &:first-of-type, &:last-of-type {
       width: 152px;
     }
+
+    &.selected,
+    &.selected:hover {
+      .linear-gradient(#686868, #a1a1a1);
+      border-color: #686868 #999999 #a1a1a1 transparent;
+      color: #fff;
+      text-shadow: 1px 1px 0 #000;
+
+      &:last-of-type {
+        border-right-color: transparent;
+      }
+
+      > a {
+        color: #fff;
+      }
+    }
   }
 }
 
