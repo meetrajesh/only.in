@@ -19,6 +19,7 @@ define('IMGUR_API_KEY', 'a101ec6dba513b6e8a0ad48c7a5a65f0');
 define('UPLOAD_MAX_SIZE', 10*1024*1024); // 10M
 define('STATIC_PREFIX', '/s');
 define('WEB_ROOT', dirname(__FILE__) . '/public');
+define('TEMPLATE_ROOT', dirname(__FILE__) . '/views');
 
 session_start();
 date_default_timezone_set('America/New_York');

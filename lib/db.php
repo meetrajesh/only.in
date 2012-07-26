@@ -106,6 +106,7 @@ class db {
         return self::get()->affected_rows;
     }
 
+    // singleton getter for db connection
     private static function get() {
         if (!self::$db) {
             self::$db = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);

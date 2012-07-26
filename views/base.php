@@ -1,7 +1,4 @@
-<?
-
-    $TEMPLATE_ROOT = dirname(__FILE__);
-    include($TEMPLATE_ROOT . '/inc/vars.php');
+<?php
 
     $this->_add_js('js/searchbox.js');
 
@@ -55,10 +52,10 @@
     <div class="container_12" id="main-content">
         <div class="grid_8">
             <ul class="pillbox cf" id="main-filter">
-                <? foreach ($CONTENT_FILTERS as $k=>$v) : ?>
-                    <li class="<?= ($data['tab'] == $k)?'selected':''; ?>">
-                        <a href="<?= hsc(absolutize($t->notempty($data['subin_slug'], '/') . '/' . $k)); ?>">
-                            <?= hsc($v) ?>
+                <? foreach (post::$PAGE_TABS as $tab => $tab_name): ?>
+                    <li class="<?= ($data['tab'] == $tab) ? 'selected' : ''; ?>">
+                        <a href="<?= hsc(absolutize($t->notempty($data['subin_slug'], '/') . '/' . $tab)); ?>">
+                            <?=hsc($tab_name)?>
                         </a>
                     </li>
                 <? endforeach; ?>
