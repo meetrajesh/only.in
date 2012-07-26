@@ -88,15 +88,14 @@
                 </div>
             </aside>
 
-            <aside>
-                <h3>Popular Places</h3>
+            <aside id="popular-places">
+                <h3>Popular Places <span>(<a href="">See all places</a>)</span></h3>
                 <div>
                     <ul id="popular-place-list">
                         <? foreach (subin::get_popular() as $place) : ?>
                             <li><a href="<?= hsc(absolutize($place['permalink'])) ?>"><?= hsc($place['name']); ?></a></li>
                         <? endforeach; ?>
                     </ul>
-                    <a href="<?= absolutize('/places'); ?>">List of all places</a>
                 </div>
             </aside>
         </div>
