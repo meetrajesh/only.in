@@ -80,7 +80,9 @@
                     <form method="post" action="/post/add" enctype="multipart/form-data">
                         <?=csrf::html()?>
                         <input type="hidden" name="MAX_FILE_SIZE" value="<?=UPLOAD_MAX_SIZE?>">
-                        <input type="text" name="place" placeholder="Place">
+                        <div id="qp-place-field">
+                            <input type="text" name="place" placeholder="Place">
+                        </div>
                         <input type="text" name="title" placeholder="Title (Optional)">
                         <input type="text" name="content" placeholder="URL">
                         <button type="submit" class="btn"><span>Submit</span></button>
