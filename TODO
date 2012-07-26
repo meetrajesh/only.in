@@ -6,4 +6,7 @@
  - investigate api security and have a way to not send api secret and csrf in JS
  - add focusability to post comment button
  - get top, popular, latest, debated links on top to highlight when selected
-
+ - search
+ - signup
+ - login
+ - post page, upload buton
