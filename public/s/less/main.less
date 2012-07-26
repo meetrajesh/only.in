@@ -219,8 +219,9 @@ ul {
 }
 
 #popular-place-list {
+  font-size: 14px;
   list-style: none;
-  margin: 0 0 20px 0;
+  margin: 0;
   padding: 0;
 
   > li {
@@ -239,13 +240,25 @@ ul {
       text-decoration: underline;
     }
   }
+}
 
-  + a:link,
-  + a:visited {
-    color: #333;
-    display: block;
-    font-weight: bold;
-    text-align: center;
+#popular-places {
+  h3 {
+    span {
+      font-size: 12px;
+      float: right;
+
+      a,
+      a:link,
+      a:visited {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
 
