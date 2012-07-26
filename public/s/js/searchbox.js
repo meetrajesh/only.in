@@ -29,5 +29,12 @@
         return false;
       }
     });
+
+    $('#main-search').on('keyup', function(ev){
+      var val = $(this).val();
+      if (val.length > 0) {
+        window.location = '/' + val;
+      }
+    });
   });
 })(jQuery);
