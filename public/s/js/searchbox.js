@@ -31,9 +31,11 @@
     });
 
     $('#main-search').on('keyup', function(ev){
-      var val = $(this).val();
-      if (val.length > 0) {
-        window.location = '/' + val;
+      if (ev.keyCode === 13) {
+        var val = $(this).val();
+        if (val.length > 2) {
+          window.location = '/' + val;
+        }
       }
     });
   });
