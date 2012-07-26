@@ -114,8 +114,7 @@ function slug_from_name($name) {
 
 function first($data) {
     if (is_array($data)) {
-        $copy = $data;
-        return array_shift($copy);
+        array_shift(array_values($array));
     } else {
         return substr($data, 0, 1);
     }
