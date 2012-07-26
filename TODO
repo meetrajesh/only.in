@@ -10,5 +10,6 @@
  - signup
  - login
  - post page, upload buton
- - test voting by IP
+ + test voting by IP
  - remove csrf checks from api endpoints?
+ - work on perfect rest api
