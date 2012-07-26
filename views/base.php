@@ -76,14 +76,14 @@
 
             <aside id="quickpost">
                 <h3>Post Something</h3>
-                <div>
+                <div class="cf">
                     <form method="post" action="/post/add" enctype="multipart/form-data">
                         <?=csrf::html()?>
                         <input type="hidden" name="MAX_FILE_SIZE" value="<?=UPLOAD_MAX_SIZE?>">
-                        <input type="submit" name="btn_submit" value="Add Post" />
                         <input type="text" name="place" placeholder="Place">
-                        <input type="text" name="title" placeholder="Title">
+                        <input type="text" name="title" placeholder="Title (Optional)">
                         <input type="text" name="content" placeholder="URL">
+                        <button type="submit" class="btn"><span>Submit</span></button>
                     </form>
                 </div>
             </aside>
