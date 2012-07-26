@@ -12,6 +12,11 @@ function run_migrations($mig_id) {
 
     require '../../init.local.php';
 
+    if (!file_exists('./migrations/' . $mig_id . '.sql')) {
+        echo 'At migration ' . ($mig_id-1) . ".\n";
+        return;
+    }
+
     while (file_exists('./migrations/' . $mig_id . '.sql')) {
         echo 'Executing migration: ' . $mig_id . "\n";
         $cmd = sprintf('mysql -u%s -p"%s" %s < ./migrations/%d.sql 2>&1', DBUSER, DBPASS, DBNAME, $mig_id);
