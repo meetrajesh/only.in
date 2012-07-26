@@ -10,7 +10,8 @@ class api {
         list($controller) = explode('/', $method);
         $method = str_replace('/', '_', $method);
 
-        $obj = new ApiController;
+        $csrf = !empty($args['csrf']) ? $args['csrf'] : null;
+        $obj = new ApiController($csrf);
 
         // check if api method exists
         if (!method_exists($obj, $method)) {

@@ -2,8 +2,8 @@
 
 class ApiController extends BaseController {
 
-    public function __construct() {
-        csrf::check(API_SECRET);
+    public function __construct($csrf=null) {
+        csrf::check(API_SECRET, $csrf);
     }
 
     public function user_username_exists($data) {
@@ -123,6 +123,10 @@ class ApiController extends BaseController {
 
     public function subins_popular($data) {
         return array('popular' => subins::get_popular());
+    }
+
+    public function subin_search($data) {
+        return subin::search($data['search_str']);
     }
 
 }

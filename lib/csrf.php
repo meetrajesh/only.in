@@ -2,11 +2,17 @@
 
 class csrf {
 
-    public static function check($unique = null) {
-        $unique = (empty($unique))?self::_unique():$unique;
-        if (empty($_REQUEST['csrf']) || !security::hmac_check(CSRF_SECRET, $unique, $_REQUEST['csrf'])) {
+    public static function check($unique=null, $csrf=null) {
+        $unique = (empty($unique)) ? self::_unique() : $unique;
+        $csrf = !empty($csrf) ? $csrf : (!empty($_REQUEST['csrf']) ? $_REQUEST['csrf'] : '');
+        if (empty($csrf) || !security::hmac_check(CSRF_SECRET, $unique, $csrf)) {
             die('csrf check fail');
         }
+    }
+
+    public static function token($unique = null) {
+        $unique = (empty($unique)) ? self::_unique() : $unique;
+        return security::hmac_gen(CSRF_SECRET, $unique);
     }
 
     public static function html() {
@@ -19,11 +25,6 @@ class csrf {
 
     private static function _unique() {
         return session::id();
-    }
-
-    public static function token($unique = null) {
-        $unique = (empty($unique))?self::_unique():$unique;
-        return security::hmac_gen(CSRF_SECRET, $unique);
     }
 
     private static function _check_token($token) {
