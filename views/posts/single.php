@@ -20,7 +20,7 @@
         <div class="comments-form cf">
             <h3>Post a new comment</h3>
             <textarea id="new-comment" rows="2" cols="64" placeholder="Enter comment here..."></textarea>
-            <div class="btn" id="submit-comment"><span>Post Comment</span></div>
+            <button class="btn" id="submit-comment"><span>Post Comment</span></button>
         </div>
 
         <div class="comments cf">
