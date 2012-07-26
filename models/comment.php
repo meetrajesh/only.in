@@ -4,7 +4,7 @@ class comment {
 
     public static function add($user_id=0, $post_id, $parent_comment_id=0, $comment, $stamp=0) {
         $comment = trim($comment);
-        if (!empty($comment)) {
+        if (empty($comment)) {
             return false;
         }
         $stamp = empty($stamp) ? time() : (int)$stamp;
