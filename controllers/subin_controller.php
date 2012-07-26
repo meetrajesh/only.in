@@ -26,6 +26,9 @@ class SubinController extends BaseController {
             $data['posts'] = array();
         }
 
+        $data['tab'] = $tab;
+        $data['subin_slug'] = $subin['slug'];
+
         $this->_render('posts/base', $data);
 
     }

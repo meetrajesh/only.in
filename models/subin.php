@@ -24,7 +24,7 @@ class subin {
 
     // lookup subin from slug in db
     public static function slug_to_subin($subin_name) {
-        $sql = 'SELECT subin_id, name FROM subins WHERE LOWER(slug) = LOWER("%s")';
+        $sql = 'SELECT subin_id, slug, name FROM subins WHERE LOWER(slug) = LOWER("%s")';
         return db::fetch_query($sql, $subin_name);
     }
 
