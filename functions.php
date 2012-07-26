@@ -113,8 +113,12 @@ function slug_from_name($name) {
 }
 
 function first($data) {
-    $func = is_array($data) ? 'array_slice' : 'substr';
-    return $func($data, 0, 1);
+    if (is_array($data)) {
+        $copy = $data;
+        return array_shift($copy);
+    } else {
+        return substr($data, 0, 1);
+    }
 }
 
 function left($str, $n) {
