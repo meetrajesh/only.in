@@ -44,7 +44,7 @@
     <header>
         <div class="container_12">
             <div class="grid_8">
-                <h1>Only.in</h1>
+                <h1><a href="<?= hsc(absolutize('/')); ?>">Only.in</a><?= @$t->notempty($data['subin_name'], ' | <a href="' . absolutize('/' . $data['subin_slug']) . '">', '</a>'); ?></h1>
             </div>
             <div class="grid_4">
                 <input id="main-search" type="text" placeholder="Search Only.in">
@@ -55,7 +55,6 @@
     <div class="container_12" id="main-content">
         <div class="grid_8">
             <ul class="pillbox cf" id="main-filter">
-                <? $data['tab'] = (empty($data['tab'])) ? first(array_keys($CONTENT_FILTERS)) : $data['tab']; ?>
                 <? foreach ($CONTENT_FILTERS as $k=>$v) : ?>
                     <li class="<?= ($data['tab'] == $k)?'selected':''; ?>">
                         <a href="<?= hsc(absolutize($t->notempty($data['subin_slug'], '/') . '/' . $k)); ?>">
