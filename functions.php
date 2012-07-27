@@ -127,3 +127,13 @@ function left($str, $n) {
 function checkreturn($array, $key, $default='') {
     return isset($array[$key]) ? $array[$key] : $default;
 }
+
+// shorthand for sprintf/vsprintf
+function spf($format, $args=array()) {
+    $args = func_get_args();
+    $format = array_shift($args);
+    if (isset($args[0]) && is_array($args[0])) {
+        $args = $args[0];
+    }
+    return vsprintf($format, $args);
+}

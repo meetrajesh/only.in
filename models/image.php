@@ -15,7 +15,7 @@ class image {
 
     // parse flickr and instagram photo urls from the og:image meta tag
     public static function scrape_og_tag($url) {
-        preg_match('~<meta property="og:image" content="(.+)" /?>~', file_get_contents($url), $match);
+        preg_match('~<meta property="og:image" content="(.+)" /?>~i', file_get_contents($url), $match);
         return $match[1];
     }
 

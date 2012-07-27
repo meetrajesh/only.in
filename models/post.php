@@ -181,9 +181,14 @@ class post {
             $result[$i]['permalink'] = self::get_permalink($post);
 
             // if the post is a youtube embed, mark it so
-            if (preg_match('~https?://(www\.)?youtube.com/watch?.*v=.{11,}~', $post['content'])) {
-                $result[$i]['youtube_url'] = str_replace('/watch?v=', '/embed/', strip_tags($post['content']));
-                $result[$i]['youtube_url'] = preg_replace('/&feature=.+/', '', $result[$i]['youtube_url']);
+            if (preg_match('~youtube.com/watch\?.*v=([^\&]+)&?~i', $post['content'], $match) ||
+                preg_match('~youtu.be/(.+)\??~i', $post['content'], $match) ||
+                preg_match('~youtube.com/embed/(.+)\??~i', $post['content'], $match)) {
+
+                #d($match);
+                if (!empty($match[1])) {
+                    $result[$i]['youtube_url'] = spf('http://www.youtube.com/embed/%s?rel=0', $match[1]);
+                }
             }
         }
 
