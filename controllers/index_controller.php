@@ -8,6 +8,7 @@ class IndexController extends BaseController {
         $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
         
         $routes = array('/$' => array('index', 'view', array('popular')), // empty route, just root domain
+                        '/404' => array('index', 'missing_404', array()),
                         '/places' => array('subin', 'browse', array()),
                         '/popular' => array('index', 'view', array('popular')),
                         '/latest' => array('index', 'view', array('latest')),
@@ -49,7 +50,7 @@ class IndexController extends BaseController {
 
         // 404
         if (empty($controller)) {
-            die('404');
+            list($controller, $action, $args) = array('index', 'missing_404', array());
         }
 
         $class = ucwords($controller) . 'Controller';
@@ -70,6 +71,11 @@ class IndexController extends BaseController {
 
         return api::call($method, $_REQUEST);
 
+    }
+
+    // 404 handler
+    public function missing_404($args) {
+        $this->_render('404');
     }
 
     public function view($args) {

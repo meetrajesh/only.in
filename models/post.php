@@ -23,10 +23,11 @@ class post {
             list($imgur_raw_json, $img_url) = image::upload_img($photo, false);
         } elseif (preg_match('~^https?://.+\.(png|jpg|jpeg|gif)$~iU', $content)) {
             list($imgur_raw_json, $img_url) = image::upload_img($content, true);
-        } elseif (preg_match('~^https?://www.flickr.com/photos/.+~i', $content)) {
-            list($imgur_raw_json, $img_url) = image::upload_img(image::get_flickr_url($content), true);
-        } elseif (preg_match('~^http://instagram.com/p/.+/?~i', $content)) {
-            list($imgur_raw_json, $img_url) = image::upload_img(image::get_instagram_url($content), true);
+        }
+
+        // check sites implementing the og:image meta tag
+        if (image::implements_og_tag($content)) {
+            list($imgur_raw_json, $img_url) = image::upload_img(image::scrape_og_tag($content), true);
         }
 
         if (strlen($title . $content . $img_url) > 0) {
@@ -174,9 +175,15 @@ class post {
         # return $result->fetch_all(MYSQLI_ASSOC);
         $result = db::fetch_all($sql, $post_id, $subin_id, ($page-1)*$limit, $limit);
 
-        // augment the result set with a permalink for each post
-        foreach ($result as $i => $row) {
-            $result[$i]['permalink'] = self::get_permalink($row);
+        // perform result set augmentation here
+        foreach ($result as $i => $post) {
+            // augment the result set with a permalink for each post
+            $result[$i]['permalink'] = self::get_permalink($post);
+
+            // if the post is a youtube embed, mark it so
+            if (preg_match('~https?://(www)?.youtube.com/watch?.*v=.{11,}~', $post['content'])) {
+                $result[$i]['youtube_url'] = str_replace('/watch?v=', '/embed/', strip_tags($post['content']));
+            }
         }
 
         return $result;

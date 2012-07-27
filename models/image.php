@@ -2,21 +2,27 @@
 
 class image {
 
-    // parse the flickr photo url from the og:image meta tag
-    public static function get_flickr_url($url) {
-        preg_match('~<meta property="og:image" content="(http://farm.+\.jpg)" />~', file_get_contents($url), $match);
-        return $match[1];
+    // does this site implement the og tag?
+    public static function implements_og_tag($url) {
+        static $og_tag_sites = array('https?://www.flickr.com/photos/', 'http://instagram.com/p/');
+        foreach ($og_tag_sites as $og_tag_site) {
+            if (preg_match("~^${og_tag_site}~i", $url)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public static function get_instagram_url($url) {
-        preg_match('~<meta property="og:image" content="(http://distilleryimage.+\.jpg)" />~', file_get_contents($url), $match);
+    // parse flickr and instagram photo urls from the og:image meta tag
+    public static function scrape_og_tag($url) {
+        preg_match('~<meta property="og:image" content="(.+)" /?>~', file_get_contents($url), $match);
         return $match[1];
     }
 
     // upload either a file upload or image url to imgur and return the imgurl raw json output and imgur thumbnail url
     public static function upload_img($photo, $is_url=false) {
 
-        $data = !$is_url && is_array($photo) && !empty($photo['tmp_name']) ? base64_encode(file_get_contents($photo['tmp_name'])) : $photo;
+        $data = !$is_url && is_array($photo) && !empty($photo['tmp_name']) ? base64_encode(file_get_contents($photo['tmp_name'])) : strip_tags($photo);
 
         // $data is file data
         $pvars = array('image' => $data, 'key' => IMGUR_API_KEY);
