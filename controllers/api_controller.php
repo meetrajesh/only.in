@@ -38,7 +38,9 @@ class ApiController extends BaseController {
         $subin_id = subin::create_subin_when_non_existing($data['subin_name'], $data['user_id']);
 
         // add the post to the particular subin
-        $post_id = post::add($subin_id, $data['user_id'], $data['content'], $data['stamp']);
+        $data['title'] = isset($data['title']) ? $data['title'] : '';
+        $data['content'] = isset($data['content']) ? $data['content'] : '';
+        $post_id = post::add($subin_id, $data['user_id'], $data['title'], $data['content'], array(), $data['stamp']);
 
         // insert the upvotes
         for ($i=0; $i < $data['num_upvotes']; $i++) {
