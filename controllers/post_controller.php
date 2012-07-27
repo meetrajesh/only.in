@@ -26,15 +26,15 @@ class PostController extends BaseController {
         $post_id = array_shift($args);
         $post_id = !empty($post_id) && ctype_digit((string) $post_id) ? (int) $post_id : 0;
 
-        if (!empty($post_id)) {
+        if (!empty($post_id) && post::exists($post_id)) {
             $data['posts'] = post::get_latest(0, $post_id);
             $data['comments'] = comment::get_all($post_id);
             $data['tab'] = '';
             $data['subin_name'] = isset($data['posts'][0]['subin_name']) ? $data['posts'][0]['subin_name'] : '';
             $data['subin_slug'] = isset($data['posts'][0]['subin_slug']) ? $data['posts'][0]['subin_slug'] : '';
         } else {
-            $data['posts'] = array();
-            $data['comments'] = array();
+            // invalid post id
+            $this->_redirect('/404');
         }
 
         $this->_render('posts/single', $data);
