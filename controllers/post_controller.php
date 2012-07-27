@@ -35,9 +35,6 @@ class PostController extends BaseController {
         } else {
             $data['posts'] = array();
             $data['comments'] = array();
-            $data['tab'] = '';
-            $data['subin_name'] = '';
-            $data['subin_slug'] = '';
         }
 
         $this->_render('posts/single', $data);

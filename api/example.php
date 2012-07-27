@@ -16,6 +16,7 @@ $data = array('subin_name' => 'toronto',
 
 $json = $api->call('/post/create', $data);
 var_dump($json);
+exit;
 
 // =====================================================================================================
 // 3. SEARCH FOR A SUBIN

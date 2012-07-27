@@ -90,8 +90,6 @@ class IndexController extends BaseController {
         }
 
         $data['tab'] = $tab;
-        $data['subin_slug'] = '';
-
         $this->_render('posts/base', $data);
     }
 }
