@@ -2,14 +2,9 @@
 
 class image {
 
-    // parse the flickr photo url from the og:image meta tag
-    public static function get_flickr_url($url) {
-        preg_match('~<meta property="og:image" content="(http://farm.+\.jpg)" />~', file_get_contents($url), $match);
-        return $match[1];
-    }
-
-    public static function get_instagram_url($url) {
-        preg_match('~<meta property="og:image" content="(http://distilleryimage.+\.jpg)" />~', file_get_contents($url), $match);
+    // parse flickr and instagram photo urls from the og:image meta tag
+    public static function scrape_og_tag($url) {
+        preg_match('~<meta property="og:image" content="(.+)" /?>~', file_get_contents($url), $match);
         return $match[1];
     }
 

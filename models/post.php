@@ -23,10 +23,15 @@ class post {
             list($imgur_raw_json, $img_url) = image::upload_img($photo, false);
         } elseif (preg_match('~^https?://.+\.(png|jpg|jpeg|gif)$~iU', $content)) {
             list($imgur_raw_json, $img_url) = image::upload_img($content, true);
-        } elseif (preg_match('~^https?://www.flickr.com/photos/.+~i', $content)) {
-            list($imgur_raw_json, $img_url) = image::upload_img(image::get_flickr_url($content), true);
-        } elseif (preg_match('~^http://instagram.com/p/.+/?~i', $content)) {
-            list($imgur_raw_json, $img_url) = image::upload_img(image::get_instagram_url($content), true);
+        }
+
+        // check sites implementing the og:image meta tag
+        $og_tag_sites = array('https?://www.flickr.com/photos/', 'http://instagram.com/p/');
+        foreach ($og_tag_sites as $og_tag_site) {
+            if (preg_match("~^${og_tag_site}~i", $content)) {
+                list($imgur_raw_json, $img_url) = image::upload_img(image::scrape_og_tag($content), true);
+                break;
+            }
         }
 
         if (strlen($title . $content . $img_url) > 0) {
