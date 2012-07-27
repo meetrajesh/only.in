@@ -7,9 +7,10 @@
  + add focusability to post comment button
  + get top, popular, latest, debated links on top to highlight when selected
  + search
- - signup
- - login
- - post page, upload buton
  + test voting by IP
  - remove csrf checks from api endpoints?
  - work on perfect rest api
+ - signup
+ - login
+ - post page, upload buton
+ - detect imgur in imgurl upload url, i.e http://imgur.com/IryGR and http://i.imgur.com/IryGR.jpg
