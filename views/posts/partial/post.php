@@ -9,7 +9,7 @@
     <? if (!empty($post['img_url'])) : ?>
         <div class="post-image"><img src="<?=hsc($post['img_url'])?>" alt=""></div>
     <? elseif(!empty($post['youtube_url'])): ?>
-        <div class="post-video"><iframe alt="" width="560" height="315" src="<?=hsc($post['youtube_url'])?>" frameborder="0" allowfullscreen></iframe></div>
+        <div class="post-video"><iframe alt="" width="560" height="315" src="<?=hsc($post['youtube_url'])?>" frameborder="0" allowfullscreen="1"></iframe></div>
     <? endif ?>
     <div class="post-votebox">
         <div class="post-upvote" role="button">Like</div>
