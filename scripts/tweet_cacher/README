@@ -1,0 +1,19 @@
+Setup
+- requires a database name twitcache
+- schema.sql provided to populate database fields
+
+
+tweet_cacher_daemon.php
+- daemon that runs in the background that uses Twitter's streaming API
+- relevant tweets are inserted into the database
+
+
+tweet_moderation.php
+- function display_tweets() dumps an HTML table with cached tweets
+- user can fill in image_url and place then hit accept and a post is made
+  - image_url is pre-populated when possible
+- hitting reject flags it in the database and the tweet won't be shown again
+
+
+index.php
+- calls display_tweets() to display the list of unmoderated, cached tweets
