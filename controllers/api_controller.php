@@ -124,7 +124,7 @@ class ApiController extends BaseController {
         }
 
         // check if already voted before
-        if (vote::has_voted_before($post_id)) {
+        if (!IS_DEV && vote::has_voted_before($post_id)) {
             return array('error' => 'already voted', 'score' => vote::format_score(vote::get_score($post_id)));
         }
 
