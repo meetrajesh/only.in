@@ -18,10 +18,11 @@ class SubinController extends BaseController {
         $subin = subin::slug_to_subin($subin_name);
         $subin_id = empty($subin['subin_id']) ? -1 : $subin['subin_id'];
 
-        if ($tab == 'popular') {
-            $data['posts'] = post::get_popular($subin_id, $page);
-        } elseif ($tab == 'latest') {
+        if ($tab == 'latest') {
             $data['posts'] = post::get_latest($subin_id, 0, $page);
+        } elseif (in_array($tab, array_keys(post::$PAGE_TABS))) {
+            $func = "get_${tab}";
+            $data['posts'] = post::$func($subin_id, $page);
         } else {
             $data['posts'] = array();
         }
@@ -36,10 +37,6 @@ class SubinController extends BaseController {
 
     public function browse() {
         $data['places'] = subin::all_places();
-        $data['tab'] = '';
-        $data['subin_slug'] = '';
-        $data['subin_place'] = '';
-
         $this->_render('places/base', $data);
     }
 

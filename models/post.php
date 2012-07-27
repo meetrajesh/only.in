@@ -174,14 +174,14 @@ class post {
 
         // augment the result set with a permalink for each post
         foreach ($result as $i => $row) {
-            $result[$i]['permalink'] = self::_get_permalink($row);
+            $result[$i]['permalink'] = self::get_permalink($row);
         }
 
         return $result;
 
     }
 
-    private static function _get_permalink($post) {
+    public static function get_permalink($post) {
         return sprintf('/%s/%d/%s', $post['subin_slug'], $post['post_id'], slug_from_name($post['title']));
     }
 

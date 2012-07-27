@@ -18,8 +18,14 @@ class BaseController {
 
     protected function _render($template, $data=array()) {
         $t = $this->_tpl;
+
         $data['errors'] = $this->_errors;
         $data['msgs'] = $this->_msgs;
+
+        $data['tab'] = checkreturn($data, 'tab');
+        $data['subin_slug'] = checkreturn($data, 'subin_slug');
+        $data['subin_place'] = checkreturn($data, 'subin_place');
+
         require './views/' . $template . '.php';
     }
 

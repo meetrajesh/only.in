@@ -123,3 +123,7 @@ function first($data) {
 function left($str, $n) {
     return substr($str, 0, $n);
 }
+
+function checkreturn($array, $key, $default='') {
+    return isset($array[$key]) ? $array[$key] : $default;
+}

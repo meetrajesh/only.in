@@ -28,6 +28,11 @@ class ApiController extends BaseController {
 
     public function post_create($data) {
 
+        // set optional fields
+        foreach (array('user_id', 'title', 'content') as $field) {
+            $data[$field] = checkreturn($data, $field);
+        }
+
         // use the current timestamp if it doesn't exist
         $data['stamp'] = empty($data['stamp']) ? time() : (int) $data['stamp'];
         
@@ -38,7 +43,7 @@ class ApiController extends BaseController {
         $subin_id = subin::create_subin_when_non_existing($data['subin_name'], $data['user_id']);
 
         // add the post to the particular subin
-        $post_id = post::add($subin_id, $data['user_id'], $data['content'], $data['stamp']);
+        $post_id = post::add($subin_id, $data['user_id'], $data['title'], $data['content'], null, $data['stamp']);
 
         // insert the upvotes
         for ($i=0; $i < $data['num_upvotes']; $i++) {
@@ -51,7 +56,9 @@ class ApiController extends BaseController {
         }
 
         // return the post id
-        return array('post_id' => $post_id);
+        $post = array('post_id' => $post_id, 'title' => $data['title'], 'subin_slug' => subin::slug_from_subin_id($subin_id));
+        return array('post_id' => $post_id, 'permalink' => absolutize(post::get_permalink($post)));
+
     }
 
     public function comment_create($data) {
@@ -117,7 +124,7 @@ class ApiController extends BaseController {
         }
 
         // check if already voted before
-        if (vote::has_voted_before($post_id)) {
+        if (!IS_DEV && vote::has_voted_before($post_id)) {
             return array('error' => 'already voted', 'score' => vote::format_score(vote::get_score($post_id)));
         }
 

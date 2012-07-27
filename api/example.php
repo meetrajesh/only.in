@@ -6,14 +6,27 @@ require dirname(__FILE__) . '/client.php';
 $api = new OnlyInAPI(API_SECRET);
 
 // =====================================================================================================
-// SEARCH FOR A SUBIN
+// 4. CREATE A POST IN SUBIN CALLED 'toronto'
+$data = array('subin_name' => 'toronto',
+              'username' => '',
+              'title' => 'Jeopardy',
+              'content' => 'http://blog.ringcentral.com/wp-content/uploads/2011/05/sunnyclouds.jpg',
+              'num_upvotes' => 4,
+              'num_downvotes' => 0);
+
+$json = $api->call('/post/create', $data);
+var_dump($json);
+exit;
+
+// =====================================================================================================
+// 3. SEARCH FOR A SUBIN
 
 $json = $api->call('/subin/search', array('search_str' => 'foo'));
 var_dump($json);
 exit;
 
 // =====================================================================================================
-// ADD A COMMENT
+// 2. ADD A COMMENT
 $data = array('post_id' => 46,
               'comment' => 'this is a test comment');
 
@@ -23,7 +36,7 @@ var_dump($json);
 exit;
 
 // =====================================================================================================
-// VOTE FOR A POST
+// 1. VOTE FOR A POST
 
 $post_id = 43;
 $json = $api->call('/post/vote', array('post_id' => $post_id, 'vote' => '1'));
