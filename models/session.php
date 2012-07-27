@@ -20,7 +20,11 @@ class session {
     }
 
     public static function get_ip() {
-        return !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+        return notempty($_SERVER, 'REMOTE_ADDR');
+    }
+
+    public function get_referer($default='/') {
+        return notempty($_SERVER, 'HTTP_REFERER', $default);
     }
 
     public static function validate_login($username, $password) {

@@ -30,7 +30,7 @@ class post {
             list($imgur_raw_json, $img_url) = image::upload_img(image::scrape_og_tag($content), true);
         }
 
-        if (strlen($title . $content . $img_url) > 0) {
+        if (!empty($img_url) && strlen($title . $content) > 0) {
             $sql = 'INSERT INTO posts (subin_id, user_id, title, content, img_url, imgur_raw_json, stamp) VALUES ("%d", "%d", "%s", "%s", "%s", "%s", %d)';
             db::query($sql, $subin_id, $user_id, $title, $content, $img_url, $imgur_raw_json, $stamp);
             return db::insert_id();
