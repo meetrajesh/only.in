@@ -77,7 +77,8 @@
                         <?=csrf::html()?>
                         <input type="hidden" name="MAX_FILE_SIZE" value="<?=UPLOAD_MAX_SIZE?>">
                         <div id="qp-place-field">
-                            <label for="place">Only.in/</label><input type="text" id="place" name="place" placeholder="Place">
+                            <label for="place">Only.in/</label>
+                            <input type="text" id="place" name="place" placeholder="Place">
                         </div>
                         <input type="text" name="title" placeholder="Title (Optional)">
                         <input type="text" name="content" placeholder="URL">
