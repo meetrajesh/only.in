@@ -40,7 +40,7 @@
     <header>
         <div class="container_12">
             <div class="grid_8">
-                <h1><a href="<?= hsc(absolutize('/')); ?>">Only.in</a><?= @$t->notempty($data['subin_name'], ' | <a href="' . absolutize('/' . $data['subin_slug']) . '">', '</a>'); ?></h1>
+                <h1><a href="<?= hsc(absolutize('/')); ?>">Only.in</a><?= @$t->notempty(ucwords($data['subin_name']), ' | <a href="' . absolutize('/' . $data['subin_slug']) . '">', '</a>'); ?></h1>
             </div>
             <div class="grid_4">
                 <input id="main-search" type="text" placeholder="Search Only.in">

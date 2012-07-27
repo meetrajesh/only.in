@@ -8,8 +8,13 @@ class image {
         return $match[1];
     }
 
+    public static function get_instagram_url($url) {
+        preg_match('~<meta property="og:image" content="(http://distilleryimage.+\.jpg)" />~', file_get_contents($url), $match);
+        return $match[1];
+    }
+
     // upload either a file upload or image url to imgur and return the imgurl raw json output and imgur thumbnail url
-   public static function upload_img($photo, $is_url=false) {
+    public static function upload_img($photo, $is_url=false) {
 
         $data = !$is_url && is_array($photo) && !empty($photo['tmp_name']) ? base64_encode(file_get_contents($photo['tmp_name'])) : $photo;
 
