@@ -181,8 +181,9 @@ class post {
             $result[$i]['permalink'] = self::get_permalink($post);
 
             // if the post is a youtube embed, mark it so
-            if (preg_match('~https?://(www)?.youtube.com/watch?.*v=.{11,}~', $post['content'])) {
+            if (preg_match('~https?://(www\.)?youtube.com/watch?.*v=.{11,}~', $post['content'])) {
                 $result[$i]['youtube_url'] = str_replace('/watch?v=', '/embed/', strip_tags($post['content']));
+                $result[$i]['youtube_url'] = preg_replace('/&feature=.+/', '', $result[$i]['youtube_url']);
             }
         }
 
