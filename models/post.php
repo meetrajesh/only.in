@@ -25,6 +25,8 @@ class post {
             list($imgur_raw_json, $img_url) = image::upload_img($content, true);
         } elseif (preg_match('~^https?://www.flickr.com/photos/.+~i', $content)) {
             list($imgur_raw_json, $img_url) = image::upload_img(image::get_flickr_url($content), true);
+        } elseif (preg_match('~^http://instagram.com/p/.+/?~i', $content)) {
+            list($imgur_raw_json, $img_url) = image::upload_img(image::get_instagram_url($content), true);
         }
 
         if (strlen($title . $content . $img_url) > 0) {
