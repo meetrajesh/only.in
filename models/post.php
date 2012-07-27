@@ -26,12 +26,8 @@ class post {
         }
 
         // check sites implementing the og:image meta tag
-        $og_tag_sites = array('https?://www.flickr.com/photos/', 'http://instagram.com/p/');
-        foreach ($og_tag_sites as $og_tag_site) {
-            if (preg_match("~^${og_tag_site}~i", $content)) {
-                list($imgur_raw_json, $img_url) = image::upload_img(image::scrape_og_tag($content), true);
-                break;
-            }
+        if (image::implements_og_tag($content)) {
+            list($imgur_raw_json, $img_url) = image::upload_img(image::scrape_og_tag($content), true);
         }
 
         if (strlen($title . $content . $img_url) > 0) {
@@ -179,9 +175,15 @@ class post {
         # return $result->fetch_all(MYSQLI_ASSOC);
         $result = db::fetch_all($sql, $post_id, $subin_id, ($page-1)*$limit, $limit);
 
-        // augment the result set with a permalink for each post
-        foreach ($result as $i => $row) {
-            $result[$i]['permalink'] = self::get_permalink($row);
+        // perform result set augmentation here
+        foreach ($result as $i => $post) {
+            // augment the result set with a permalink for each post
+            $result[$i]['permalink'] = self::get_permalink($post);
+
+            // if the post is a youtube embed, mark it so
+            if (preg_match('~https?://(www)?.youtube.com/watch?.*v=.{11,}~', $post['content'])) {
+                $result[$i]['youtube_url'] = str_replace('/watch?v=', '/embed/', strip_tags($post['content']));
+            }
         }
 
         return $result;
