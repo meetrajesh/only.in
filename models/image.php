@@ -2,6 +2,10 @@
 
 class image {
 
+    public static function is_youtube_url($url) {
+        return preg_match('~https?://(www\.)?youtu\.?be(\.com)?/~i', $url);
+    }
+
     // does this site implement the og tag?
     public static function implements_og_tag($url) {
         static $og_tag_sites = array('https?://www.flickr.com/photos/', 'http://instagram.com/p/');
