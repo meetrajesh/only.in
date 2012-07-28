@@ -2,6 +2,22 @@
 
 class image {
 
+    public static function is_youtube_url($url) {
+        return preg_match('~https?://(www\.)?youtu\.?be(\.com)?/~i', $url);
+    }
+
+    public static function has_photo_url($url) {
+        static $sites = array('http://imgur.com/.{5}' => '<link rel="image_src" href="(http://i.imgur.com/.+) ?"/>');
+        foreach ($sites as $site_pattern => $html_pattern) {
+            if (preg_match("~${site_pattern}~i", $url)) {
+                if (preg_match("~${html_pattern}~i", file_get_contents($url), $match)) {
+                    return $match[1];
+                }
+            }
+        }
+        return false;
+    }
+
     // does this site implement the og tag?
     public static function implements_og_tag($url) {
         static $og_tag_sites = array('https?://www.flickr.com/photos/', 'http://instagram.com/p/');
@@ -15,7 +31,7 @@ class image {
 
     // parse flickr and instagram photo urls from the og:image meta tag
     public static function scrape_og_tag($url) {
-        preg_match('~<meta property="og:image" content="(.+)" /?>~', file_get_contents($url), $match);
+        preg_match('~<meta property="og:image" content="(.+)" /?>~i', file_get_contents($url), $match);
         return $match[1];
     }
 

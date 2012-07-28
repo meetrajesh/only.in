@@ -61,13 +61,14 @@ class IndexController extends BaseController {
     
     public static function api_route() {
 
-        // check api key
-        if (empty($_REQUEST['api_key']) || $_REQUEST['api_key'] != api_key(API_SECRET)) {
-            return array('error' => 'invalid api key');
-        }
-
         $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
         $method = preg_replace($regex, '', $_SERVER['REQUEST_URI']); // strip the prefix hostname
+
+        // check api key
+        if ($method != '/help' && (empty($_REQUEST['api_key']) || $_REQUEST['api_key'] != api_key(API_SECRET))) {
+            return array('error' => 'missing or invalid api_key');
+        }
+
 
         return api::call($method, $_REQUEST);
 

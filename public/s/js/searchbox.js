@@ -3,11 +3,10 @@
   function get_results(request, response) {
     $.getJSON($(document).data('api_url') + '/subin/search', {
           'api_key': $(document).data('api_key'),
-          'csrf': $(document).data('csrf'),
           'search_str': request.term
         },
         function(data) {
-          response($.map(data, function(item){
+          response($.map(data.results, function(item) {
             return {
               'label': item.name,
               'value': item
@@ -34,7 +33,7 @@
       source: get_results,
       focus: function(ev, ui){
         ac_focus(ev, ui);
-        window.location = '/' + ui.item.value.permalink;
+        //window.location = '/' + ui.item.value.permalink;
         return false;
       },
       select: ac_select

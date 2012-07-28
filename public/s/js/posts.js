@@ -4,8 +4,7 @@
     return $.getJSON($(document).data('api_url') + '/post_vote', {
       api_key: $(document).data('api_key'),
       post_id: $post.attr('data-id'),
-      vote: score,
-      csrf: $(document).data('csrf')
+      vote: score
     }, function(data) {
       $post.find('.post-votebox > span').html(data.score);
     });
@@ -24,8 +23,7 @@
     $.getJSON($(document).data('api_url') + '/comment/create', {
       api_key: $(document).data('api_key'),
       post_id: $post.attr('data-id'),
-      comment: $('#new-comment').val(),
-      csrf: $(document).data('csrf')
+      comment: $('#new-comment').val()
     }, function(data) {
       if (data.comment_id !== -1) {
         $('#new-comment').val('');

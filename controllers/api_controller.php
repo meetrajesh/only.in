@@ -2,8 +2,58 @@
 
 class ApiController extends BaseController {
 
-    public function __construct($csrf=null) {
-        csrf::check(API_SECRET, $csrf);
+    public function __construct() {
+        // skip csrf check
+    }
+
+    public function help($data) {
+        return array('/user/username_exists' => array('inputs' => array('username' => 'string'),
+                                                      'outputs' => array('username_exists' => 'bool')),
+
+                     '/user/is_fake_user' => array('inputs' => array('username' => 'string'),
+                                                  'outputs' => array('is_fake_user' => 'bool')),
+
+                     '/user/create' => array('inputs' => array(array('username' => 'string'),
+                                                              array('password' => 'string'),
+                                                              array('name' => 'string'),
+                                                              array('email' => 'string')),
+                                                  'outputs' => array('user_id' => 'int')),
+
+                     '/post/create' => array('inputs' => array(array('user_id' => 'int (optional)'),
+                                                               array('username' => 'string (optional)'),
+                                                               array('title' => 'string (optional)'),
+                                                               array('content' => 'string (optional)'),
+                                                               array('stamp' => 'int (optional)'),
+                                                               array('subin_name' => 'string'),
+                                                               array('num_upvotes' => 'int (optional)'),
+                                                               array('num_downvotes' => 'int (optional)')),
+                                             'outputs' => array(array('post_id' => 'int'),
+                                                                array('permalink' => 'string'))),
+
+                     '/comment/create' => array('inputs' => array(array('post_id' => 'int'),
+                                                                  array('parent_comment_id' => 'int (optional)'),
+                                                                  array('comment' => 'string'),
+                                                                  array('user_id' => 'int (optional)'),
+                                                                  array('username' => 'string (optional'),
+                                                                  array('num_upvotes' => 'int (optional)'),
+                                                                  array('num_downvotes' => 'int (optional)')),
+                                                'outputs' => array(array('comment_id' => 'int'),
+                                                                   array('comment_count' => 'int'),
+                                                                   array('comment_html' => 'string'))),
+
+                     '/post/vote' => array('inputs' => array(array('post_id' => 'int'),
+                                                             array('user_id' => 'int (optional)'),
+                                                             array('vote' => 'int')),
+                                           'outputs' => array(array('vote_id' => 'int'),
+                                                              array('score' => 'int'))),
+
+                     '/subins/popular' => array('inputs' => array(),
+                                                'outputs' => array('popular' => 'array')),
+
+                     '/subin/search' => array('inputs' => array('search_str' => 'string'),
+                                              'outputs' => array('results' => 'array')),
+                     );
+
     }
 
     public function user_username_exists($data) {
@@ -64,9 +114,9 @@ class ApiController extends BaseController {
     public function comment_create($data) {
 
         // use the current timestamp if it doesn't exist
-        $data['stamp'] = empty($data['stamp']) ? time() : (int) $data['stamp'];
-        $data['parent_comment_id'] = empty($data['parent_comment_id']) ? 0 : (int) $data['parent_comment_id'];
-        $data['post_id'] = !empty($data['post_id']) ? (int) $data['post_id'] : 0;
+        $data['stamp'] = (int) notempty($data, 'stamp', time());
+        $data['parent_comment_id'] = (int) notempty($data, 'parent_comment_id', 0);
+        $data['post_id'] = (int) notempty($data, 'post_id', 0);
         $data['comment'] = trim($data['comment']);
 
         // get the userid from the username if it exists
@@ -138,7 +188,7 @@ class ApiController extends BaseController {
     }
 
     public function subin_search($data) {
-        return subin::search($data['search_str']);
+        return array('results' => subin::search($data['search_str']));
     }
 
 }

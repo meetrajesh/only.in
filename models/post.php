@@ -23,14 +23,15 @@ class post {
             list($imgur_raw_json, $img_url) = image::upload_img($photo, false);
         } elseif (preg_match('~^https?://.+\.(png|jpg|jpeg|gif)$~iU', $content)) {
             list($imgur_raw_json, $img_url) = image::upload_img($content, true);
-        }
-
-        // check sites implementing the og:image meta tag
-        if (image::implements_og_tag($content)) {
+        } elseif (image::implements_og_tag($content)) {
+            // check sites implementing the og:image meta tag
             list($imgur_raw_json, $img_url) = image::upload_img(image::scrape_og_tag($content), true);
+        } elseif ($scraped_img_url = image::has_photo_url($content)) {
+            // check other sites where photo url can be scraped
+            list($imgur_raw_json, $img_url) = image::upload_img($scraped_img_url, true);
         }
 
-        if (strlen($title . $content . $img_url) > 0) {
+        if (image::is_youtube_url($content) || (!empty($img_url) && strlen($title . $content) > 0)) {
             $sql = 'INSERT INTO posts (subin_id, user_id, title, content, img_url, imgur_raw_json, stamp) VALUES ("%d", "%d", "%s", "%s", "%s", "%s", %d)';
             db::query($sql, $subin_id, $user_id, $title, $content, $img_url, $imgur_raw_json, $stamp);
             return db::insert_id();
@@ -181,8 +182,14 @@ class post {
             $result[$i]['permalink'] = self::get_permalink($post);
 
             // if the post is a youtube embed, mark it so
-            if (preg_match('~https?://(www)?.youtube.com/watch?.*v=.{11,}~', $post['content'])) {
-                $result[$i]['youtube_url'] = str_replace('/watch?v=', '/embed/', strip_tags($post['content']));
+            if (preg_match('~youtube.com/watch\?.*v=([^\&]+)&?~i', $post['content'], $match) ||
+                preg_match('~youtu.be/(.+)\??~i', $post['content'], $match) ||
+                preg_match('~youtube.com/embed/(.+)\??~i', $post['content'], $match)) {
+
+                #d($match);
+                if (!empty($match[1])) {
+                    $result[$i]['youtube_url'] = spf('http://www.youtube.com/embed/%s?rel=0', $match[1]);
+                }
             }
         }
 
