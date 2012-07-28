@@ -11,6 +11,11 @@
     <? elseif(!empty($post['youtube_url'])): ?>
         <div class="post-video"><iframe alt="" width="560" height="315" src="<?=hsc($post['youtube_url'])?>" frameborder="0" allowfullscreen="1"></iframe></div>
     <? endif ?>
+
+    <? if (!empty($post['caption'])) : ?>
+        <div class="post-caption"><?=filter_text(hsc(strip_tags($post['caption'])))?></div>
+    <? endif ?>
+
     <div class="post-votebox">
         <div class="post-upvote" role="button">Like</div>
         <div class="post-downvote" role="button">Dislike</div>

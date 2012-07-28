@@ -1,0 +1,1 @@
+ALTER TABLE posts ADD COLUMN caption VARCHAR(255) NOT NULL AFTER content;

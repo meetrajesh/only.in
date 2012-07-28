@@ -80,6 +80,7 @@
                         </div>
                         <input type="text" name="title" placeholder="Title (Optional)">
                         <input type="text" name="content" placeholder="URL">
+                        <input type="text" name="caption" placeholder="Caption (Optional)">
                         <button type="submit" class="btn"><span>Submit</span></button>
                     </form>
                 </div>
