@@ -6,7 +6,14 @@ require dirname(__FILE__) . '/client.php';
 $api = new OnlyInAPI(API_SECRET);
 
 // =====================================================================================================
-// 4. CREATE A POST IN SUBIN CALLED 'toronto'
+// 4. SEARCH FOR A SUBIN
+
+$json = $api->call('/subin/search', array('search_str' => 'foo'));
+var_dump($json);
+exit;
+
+// =====================================================================================================
+// 3. CREATE A POST IN SUBIN CALLED 'toronto'
 $data = array('subin_name' => 'toronto',
               'username' => '',
               'title' => 'Jeopardy',
@@ -15,13 +22,6 @@ $data = array('subin_name' => 'toronto',
               'num_downvotes' => 0);
 
 $json = $api->call('/post/create', $data);
-var_dump($json);
-exit;
-
-// =====================================================================================================
-// 3. SEARCH FOR A SUBIN
-
-$json = $api->call('/subin/search', array('search_str' => 'foo'));
 var_dump($json);
 exit;
 

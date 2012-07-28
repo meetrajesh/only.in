@@ -12,7 +12,6 @@
 
     <title><? $t->block('title'); ?>Only.in<? $t->endblock(true); ?></title>
     <meta name="description" content="">
-
     <meta property="og:site_name" content="Only.in" />
     <? $t->block('meta'); ?>
     <? $t->endblock(true); ?>
@@ -43,7 +42,7 @@
                 <h1><a href="<?= hsc(absolutize('/')); ?>">Only.in</a><?= @$t->notempty(ucwords($data['subin_name']), ' | <a href="' . absolutize('/' . $data['subin_slug']) . '">', '</a>'); ?></h1>
             </div>
             <div class="grid_4">
-                <input id="main-search" type="text" placeholder="Search Only.in">
+                <input id="main-search" type="text" placeholder="Search Only.in" autocomplete="off">
             </div>
         </div>
     </header>
@@ -77,7 +76,7 @@
                         <?=csrf::html()?>
                         <input type="hidden" name="MAX_FILE_SIZE" value="<?=UPLOAD_MAX_SIZE?>">
                         <div id="qp-place-field">
-                            <label for="place">only.in/</label><input type="text" id="place" name="place" placeholder="Place">
+                            <label for="place">only.in/</label><input type="text" id="place" name="place" placeholder="Place" autocomplete="off">
                         </div>
                         <input type="text" name="title" placeholder="Title (Optional)">
                         <input type="text" name="content" placeholder="URL">
@@ -106,7 +105,6 @@
     <script>
         $(document).data('api_url', '<?= API_BASE_URL; ?>');
         $(document).data('api_key', '<?= api_key(API_SECRET); ?>');
-        $(document).data('csrf', '<?= csrf::token(API_SECRET); ?>');
     </script>
     <? foreach ($this->_scripts as $script): ?>
         <script src="<?=PATH_PREFIX . $script?>"></script>
