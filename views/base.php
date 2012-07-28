@@ -42,7 +42,7 @@
                 <h1><a href="<?= hsc(absolutize('/')); ?>">Only.in</a><?= @$t->notempty(ucwords($data['subin_name']), ' | <a href="' . absolutize('/' . $data['subin_slug']) . '">', '</a>'); ?></h1>
             </div>
             <div class="grid_4">
-                <input id="main-search" type="text" placeholder="Search Only.in" autocomplete="off">
+                <input id="main-search" type="text" placeholder="Search Only.in">
             </div>
         </div>
     </header>
@@ -76,7 +76,7 @@
                         <?=csrf::html()?>
                         <input type="hidden" name="MAX_FILE_SIZE" value="<?=UPLOAD_MAX_SIZE?>">
                         <div id="qp-place-field">
-                            <label for="place">only.in/</label><input type="text" id="place" name="place" placeholder="Place" autocomplete="off">
+                            <label for="place">only.in/</label><input type="text" id="place" name="place" placeholder="Place">
                         </div>
                         <input type="text" name="title" placeholder="Title (Optional)">
                         <input type="text" name="content" placeholder="URL">

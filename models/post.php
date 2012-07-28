@@ -23,11 +23,12 @@ class post {
             list($imgur_raw_json, $img_url) = image::upload_img($photo, false);
         } elseif (preg_match('~^https?://.+\.(png|jpg|jpeg|gif)$~iU', $content)) {
             list($imgur_raw_json, $img_url) = image::upload_img($content, true);
-        }
-
-        // check sites implementing the og:image meta tag
-        if (image::implements_og_tag($content)) {
+        } elseif (image::implements_og_tag($content)) {
+            // check sites implementing the og:image meta tag
             list($imgur_raw_json, $img_url) = image::upload_img(image::scrape_og_tag($content), true);
+        } elseif ($scraped_img_url = image::has_photo_url($content)) {
+            // check other sites where photo url can be scraped
+            list($imgur_raw_json, $img_url) = image::upload_img($scraped_img_url, true);
         }
 
         if (image::is_youtube_url($content) || (!empty($img_url) && strlen($title . $content) > 0)) {
