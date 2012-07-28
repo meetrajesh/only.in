@@ -6,22 +6,23 @@ require dirname(__FILE__) . '/client.php';
 $api = new OnlyInAPI(API_SECRET);
 
 // =====================================================================================================
-// 4. SEARCH FOR A SUBIN
+// 4. CREATE A POST IN SUBIN CALLED 'toronto'
+$data = array('subin_name' => 'toronto',
+              'username' => '',
+              'title' => 'Jeopardy',
+              'content' => 'http://images2.mtv.com/shared/promoimages/bands/j/johnson_alexz/walking/561x401.jpg?width=561&height=401&quality=0.85',
+              'caption' => 'MTV super star',
+              'num_upvotes' => 0,
+              'num_downvotes' => 0);
 
-$json = $api->call('/subin/search', array('search_str' => 'foo'));
+$json = $api->call('/post/create', $data);
 var_dump($json);
 exit;
 
 // =====================================================================================================
-// 3. CREATE A POST IN SUBIN CALLED 'toronto'
-$data = array('subin_name' => 'toronto',
-              'username' => '',
-              'title' => 'Jeopardy',
-              'content' => 'http://blog.ringcentral.com/wp-content/uploads/2011/05/sunnyclouds.jpg',
-              'num_upvotes' => 4,
-              'num_downvotes' => 0);
+// 3. SEARCH FOR A SUBIN
 
-$json = $api->call('/post/create', $data);
+$json = $api->call('/subin/search', array('search_str' => 'foo'));
 var_dump($json);
 exit;
 

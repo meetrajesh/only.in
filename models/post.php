@@ -9,19 +9,20 @@ class post {
 
     private static $_confidences;
 
-    public static function add($subin_id, $user_id=0, $title='', $content, $photo=array(), $stamp=0) {
+    public static function add($subin_id, $user_id=0, $title='', $content, $caption='', $photo=array(), $stamp=0) {
 
         $subin_id = (int) $subin_id;
         $user_id = (int) $user_id;
         $title = trim($title);
         $content = trim($content);
+        $caption = trim($caption);
         $stamp = (!empty($stamp) && $stamp > 0) ? (int) $stamp : time();
         $img_url = '';
         $imgur_raw_json = '';
 
         if (!empty($photo['tmp_name'])) {
             list($imgur_raw_json, $img_url) = image::upload_img($photo, false);
-        } elseif (preg_match('~^https?://.+\.(png|jpg|jpeg|gif)$~iU', $content)) {
+        } elseif (preg_match('~^https?://.+\.(png|jpg|jpeg|gif)~iU', $content)) {
             list($imgur_raw_json, $img_url) = image::upload_img($content, true);
         } elseif (image::implements_og_tag($content)) {
             // check sites implementing the og:image meta tag
@@ -32,8 +33,8 @@ class post {
         }
 
         if (image::is_youtube_url($content) || (!empty($img_url) && strlen($title . $content) > 0)) {
-            $sql = 'INSERT INTO posts (subin_id, user_id, title, content, img_url, imgur_raw_json, stamp) VALUES ("%d", "%d", "%s", "%s", "%s", "%s", %d)';
-            db::query($sql, $subin_id, $user_id, $title, $content, $img_url, $imgur_raw_json, $stamp);
+            $sql = 'INSERT INTO posts (subin_id, user_id, title, content, caption, img_url, imgur_raw_json, stamp) VALUES ("%d", "%d", "%s", "%s", "%s", "%s", "%s", %d)';
+            db::query($sql, $subin_id, $user_id, $title, $content, $caption, $img_url, $imgur_raw_json, $stamp);
             return db::insert_id();
         }
 
@@ -160,7 +161,7 @@ class post {
         $where_clause  = !empty($post_id) ? 'p.post_id=%d AND ' : '(%d OR 1) AND ';
         $where_clause .= !empty($subin_id) ? 'p.subin_id=%d' : '(%d OR 1)';
 
-        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.img_url, p.stamp, s.name AS subin_name, s.slug AS subin_slug, u.username,
+        $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.caption, p.img_url, p.stamp, s.name AS subin_name, s.slug AS subin_slug, u.username,
                        (SELECT COUNT(*) FROM comments c WHERE c.post_id=p.post_id) AS num_comments,
                        IFNULL(SUM(v.vote), 0) AS score, IFNULL(SUM(IF(v.vote=1, 1, 0)), 0) AS ups, IFNULL(SUM(IF(v.vote=-1, 1, 0)), 0) AS downs
                 FROM posts p

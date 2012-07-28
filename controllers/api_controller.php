@@ -23,6 +23,7 @@ class ApiController extends BaseController {
                                                                array('username' => 'string (optional)'),
                                                                array('title' => 'string (optional)'),
                                                                array('content' => 'string (optional)'),
+                                                               array('caption' => 'string (optional)'),
                                                                array('stamp' => 'int (optional)'),
                                                                array('subin_name' => 'string'),
                                                                array('num_upvotes' => 'int (optional)'),
@@ -79,7 +80,7 @@ class ApiController extends BaseController {
     public function post_create($data) {
 
         // set optional fields
-        foreach (array('user_id', 'title', 'content') as $field) {
+        foreach (array('user_id', 'title', 'content', 'caption') as $field) {
             $data[$field] = checkreturn($data, $field);
         }
 
@@ -93,7 +94,7 @@ class ApiController extends BaseController {
         $subin_id = subin::create_subin_when_non_existing($data['subin_name'], $data['user_id']);
 
         // add the post to the particular subin
-        $post_id = post::add($subin_id, $data['user_id'], $data['title'], $data['content'], null, $data['stamp']);
+        $post_id = post::add($subin_id, $data['user_id'], $data['title'], $data['content'], $data['caption'], null, $data['stamp']);
 
         // insert the upvotes
         for ($i=0; $i < $data['num_upvotes']; $i++) {
