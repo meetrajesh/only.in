@@ -23,7 +23,7 @@ class session {
         return notempty($_SERVER, 'REMOTE_ADDR');
     }
 
-    public function get_referer($default='/') {
+    public static function get_referer($default='/') {
         return notempty($_SERVER, 'HTTP_REFERER', $default);
     }
 

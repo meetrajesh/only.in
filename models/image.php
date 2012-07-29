@@ -62,15 +62,14 @@ class image {
         $json = json_decode($raw_json, true);
 
         if (false === $raw_json || is_null($json)) {
-            var_dump($raw_json);
             $error = curl_error($curl);
             curl_close($curl);
-            die($error);
+            return array($raw_json, array('error' => $error));
         }
 
         // handle imgur failure
         if (is_null($json) || isset($json['error']) || empty($json['upload']['links']['large_thumbnail'])) {
-            return array((string) $raw_json, '');
+            return array((string) $raw_json, array('error' => $json['error']['message']));
         }
 
         return array($raw_json, $json['upload']['links']['large_thumbnail']);
