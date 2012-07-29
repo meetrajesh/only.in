@@ -40,7 +40,7 @@ class subin {
         return ucwords($slug);
     }
 
-    public static function get_popular($num_days=7, $limit=10) {
+    public static function get_popular($num_days=10, $limit=10) {
         $num_days = (int) $num_days;
         $limit = (int) $limit;
 
@@ -51,6 +51,12 @@ class subin {
                 LIMIT %d';
 
         $result = db::fetch_all($sql, $num_days, $limit);
+
+        // sort the results by name
+        usort($result, function($a, $b) {
+                return strcmp(strtolower($a['name']), strtolower($b['name']));
+            });
+
         // augment with subin url
         foreach ($result as &$row) {
             $row['permalink'] = '/' . $row['slug'];
