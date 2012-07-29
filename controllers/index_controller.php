@@ -6,6 +6,7 @@ class IndexController extends BaseController {
 
         $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
         $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
+        $uri = strtolower($uri);
         
         $routes = array('/$' => array('index', 'view', array('popular')), // empty route, just root domain
                         '/404' => array('index', 'missing_404', array()),
@@ -20,7 +21,8 @@ class IndexController extends BaseController {
                         '/user/signup' => array('user', 'signup', array()),
                         '/user/login' => array('user', 'login', array()),
                         '/user/logout' => array('user', 'logout', array()),
-                        '/.{' . SUBIN_MIN_LEN . ',}/(\d+)/?' => array('post', 'view', array()),
+                        '/.{' . SUBIN_MIN_LEN . ',}/[^\d]+/?' => array('subin', 'view', array()), // arbitrary subin, particular tab
+                        '/.{' . SUBIN_MIN_LEN . ',}/(\d+)/?' => array('post', 'view', array()), // individual post
                         '/.{' . SUBIN_MIN_LEN . ',}/?' => array('subin', 'view', array()), // arbitrary subin
                         );
 
