@@ -7,7 +7,7 @@ $api = new OnlyInAPI(API_SECRET);
 
 // =====================================================================================================
 // 4. CREATE A POST IN SUBIN CALLED 'toronto'
-$data = array('subin_name' => 'toronto',
+$data = array('subin_name' => 'popular',
               'username' => '',
               'title' => 'Jeopardy',
               'content' => 'http://images2.mtv.com/shared/promoimages/bands/j/johnson_alexz/walking/561x401.jpg?width=561&height=401&quality=0.85',

@@ -2,13 +2,24 @@
 
 class subin {
 
+    public static $RESERVED_SUBINS = array('404', 'places', 'popular', 'latest', 'debated', 'top', 'post', 'admin', 'user', 'subin');
+
     public static function create($subin_name, $user_id=0) {
+        $subin_name = trim($subin_name);
+
         if (strlen($subin_name) < SUBIN_MIN_LEN) {
-            die('subin name too short!');
+            return 'subin name too short!';
+        } elseif (self::_is_reserved_subin($subin_name)) {
+            return 'invalid/reserved subin name';
         }
+
         $sql = 'INSERT INTO subins (name, slug, user_id) VALUES ("%s", "%s", %d)';
         db::query($sql, $subin_name, slug_from_name($subin_name), (int) $user_id);
         return db::insert_id();
+    }
+
+    private static function _is_reserved_subin($name) {
+        return in_array(strtolower($name), self::$RESERVED_SUBINS);
     }
 
     public static function create_subin_when_non_existing($subin_name, $user_id=0) {

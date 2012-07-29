@@ -93,6 +93,11 @@ class ApiController extends BaseController {
         // create the subin if it doesn't exist
         $subin_id = subin::create_subin_when_non_existing($data['subin_name'], $data['user_id']);
 
+        // error check
+        if (!ctype_digit((string) $subin_id)) {
+            return array('error' => $subin_id);
+        }
+
         // add the post to the particular subin
         $post_id = post::add($subin_id, $data['user_id'], $data['title'], $data['content'], $data['caption'], null, $data['stamp']);
 
