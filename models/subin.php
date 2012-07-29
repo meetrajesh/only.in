@@ -60,6 +60,7 @@ class subin {
         // augment with subin url
         foreach ($result as &$row) {
             $row['permalink'] = '/' . $row['slug'];
+            $row['name'] = ucwords(strtolower($row['name']));
             unset($row['slug']);
         }
         return $result;
