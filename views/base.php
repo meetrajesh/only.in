@@ -78,8 +78,8 @@
                         <div id="qp-place-field">
                             <label for="place">only.in/</label><input type="text" id="place" name="place" placeholder="Place">
                         </div>
+                        <input type="text" name="content" placeholder="Image or Youtube URL">
                         <input type="text" name="title" placeholder="Title (Optional)">
-                        <input type="text" name="content" placeholder="URL">
                         <input type="text" name="caption" placeholder="Caption (Optional)">
                         <button type="submit" class="btn"><span>Submit</span></button>
                     </form>
