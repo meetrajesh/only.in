@@ -32,10 +32,17 @@ class post {
             list($imgur_raw_json, $img_url) = image::upload_img($scraped_img_url, true);
         }
 
+        // upload error check
+        if (isset($img_url['error'])) {
+            return $img_url['error'];
+        }
+
         if (image::is_youtube_url($content) || (!empty($img_url) && strlen($title . $content) > 0)) {
             $sql = 'INSERT INTO posts (subin_id, user_id, title, content, caption, img_url, imgur_raw_json, stamp) VALUES ("%d", "%d", "%s", "%s", "%s", "%s", "%s", %d)';
             db::query($sql, $subin_id, $user_id, $title, $content, $caption, $img_url, $imgur_raw_json, $stamp);
             return db::insert_id();
+        } else {
+            return 'invalid url';
         }
 
     }

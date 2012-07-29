@@ -12,8 +12,11 @@
  + work on perfect rest api
  + detect imgur in imgurl upload url, i.e http://imgur.com/IryGR and http://i.imgur.com/IryGR.jpg
  + add description field
+ + Popular boxes is empty for jon and shams
  - signup
  - login
  - post page, upload buton
- - Popular boxes is empty for jon and shams
  - hide chrome auto complete box in quick post and search box
+ - protect http://only.in/admin/delete
+ - turn of strict errors and display_errors in prod
+ - use different api key for prod

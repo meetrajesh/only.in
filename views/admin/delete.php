@@ -7,7 +7,7 @@
 
 <form method="post" action="/admin/delete">
 
-  <label>Search for Image!</label><br/>
+  <label>Search for Image:</label><br/>
   <input type="text" name="img_url" size="60" /><br/><br/>
   
   <?=csrf::html()?>

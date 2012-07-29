@@ -10,7 +10,7 @@ $api = new OnlyInAPI(API_SECRET);
 $data = array('subin_name' => 'toronto',
               'username' => '',
               'title' => 'Jeopardy',
-              'content' => 'http://images2.mtv.com/shared/promoimages/bands/j/johnson_alexz/walking/561x401.jpg?width=561&height=401&quality=0.85',
+              'content' => 'http://funkydowntown.com/wp-content/uploads/2010/08/laycock-street-london.jpg',
               'caption' => 'MTV super star',
               'num_upvotes' => 0,
               'num_downvotes' => 0);
