@@ -7,7 +7,9 @@ class image {
     }
 
     public static function has_photo_url($url) {
-        static $sites = array('http://imgur.com/.{5}' => '<link rel="image_src" href="(http://i.imgur.com/.+) ?"/>');
+        static $sites = array('http://imgur.com/.{5}' => '<link rel="image_src" href="(http://i\.imgur.com/.+) ?"/>',
+                              'https://twitter.com/.+?/status/\d+', '<img src="(https?://p\.twimg\.com/.+)">');
+
         foreach ($sites as $site_pattern => $html_pattern) {
             if (preg_match("~${site_pattern}~i", $url)) {
                 if (preg_match("~${html_pattern}~i", file_get_contents($url), $match)) {
