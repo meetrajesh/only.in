@@ -95,11 +95,15 @@ class ApiController extends BaseController {
 
         // error check
         if (!ctype_digit((string) $subin_id)) {
-            return array('error' => $subin_id);
+            return array('post_id' => -1, 'error' => $subin_id);
         }
 
         // add the post to the particular subin
         $post_id = post::add($subin_id, $data['user_id'], $data['title'], $data['content'], $data['caption'], null, $data['stamp']);
+
+        if (!ctype_digit((string) $post_id)) {
+            return array('post_id' => -1, 'error' => $post_id);
+        }
 
         // insert the upvotes
         for ($i=0; $i < $data['num_upvotes']; $i++) {

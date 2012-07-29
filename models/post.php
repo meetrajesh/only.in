@@ -36,6 +36,8 @@ class post {
             $sql = 'INSERT INTO posts (subin_id, user_id, title, content, caption, img_url, imgur_raw_json, stamp) VALUES ("%d", "%d", "%s", "%s", "%s", "%s", "%s", %d)';
             db::query($sql, $subin_id, $user_id, $title, $content, $caption, $img_url, $imgur_raw_json, $stamp);
             return db::insert_id();
+        } else {
+            return 'invalid url';
         }
 
     }
