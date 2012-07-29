@@ -187,7 +187,6 @@ class post {
                 preg_match('~youtu.be/(.+)\??~i', $post['content'], $match) ||
                 preg_match('~youtube.com/embed/(.+)\??~i', $post['content'], $match)) {
 
-                #d($match);
                 if (!empty($match[1])) {
                     $result[$i]['youtube_url'] = spf('http://www.youtube.com/embed/%s?rel=0', $match[1]);
                 }

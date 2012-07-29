@@ -180,7 +180,7 @@ class ApiController extends BaseController {
         }
 
         $vote_id = vote::add($user_id, $post_id, 0, $vote);
-        return array('vote_id' => $vote_id, 'score' => vote::format_score(vote::get_score($post_id)));
+        return array('post_id' => $post_id, 'vote_id' => $vote_id, 'score' => vote::format_score(vote::get_score($post_id)));
 
     }
 
