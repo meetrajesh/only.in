@@ -2,6 +2,9 @@
 
 require dirname(__FILE__) . '/../../init.php';
 require dirname(__FILE__) . '/../../api/client.php';
+require dirname(__FILE__) . '/lib/tmhOAuth/tmhOAuth.php';
+require dirname(__FILE__) . '/lib/tmhOAuth/tmhUtilities.php';
+require 'tweet_db.php';
 
 if (isset($_POST['tweet_id'])) {
 
@@ -19,13 +22,15 @@ if (isset($_POST['tweet_id'])) {
                       'username' => 'anonymous',
                       'title' => $title,
                       'content' => $content_url,
+                      'caption' => 'test caption',
                       'num_upvotes' => 4,
                       'num_downvotes' => 0);
 
         if (get_tweet_state($id) === 0) {
             $json = $api->call('/post/create', $data);
             update_tweet_state($id, 1);
-            update_content_url($id, $content_url);            
+            update_content_url($id, $content_url);
+            send_tweet("Hello World");
         }
         #$post_id = $json['post_id'];
         #var_dump($json);
@@ -38,7 +43,7 @@ if (isset($_POST['tweet_id'])) {
 function update_tweet_state($tweet_id, $state)
 {
     // TODO: remove code duplication
-    $db = new mysqli("127.0.0.1", "root", "root", 'twitcache');
+    $db = tweet_db::get_tweet_db();
     if (!$db)
     {
         die('Could not connect: ' . mysql_error());
@@ -53,7 +58,7 @@ function update_tweet_state($tweet_id, $state)
 function get_tweet_state($tweet_id)
 {
     // TODO: remove code duplication
-    $db = new mysqli("127.0.0.1", "root", "root", 'twitcache');
+    $db = tweet_db::get_tweet_db();
     if (!$db)
     {
         die('Could not connect: ' . mysql_error());
@@ -72,7 +77,7 @@ function get_tweet_state($tweet_id)
 function update_content_url($tweet_id, $url)
 {
     // TODO: remove code duplication
-    $db = new mysqli("127.0.0.1", "root", "root", 'twitcache');
+    $db = tweet_db::get_tweet_db();
     if (!$db)
     {
         die('Could not connect: ' . mysql_error());
@@ -105,10 +110,30 @@ function custom_mysql_query($db, $query) {
   }
 }
 
+function send_tweet($text)
+{
+    $tmhOAuth = new tmhOAuth(array(
+      'consumer_key'    => 'Mt2NDCK8DUn5BtElaa8zPA',
+      'consumer_secret' => 'mcaj6x7dWTwjk9r9xKG2O5BHe36yfLbVwiQDGClpUR8',
+      'user_token'      => '618886497-IFdN8g1oaoFFX7611eiwfTvygWUVODVkT2tmSh1Z',
+      'user_secret'     => '3cE8LXf9oiXc4446A61IaPwc1UKx1u1ZvxNYDyXYc',
+    ));
+
+    $code = $tmhOAuth->request('POST', $tmhOAuth->url('1/statuses/update'), array(
+      'status' => 'My Twitter Message'
+    ));
+
+    if ($code == 200) {
+      tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
+    } else {
+      tmhUtilities::pr($tmhOAuth->response['response']);
+    }
+}
+
 function display_tweets()
 {
     // TODO: remove code duplication
-    $db = new mysqli("127.0.0.1", "root", "root", 'twitcache');
+    $db = tweet_db::get_tweet_db();
     if (!$db)
     {
         die('AB Could not connect: ' . mysql_error());
