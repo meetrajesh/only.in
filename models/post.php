@@ -33,7 +33,8 @@ class post {
         }
 
         // upload error check
-        if (isset($img_url['error'])) {
+        if (is_array($img_url) && isset($img_url['error'])) {
+print_r($img_url);
             return $img_url['error'];
         }
 
