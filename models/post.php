@@ -20,6 +20,12 @@ class post {
         $img_url = '';
         $imgur_raw_json = '';
 
+        // check if the photo already exists
+        $sql = 'SELECT post_id FROM posts WHERE subin_id=%d AND (content LIKE "%%%s%%" OR img_url LIKE "%%%2$s%%") LIMIT 1';
+        if ($post_id = db::result_query($sql, $subin_id, $content)) {
+            return $post_id;
+        }
+
         if (!empty($photo['tmp_name'])) {
             list($imgur_raw_json, $img_url) = image::upload_img($photo, false);
         } elseif (preg_match('~^https?://.+\.(png|jpg|jpeg|gif)~iU', $content)) {

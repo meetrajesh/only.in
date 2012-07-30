@@ -91,7 +91,7 @@ class ApiController extends BaseController {
         $data['user_id'] = user::getid($data['username']);
 
         // create the subin if it doesn't exist
-        $subin_id = subin::create_subin_when_non_existing($data['subin_name'], $data['user_id']);
+        $subin_id = subin::create($data['subin_name'], $data['user_id']);
 
         // error check
         if (!ctype_digit((string) $subin_id)) {
