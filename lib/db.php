@@ -107,9 +107,10 @@ class db {
     }
 
     // singleton getter for db connection
-    private static function get() {
+    protected static function get() {
         if (!self::$db) {
-            self::$db = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+            $db_name = (defined('ALTERNATE_DBNAME') ? ALTERNATE_DBNAME : DBNAME);
+            self::$db = new mysqli(DBHOST, DBUSER, DBPASS, $db_name);
             if (!self::$db) {
                 error('failed to obtain db connection');
             }
