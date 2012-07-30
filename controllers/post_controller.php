@@ -7,7 +7,7 @@ class PostController extends BaseController {
         if (!empty($_POST['content']) || !empty($_FILES['photo']['tmp_name'])) {
             $_FILES['photo'] = !empty($_FILES['photo']) ? $_FILES['photo'] : array();
             // create the subin if it doesn't exist
-            $subin_id = subin::create_subin_when_non_existing($_POST['place'], session::cuser_id());
+            $subin_id = subin::create($_POST['place'], session::cuser_id());
 
             // error check
             if (ctype_digit((string) $subin_id)) {

@@ -46,33 +46,52 @@ class image {
         $pvars = array('image' => $data, 'key' => IMGUR_API_KEY);
         $curl = curl_init();
 
+        // set up curl
         curl_setopt($curl, CURLOPT_URL, 'http://api.imgur.com/2/upload.json');
         curl_setopt($curl, CURLOPT_TIMEOUT, 30);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $pvars);
 
-        $raw_json = curl_exec($curl);
+        list($raw_json, $img_url) = self::_call_imgur_api($curl);
+
+        // check error and retry if failed
+        if (is_array($img_url) && isset($img_url['error'])) {
+            sleep(2);
+            // record retry in error log for future stats collection
+            error_log('imgur image upload retried');
+            list($raw_json, $img_url) = self::_call_imgur_api($curl);
+        }
+
+        // close the curl connection
+        curl_close($curl);
 
         // delete the uploaded tmp file if it exists, may not exist if file was uploaded by url
         if (!$is_url && !empty($photo['tmp_name']) && file_exists($photo['tmp_name'])) {
             unlink($photo['tmp_name']);
         }
 
+        return array($raw_json, $img_url);
+
+    }
+
+    private static function _call_imgur_api($curl) {
+        $raw_json = curl_exec($curl);
         $json = json_decode($raw_json, true);
 
         if (false === $raw_json || is_null($json)) {
             $error = curl_error($curl);
-            curl_close($curl);
             return array($raw_json, array('error' => $error));
         }
 
         // handle imgur failure
-        if (is_null($json) || isset($json['error']) || empty($json['upload']['links']['large_thumbnail'])) {
+        if (is_null($json)) {
+            return array((string) $raw_json, array('error' => 'undecodable json output from imgur'));
+        } elseif (isset($json['error']) || empty($json['upload']['links']['large_thumbnail'])) {
             return array((string) $raw_json, array('error' => $json['error']['message']));
         }
 
-        return array($raw_json, $json['upload']['links']['large_thumbnail']);
+        return array((string) $raw_json, $json['upload']['links']['large_thumbnail']);
 
     }
 

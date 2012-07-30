@@ -7,6 +7,14 @@ class subin {
     public static function create($subin_name, $user_id=0) {
         $subin_name = trim($subin_name);
 
+        // check if the subin exists first
+        $sql = 'SELECT subin_id FROM subins WHERE LOWER(name) = LOWER("%s")';
+        if ($subin_id = db::result_query($sql, strtolower($subin_name))) {
+            // return subin_id if subin already exists
+            return $subin_id;
+        }
+
+        // perform checks on subin name and length
         if (strlen($subin_name) < SUBIN_MIN_LEN) {
             return 'subin name too short!';
         } elseif (self::_is_reserved_subin($subin_name)) {
@@ -20,17 +28,6 @@ class subin {
 
     private static function _is_reserved_subin($name) {
         return in_array(strtolower($name), self::$RESERVED_SUBINS);
-    }
-
-    public static function create_subin_when_non_existing($subin_name, $user_id=0) {
-        // check if the subin exists first
-        $sql = 'SELECT subin_id FROM subins WHERE LOWER(name) = LOWER("%s")';
-        if ($subin_id = db::result_query($sql, strtolower($subin_name))) {
-            // return subin_id if subin already exists
-            return $subin_id;
-        }
-        // create the subin since it doesn't exist
-        return self::create($subin_name, $user_id);
     }
 
     // lookup subin from slug in db

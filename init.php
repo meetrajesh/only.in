@@ -13,7 +13,7 @@ if (file_exists('./init.local.php')) {
 define('CSRF_SECRET', 'm2*xb23)./2nej3{3$');
 define('USER_SALT_LEN', 3);
 define('USER_PWD_SECRET', '20)(*2mn3h32119**@#21');
-define('SUBIN_MIN_LEN', 3);
+define('SUBIN_MIN_LEN', 2);
 define('API_SECRET', '95dbb8238195850');
 define('IMGUR_API_KEY', 'a101ec6dba513b6e8a0ad48c7a5a65f0');
 define('UPLOAD_MAX_SIZE', 10*1024*1024); // 10M

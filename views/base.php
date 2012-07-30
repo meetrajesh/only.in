@@ -53,7 +53,8 @@
                 <? foreach (post::$PAGE_TABS as $tab => $tab_name): ?>
                     <li class="<?= (isset($data['tab']) && $data['tab'] == $tab) ? 'selected' : ''; ?>">
                         <a href="<?= hsc(absolutize($t->notempty($data['subin_slug'], '/') . '/' . $tab)); ?>">
-                            <?=hsc($tab_name)?>
+                            <? /* hsc($t->notempty(ucwords($data['subin_name']),  '', '/') . $tab_name) */ ?>
+                            <?= hsc($tab_name) ?>
                         </a>
                     </li>
                 <? endforeach; ?>
@@ -106,6 +107,7 @@
     <script>
         $(document).data('api_url', '<?= API_BASE_URL; ?>');
         $(document).data('api_key', '<?= api_key(API_SECRET); ?>');
+        $(document).data('subin_min_len', <?= (int)SUBIN_MIN_LEN ?>);
     </script>
     <? foreach ($this->_scripts as $script): ?>
         <script src="<?=PATH_PREFIX . $script?>"></script>
