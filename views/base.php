@@ -53,7 +53,7 @@
                 <? foreach (post::$PAGE_TABS as $tab => $tab_name): ?>
                     <li class="<?= (isset($data['tab']) && $data['tab'] == $tab) ? 'selected' : ''; ?>">
                         <a href="<?= hsc(absolutize($t->notempty($data['subin_slug'], '/') . '/' . $tab)); ?>">
-                            <?=hsc($tab_name)?>
+                            <?=hsc($t->notempty(ucwords($data['subin_name']),  '', '/') . $tab_name)?>
                         </a>
                     </li>
                 <? endforeach; ?>

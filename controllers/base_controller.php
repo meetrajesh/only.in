@@ -24,7 +24,7 @@ class BaseController {
 
         $data['tab'] = checkreturn($data, 'tab');
         $data['subin_slug'] = checkreturn($data, 'subin_slug');
-        $data['subin_place'] = checkreturn($data, 'subin_place');
+        $data['subin_name'] = checkreturn($data, 'subin_name');
 
         require './views/' . $template . '.php';
     }
