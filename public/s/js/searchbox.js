@@ -42,7 +42,7 @@
     $('#main-search').on('keyup', function(ev){
       if (ev.keyCode === 13) {
         var val = $(this).val();
-        if (val.length > 2) {
+        if (val.length > $(document).data('subin_min_len')) {
           window.location = '/' + val;
         }
       }
