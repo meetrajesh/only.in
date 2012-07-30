@@ -57,6 +57,7 @@ class image {
 
         // check error and retry if failed
         if (is_array($img_url) && isset($img_url['error'])) {
+            sleep(2);
             // record retry in error log for future stats collection
             error_log('imgur image upload retried');
             list($raw_json, $img_url) = self::_call_imgur_api($curl);
