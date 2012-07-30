@@ -68,7 +68,9 @@ class image {
         }
 
         // handle imgur failure
-        if (is_null($json) || isset($json['error']) || empty($json['upload']['links']['large_thumbnail'])) {
+        if (is_null($json)) {
+            return array((string) $raw_json, array('error' => 'undecodable json output from imgur'));
+        } elseif (isset($json['error']) || empty($json['upload']['links']['large_thumbnail'])) {
             return array((string) $raw_json, array('error' => $json['error']['message']));
         }
 
