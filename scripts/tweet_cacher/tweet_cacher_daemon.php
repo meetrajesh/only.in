@@ -5,9 +5,12 @@ require dirname(__FILE__) .'/lib/tmhOAuth/tmhOAuth.php';
 require dirname(__FILE__) .'/lib/tmhOAuth/tmhUtilities.php';
 
 require 'tweet_db.php';
-require dirname(__FILE__) . '/../../init.php';
 
-date_default_timezone_set('America/Toronto');
+ini_set('error_reporting', E_ALL | E_STRICT);
+ini_set('display_errors', true);
+ini_set('html_errors', true);
+
+date_default_timezone_set('America/New_York');
 
 function my_streaming_callback($data, $length, $metrics) {
     $data = json_decode($data, true);
@@ -16,9 +19,11 @@ function my_streaming_callback($data, $length, $metrics) {
 
     $has_link = (strpos($tweet_text,'http') !== false);
     $is_retweet = (strpos($tweet_text,'RT @') !== false);
-    $onlyin_username = (strpos(strtolower($user), 'onlyin_') !== false) || (strpos(strtolower($user), 'onlyinnycdotnet') !== false);
+    $onlyin_username = (strpos(strtolower($user), 'onlyin_') !== false) 
+            || (strpos(strtolower($user), 'onlyinnycdotnet') !== false)
+            || (strpos(strtolower($user), '0nlyin') !== false);
     
-    if ($has_link && !$onlyin_username) {
+    if ($has_link && !$onlyin_username && $is_retweet) {
         # Format tweet for HTML output
         $link = get_link_from_text($tweet_text);
         $tweet_text = make_links_clickable($tweet_text);
@@ -57,10 +62,10 @@ function get_link_from_text($text) {
 }
 
 $tmhOAuth = new tmhOAuth(array(
-  'consumer_key'    => 'Mt2NDCK8DUn5BtElaa8zPA',
-  'consumer_secret' => 'mcaj6x7dWTwjk9r9xKG2O5BHe36yfLbVwiQDGClpUR8',
-  'user_token'      => '618886497-sFdxlRJSRGXXd1yZh5GkUIEwllwpdwcg4LqnNs1F',
-  'user_secret'     => 'djDR9n5ZPTbb2mEWrXALtiUHAujFg7ug938rEiM',
+    'consumer_key'    => '6jUhNPvNmlQqy9ubqCvAA',
+    'consumer_secret' => 'duQseGhqy0xdwJlxPsrAhxjyxSr6xAGBBkaZR3ANA',
+    'user_token'      => '618816718-InB5Wxg5TRi7RImDjakm47dov3gigdLMATHOfMiJ',
+    'user_secret'     => 'rBxm51hP803A5filcvAE1g1ex1YBsxYmSHsmOoJDAK0',
 ));
 
 $method = 'https://stream.twitter.com/1/statuses/filter.json';
@@ -71,6 +76,10 @@ $track = $track . ',onlyincanada,onlyinbrazil,onlyinuk,onlyingermany,onlyinindia
 
 $params = array();
 $params['track'] = $track;
-$tmhOAuth->streaming_request('POST', $method, $params, 'my_streaming_callback');
+
+$result = $tmhOAuth->streaming_request('POST', $method, $params, 'my_streaming_callback');
+if (!$result) {
+  var_dump($tmhOAuth);
+}
 
 ?>

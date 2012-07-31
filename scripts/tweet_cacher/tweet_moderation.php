@@ -4,25 +4,28 @@ require dirname(__FILE__) . '/../../init.php';
 require dirname(__FILE__) . '/../../api/client.php';
 require dirname(__FILE__) . '/lib/tmhOAuth/tmhOAuth.php';
 require dirname(__FILE__) . '/lib/tmhOAuth/tmhUtilities.php';
+
 require 'tweet_db.php';
 
 if (isset($_POST['tweet_id'])) {
 
     $id = $_POST['tweet_id'];
-
-    if (isset($_POST['Accept']) && isset($_POST['place']) && isset($_POST['content_url'])) {
+    #var_dump($_POST);
+    if ((isset($_POST['Accept']) || isset($_POST['Accept_&_Tweet'])) && isset($_POST['place']) && isset($_POST['content_url'])) {
         $place = $_POST['place'];
         $title = $_POST['title'];
         $content_url = $_POST['content_url'];
-        #echo "Accepted: $place & $content_url & $id";
+        $caption = $_POST['caption'];
+        #TODO: Figure out how this got inserted
+        $caption = preg_replace('/\\\\"/','', $caption);
+                $user = $_POST['user'];
 
         $api = new OnlyInAPI(API_SECRET);
-        
         $data = array('subin_name' => $place,
                       'username' => 'anonymous',
                       'title' => $title,
                       'content' => $content_url,
-                      'caption' => 'test caption',
+                      'caption' => $caption,
                       'num_upvotes' => 4,
                       'num_downvotes' => 0);
 
@@ -30,18 +33,22 @@ if (isset($_POST['tweet_id'])) {
             $json = $api->call('/post/create', $data);
             update_tweet_state($id, 1);
             update_content_url($id, $content_url);
-            send_tweet("Hello World");
+            if (isset($_POST['Accept_&_Tweet'])) {
+                $tweet = "@$user ";
+                $tweet = $tweet . "#onlyin$place : http://only.in/$place";
+                send_tweet($tweet);
+            }
         }
         #$post_id = $json['post_id'];
         #var_dump($json);
     } else if (isset($_POST['Reject'])) {
         update_tweet_state($id, 2);
-        #echo "Rejected";
+    } else {
+        echo "Invalid Response" . PHP_EOL;
     }
 }
 
-function update_tweet_state($tweet_id, $state)
-{
+function update_tweet_state($tweet_id, $state) {
     // TODO: remove code duplication
     $db = tweet_db::get_tweet_db();
     if (!$db)
@@ -50,13 +57,10 @@ function update_tweet_state($tweet_id, $state)
     }
     
     $sql = 'UPDATE tweets SET state=' . $state . ' WHERE id=' . $tweet_id;
-    #echo "SQL: $sql" . PHP_EOL;
     custom_mysql_query($db, $sql);
-    $db->close();
 }
 
-function get_tweet_state($tweet_id)
-{
+function get_tweet_state($tweet_id) {
     // TODO: remove code duplication
     $db = tweet_db::get_tweet_db();
     if (!$db)
@@ -69,13 +73,10 @@ function get_tweet_state($tweet_id)
     $result->bind_result($row['state']); // bind results to $row
     $result->fetch(); 
     $state = $row['state'];
-
-    return $row['state'];
-    $db->close();    
+    return $state;
 }
 
-function update_content_url($tweet_id, $url)
-{
+function update_content_url($tweet_id, $url) {
     // TODO: remove code duplication
     $db = tweet_db::get_tweet_db();
     if (!$db)
@@ -85,7 +86,6 @@ function update_content_url($tweet_id, $url)
     $url = $db->real_escape_string($url);
     $sql = 'UPDATE tweets SET content_url="' . $url . '" WHERE id=' . $tweet_id;
     custom_mysql_query($db, $sql);    
-    $db->close();
 }
 
 # TODO: Move db functions somewhere common
@@ -110,28 +110,46 @@ function custom_mysql_query($db, $query) {
   }
 }
 
-function send_tweet($text)
-{
+function send_tweet($text) {
+    #0nlyin Twitter Account Info
     $tmhOAuth = new tmhOAuth(array(
-      'consumer_key'    => 'Mt2NDCK8DUn5BtElaa8zPA',
-      'consumer_secret' => 'mcaj6x7dWTwjk9r9xKG2O5BHe36yfLbVwiQDGClpUR8',
-      'user_token'      => '618886497-IFdN8g1oaoFFX7611eiwfTvygWUVODVkT2tmSh1Z',
-      'user_secret'     => '3cE8LXf9oiXc4446A61IaPwc1UKx1u1ZvxNYDyXYc',
+      'consumer_key'    => '6jUhNPvNmlQqy9ubqCvAA',
+      'consumer_secret' => 'duQseGhqy0xdwJlxPsrAhxjyxSr6xAGBBkaZR3ANA',
+      'user_token'      => '618816718-InB5Wxg5TRi7RImDjakm47dov3gigdLMATHOfMiJ',
+      'user_secret'     => 'rBxm51hP803A5filcvAE1g1ex1YBsxYmSHsmOoJDAK0',
     ));
 
     $code = $tmhOAuth->request('POST', $tmhOAuth->url('1/statuses/update'), array(
-      'status' => 'My Twitter Message'
+        'status' => $text
     ));
 
     if ($code == 200) {
-      tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
+        #All Good
+        #tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
     } else {
-      tmhUtilities::pr($tmhOAuth->response['response']);
+        tmhUtilities::pr($tmhOAuth->response['response']);
     }
 }
 
-function display_tweets()
-{
+function remove_link($text) {
+    $text = preg_replace('/<[^>]*>/', '', $text);
+    $text = preg_replace('((?:http|https)(?::\\/{2}[\\w]+)(?:[\\/|\\.]?)(?:[^\\s"]*))', '', $text);
+    return $text;
+}
+
+# TODO: Remove code duplication
+function make_links_clickable($text) {
+    if ($text) {
+        $text = trim($text);
+        while ($text != stripslashes($text)) { $text = stripslashes($text); }    
+        $text = strip_tags($text,"<b><i><u>");
+        $text = preg_replace("/(?<!http:\/\/)www\./","http://www.",$text);
+        $text = preg_replace( "/((http|ftp)+(s)?:\/\/[^<>\s]+)/i", "<a href=\"\\0\" target=\"_blank\">\\0</a>",$text);   
+    }
+    return $text;
+}
+
+function display_tweets() {
     // TODO: remove code duplication
     $db = tweet_db::get_tweet_db();
     if (!$db)
@@ -141,6 +159,10 @@ function display_tweets()
     
     $query = "SELECT * FROM tweets WHERE state=0";
     $result = $db->prepare($query); // prepare your query
+    if (!$result) {
+        die("Could not display tweets. Try again." . PHP_EOL);
+    }
+
     $result->execute(); // now we execute the query
     $result->bind_result($row['stamp'], $row['user'], $row['content'], $row['id'], $row['state'], $row['content_url']); // bind results to $row
     
@@ -149,24 +171,30 @@ function display_tweets()
     <table width="80%" border="1">
     <tr>
       <td width="12%">Username</td>
-      <td width="26%">Image</td>
+      <td width="0%">Image</td>
       <td width="26%">Image URL</td>
       <td width="25%">Tweet</td>
       <td width="14%">Place</td>
       <td width="18%">Title</td>
+      <td width="20%">Caption</td>
       <td width="0%">Accept</td>
+      <td width="0%">Accept & Tweet</td>
       <td width="0%">Reject</td>
     </tr>';
     
     while($result->fetch()) {
         $tweet = $row['content'];
         $content_url = $row['content_url'];
-        
+        $user = $row['user'];
+        $tweet_without_link = remove_link($tweet) . ' <a href="https://twitter.com/' . strtolower($user) . '/status/' . $row['id'] . '" target="_blank">(tweet)</a>';
+        $tweet_without_link = htmlspecialchars($tweet_without_link);
+
         # Format the HTML
         echo "<tr><td>" . $row['user'] . "</td>";
         
         echo '<FORM NAME ="form1" METHOD ="POST" ACTION = "' . $_SERVER['PHP_SELF'] . '">
-        <INPUT TYPE = "HIDDEN" name="tweet_id" value="' . $row["id"] . '"/>';        
+        <INPUT TYPE = "HIDDEN" name="tweet_id" value="' . $row["id"] . '"/>        
+        <INPUT TYPE = "HIDDEN" name="user" value="' . $user . '"/>';        
         
         if ($content_url) {
             echo "<td><img src=\"$content_url\"/></td>";
@@ -177,11 +205,12 @@ function display_tweets()
         echo "<td><INPUT TYPE = \"TEXT\"   name=\"content_url\" VALUE =$content_url></td>";
         echo "<td>$tweet</td>";
         
-
         echo '
         <td><INPUT TYPE = "TEXT"   name="place" VALUE =""/></td>
         <td><INPUT TYPE = "TEXT"   name="title" VALUE =""/></td>
+        <td><INPUT TYPE = "TEXT"   name="caption" VALUE ="'.$tweet_without_link.'"/></td>
         <td><INPUT TYPE = "Submit" Name = "Accept" VALUE = "Accept"/></td>
+        <td><INPUT TYPE = "Submit" Name = "Accept & Tweet" VALUE = "Accept & Tweet"/></td>
         <td><INPUT TYPE = "Submit" Name = "Reject" VALUE = "Reject"/></td>
 
         </FORM>';
@@ -189,7 +218,6 @@ function display_tweets()
         
     }
     echo "</table>";    
-    $db->close(); 
 }
 
 ?>
