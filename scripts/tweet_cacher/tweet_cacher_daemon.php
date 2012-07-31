@@ -23,7 +23,7 @@ function my_streaming_callback($data, $length, $metrics) {
             || (strpos(strtolower($user), 'onlyinnycdotnet') !== false)
             || (strpos(strtolower($user), '0nlyin') !== false);
     
-    if ($has_link && !$onlyin_username && $is_retweet) {
+    if ($has_link && !$onlyin_username && !$is_retweet) {
         # Format tweet for HTML output
         $link = get_link_from_text($tweet_text);
         $tweet_text = make_links_clickable($tweet_text);
