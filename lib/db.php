@@ -105,14 +105,13 @@ class db {
     public static function affected_rows() {
         return self::get()->affected_rows;
     }
-
+    
     // singleton getter for db connection
     protected static function get() {
         if (!self::$db) {
-            $db_name = (defined('ALTERNATE_DBNAME') ? ALTERNATE_DBNAME : DBNAME);
-            self::$db = new mysqli(DBHOST, DBUSER, DBPASS, $db_name);
+            self::$db = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             if (!self::$db) {
-                error('failed to obtain db connection');
+                echo('failed to obtain db connection');
             }
             self::$db->set_charset('utf8');
         }
