@@ -44,6 +44,10 @@ class tweet_db {
         }
         return $result;
     }
+    
+    function error($msg) {
+        die($msg);
+    }
 
     private static function _bind_args($sql, $args) {
         $db = self::get();

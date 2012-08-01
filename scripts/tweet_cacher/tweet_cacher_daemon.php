@@ -61,25 +61,28 @@ function get_link_from_text($text) {
     }
 }
 
-$tmhOAuth = new tmhOAuth(array(
-    'consumer_key'    => '6jUhNPvNmlQqy9ubqCvAA',
-    'consumer_secret' => 'duQseGhqy0xdwJlxPsrAhxjyxSr6xAGBBkaZR3ANA',
-    'user_token'      => '618816718-InB5Wxg5TRi7RImDjakm47dov3gigdLMATHOfMiJ',
-    'user_secret'     => 'rBxm51hP803A5filcvAE1g1ex1YBsxYmSHsmOoJDAK0',
-));
+while (true) {
+    $tmhOAuth = new tmhOAuth(array(
+        'consumer_key'    => '6jUhNPvNmlQqy9ubqCvAA',
+        'consumer_secret' => 'duQseGhqy0xdwJlxPsrAhxjyxSr6xAGBBkaZR3ANA',
+        'user_token'      => '618816718-InB5Wxg5TRi7RImDjakm47dov3gigdLMATHOfMiJ',
+        'user_secret'     => 'rBxm51hP803A5filcvAE1g1ex1YBsxYmSHsmOoJDAK0',
+    ));
 
-$method = 'https://stream.twitter.com/1/statuses/filter.json';
-$track = "onlyin,onlyinamerica,onlyinusa,onlyinwashington";
-$track = $track . ',onlyinlondon,onlyinla,onlyinchicago,onlyinny,onlyinnyc,onlyinnewyork,onlyintoronto,onlyinatlanta';
-$track = $track . ',onlyinsf,onlyinsanfran,onlyinthecity,onlyinsanfrancisco,onlyinboston,onlyinseattle,onlyinredmond,onlyinsydney';
-$track = $track . ',onlyincanada,onlyinbrazil,onlyinuk,onlyingermany,onlyinindia,onlyinjapan,onlyinaustralia';
+    $method = 'https://stream.twitter.com/1/statuses/filter.json';
+    $track = "onlyin,onlyinamerica,onlyinusa,onlyinwashington";
+    $track = $track . ',onlyinlondon,onlyinla,onlyinchicago,onlyinny,onlyinnyc,onlyinnewyork,onlyintoronto,onlyinatlanta';
+    $track = $track . ',onlyinsf,onlyinsanfran,onlyinthecity,onlyinsanfrancisco,onlyinboston,onlyinseattle,onlyinredmond,onlyinsydney';
+    $track = $track . ',onlyincanada,onlyinbrazil,onlyinuk,onlyingermany,onlyinindia,onlyinjapan,onlyinaustralia';
 
-$params = array();
-$params['track'] = $track;
+    $params = array();
+    $params['track'] = $track;
 
-$result = $tmhOAuth->streaming_request('POST', $method, $params, 'my_streaming_callback');
-if (!$result) {
-  var_dump($tmhOAuth);
+    #TODO figure out why this is necessary
+    $result = $tmhOAuth->streaming_request('POST', $method, $params, 'my_streaming_callback');
+    if (!$result) {
+      var_dump($tmhOAuth);
+}
 }
 
 ?>
