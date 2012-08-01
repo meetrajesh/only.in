@@ -195,6 +195,8 @@ class post {
             // augment the result set with a permalink for each post
             $result[$i]['permalink'] = self::get_permalink($post);
 
+            $result[$i]['subin_name'] = subin::format_subin_name($post['subin_name']);
+
             // if the post is a youtube embed, mark it so
             if (preg_match('~youtube.com/watch\?.*v=([^\&]+)&?~i', $post['content'], $match) ||
                 preg_match('~youtu.be/(.+)\??~i', $post['content'], $match) ||
