@@ -7,10 +7,16 @@
 
 <form method="post" action="/admin/delete">
 
+  <label>Search for Post Id:</label><br/>
+  <input type="text" name="post_id" size="10" />
+
+  <p>..or..</p>
+
   <label>Search for Image:</label><br/>
   <input type="text" name="img_url" size="60" /><br/><br/>
   
   <?=csrf::html()?>
   <input type="submit" name="btn_delete" value="Delete!" />
+
 </form>
 
