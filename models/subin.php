@@ -55,18 +55,13 @@ class subin {
         $num_days = (int) $num_days;
         $limit = (int) $limit;
 
-        // return the list of subins post to the most in the last 7 days
+        // return the list of subins posted to the most in the last 10 days
         $sql = 'SELECT s.subin_id, s.slug, s.name, (SELECT COUNT(*) FROM posts p WHERE s.subin_id=p.subin_id AND p.stamp > (UNIX_TIMESTAMP() - %d*86400)) AS num_posts FROM subins s
                 HAVING num_posts > 0
                 ORDER BY num_posts DESC
                 LIMIT %d';
 
         $result = db::fetch_all($sql, $num_days, $limit);
-
-        // sort the results by name
-        usort($result, function($a, $b) {
-                return strcmp(strtolower($a['name']), strtolower($b['name']));
-            });
 
         // augment with subin url
         foreach ($result as &$row) {
