@@ -217,8 +217,14 @@ class post {
     }
 
     public static function delete_by_img_url($img_url) {
-        db::query('UPDATE posts SET is_deleted=1 WHERE img_url="%s"', $img_url);
-        return db::affected_rows() > 0;
+        $post_id = db::result_query('SELECT post_id FROM posts WHERE img_url="%s"', $img_url);
+        return ($post_id > 0) ? self::delete_by_id($post_id) : false;
+    }
+
+    public static function delete_by_id($post_id) {
+        $img_url = db::result_query('SELECT img_url FROM posts WHERE post_id=%d', (int)$post_id);
+        db::query('UPDATE posts SET is_deleted=1 WHERE post_id=%d', (int)$post_id);
+        return array(db::affected_rows() > 0, $post_id, $img_url);
     }
 
 }
