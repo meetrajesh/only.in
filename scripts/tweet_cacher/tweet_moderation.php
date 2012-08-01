@@ -35,8 +35,9 @@ if (isset($_POST['tweet_id'])) {
             update_content_url($id, $content_url);
             if (isset($_POST['Accept_&_Tweet'])) {
                 $place_no_spaces = str_replace(' ', '', $place);
+                $place_dashes = str_replace(' ', '', $place);
                 $tweet = "@$user ";
-                $tweet = $tweet . "#onlyin$place_no_spaces : http://only.in/$place";
+                $tweet = $tweet . "#onlyin$place_no_spaces : http://only.in/$place_dashes";
                 send_tweet($tweet);
             }
         }
