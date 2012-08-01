@@ -13,7 +13,7 @@
     <? endif ?>
 
     <? if (!empty($post['caption'])) : ?>
-        <div class="post-caption"><?=filter_text(hsc(strip_tags($post['caption'])))?></div>
+        <div class="post-caption"><?=filter_text($post['caption'])?></div>
     <? endif ?>
 
     <div class="post-votebox">
