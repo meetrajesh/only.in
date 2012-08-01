@@ -48,7 +48,7 @@ class IndexController extends BaseController {
             }
         }
 
-        v($controller, $action, $args); exit;
+        #v($controller, $action, $args); exit;
 
         // 404
         if (empty($controller)) {
