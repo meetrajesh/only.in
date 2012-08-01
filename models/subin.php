@@ -27,8 +27,8 @@ class subin {
         // capitalize the subin name
         $subin_name = self::format_subin_name($subin_name);
 
-        $sql = 'INSERT INTO subins (name, slug, user_id) VALUES ("%s", "%s", %d)';
-        db::query($sql, $subin_name, slug_from_name($subin_name), (int) $user_id);
+        $sql = 'INSERT INTO subins (name, slug, user_id, stamp) VALUES ("%s", "%s", %d, %d)';
+        db::query($sql, $subin_name, slug_from_name($subin_name), (int) $user_id, time());
         return db::insert_id();
     }
 
