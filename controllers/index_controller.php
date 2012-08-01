@@ -21,7 +21,7 @@ class IndexController extends BaseController {
                         '/user/signup' => array('user', 'signup', array()),
                         '/user/login' => array('user', 'login', array()),
                         '/user/logout' => array('user', 'logout', array()),
-                        '/.{' . SUBIN_MIN_LEN . ',}/[^\d]+/?' => array('subin', 'view', array()), // arbitrary subin, particular tab
+                        '/[^\d]{' . SUBIN_MIN_LEN . ',}/[^\d]+/?' => array('subin', 'view', array()), // arbitrary subin, particular tab
                         '/.{' . SUBIN_MIN_LEN . ',}/(\d+)/?' => array('post', 'view', array()), // individual post
                         '/.{' . SUBIN_MIN_LEN . ',}/?' => array('subin', 'view', array()), // arbitrary subin
                         );
@@ -48,7 +48,7 @@ class IndexController extends BaseController {
             }
         }
 
-        #v($controller, $action, $args); exit;
+        v($controller, $action, $args); exit;
 
         // 404
         if (empty($controller)) {
