@@ -20,3 +20,4 @@
  - protect http://only.in/admin/delete
  - turn of strict errors and display_errors in prod
  - use different api key for prod
+ - crank up number of posts to 25
