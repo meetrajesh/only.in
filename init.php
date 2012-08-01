@@ -20,6 +20,7 @@ define('UPLOAD_MAX_SIZE', 10*1024*1024); // 10M
 define('STATIC_PREFIX', '/s');
 define('WEB_ROOT', dirname(__FILE__) . '/public');
 define('TEMPLATE_ROOT', dirname(__FILE__) . '/views');
+define('DEFAULT_NUM_POSTS', 25);
 
 session_start();
 date_default_timezone_set('America/New_York');
