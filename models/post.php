@@ -211,7 +211,7 @@ class post {
     }
 
     public static function get_permalink($post) {
-        return sprintf('/%s/%d/%s', $post['subin_slug'], $post['post_id'], slug_from_name($post['title']));
+        return rtrim(sprintf('/%s/%d/%s', $post['subin_slug'], $post['post_id'], slug_from_name($post['title'])), '/') . '/';
     }
 
     public static function delete_by_img_url($img_url) {

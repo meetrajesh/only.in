@@ -21,3 +21,4 @@
  - turn of strict errors and display_errors in prod
  - use different api key for prod
  - crank up number of posts to 25
+ - make links clickable in caption field
