@@ -1,8 +1,8 @@
 <?php
 
 require dirname(__FILE__) . '/../../models/image.php';
-require dirname(__FILE__) .'/lib/tmhOAuth/tmhOAuth.php';
-require dirname(__FILE__) .'/lib/tmhOAuth/tmhUtilities.php';
+require dirname(__FILE__) . '/lib/tmhOAuth/tmhOAuth.php';
+require dirname(__FILE__) . '/lib/tmhOAuth/tmhUtilities.php';
 
 require 'tweet_db.php';
 
@@ -14,33 +14,37 @@ date_default_timezone_set('America/New_York');
 
 function my_streaming_callback($data, $length, $metrics) {
     $data = json_decode($data, true);
+    var_dump($data);
     $tweet_text = str_replace(PHP_EOL, '', $data['text']);
     $user = $data['user']['screen_name'];
 
-    $has_link = (strpos($tweet_text,'http') !== false);
-    $is_retweet = (strpos($tweet_text,'RT @') !== false);
-    $onlyin_username = (strpos(strtolower($user), 'onlyin_') !== false) 
+    $has_link = (strpos($tweet_text, 'http') !== false);
+    $is_retweet = $data['retweeted'];
+    $onlyin_username = (strpos(strtolower($user), 'onlyin_') !== false)
             || (strpos(strtolower($user), 'onlyinnycdotnet') !== false)
             || (strpos(strtolower($user), '0nlyin') !== false);
-    
+
     if ($has_link && !$onlyin_username && !$is_retweet) {
         # Format tweet for HTML output
         $link = get_link_from_text($tweet_text);
         $tweet_text = make_links_clickable($tweet_text);
         $content_url = get_content_url($link);
         $id = $data['id'];
-        
-        tweet_db::insert_tweet($user, $tweet_text, $link, $content_url, $id);
+        if ($content_url) {
+            tweet_db::insert_tweet($user, $tweet_text, $link, $content_url, $id);
+        }
     }
 }
 
 function make_links_clickable($text) {
     if ($text) {
         $text = trim($text);
-        while ($text != stripslashes($text)) { $text = stripslashes($text); }    
-        $text = strip_tags($text,"<b><i><u>");
-        $text = preg_replace("/(?<!http:\/\/)www\./","http://www.",$text);
-        $text = preg_replace( "/((http|ftp)+(s)?:\/\/[^<>\s]+)/i", "<a href=\"\\0\" target=\"_blank\">\\0</a>",$text);   
+        while ($text != stripslashes($text)) {
+            $text = stripslashes($text);
+        }
+        $text = strip_tags($text, "<b><i><u>");
+        $text = preg_replace("/(?<!http:\/\/)www\./", "http://www.", $text);
+        $text = preg_replace("/((http|ftp)+(s)?:\/\/[^<>\s]+)/i", "<a href=\"\\0\" target=\"_blank\">\\0</a>", $text);
     }
     return $text;
 }
@@ -55,7 +59,7 @@ function get_content_url($url) {
 
 function get_link_from_text($text) {
     // Check if there is a url in the text
-    if(preg_match('/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/', $text, $url)) {
+    if (preg_match('/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/', $text, $url)) {
         #echo "URL " . $url[0] . PHP_EOL;
         return $url[0];
     } else {
@@ -64,24 +68,24 @@ function get_link_from_text($text) {
 }
 
 $tmhOAuth = new tmhOAuth(array(
-    'consumer_key'    => TWEET_CONSUMER_KEY,
-    'consumer_secret' => TWEET_CONSUMER_SECRET,
-    'user_token'      => TWEET_USER_TOKEN,
-    'user_secret'     => TWEET_USER_SECRET,
-));
+            'consumer_key' => TWEET_CONSUMER_KEY,
+            'consumer_secret' => TWEET_CONSUMER_SECRET,
+            'user_token' => TWEET_USER_TOKEN,
+            'user_secret' => TWEET_USER_SECRET,
+        ));
 
 $method = 'https://stream.twitter.com/1/statuses/filter.json';
 $track = "onlyin,onlyinamerica,onlyinusa,onlyinwashington";
 $track = $track . ',onlyinlondon,onlyinla,onlyinchicago,onlyinny,onlyinnyc,onlyinnewyork,onlyintoronto,onlyinatlanta';
 $track = $track . ',onlyinsf,onlyinsanfran,onlyinthecity,onlyinsanfrancisco,onlyinboston,onlyinseattle,onlyinredmond,onlyinsydney';
 $track = $track . ',onlyincanada,onlyinbrazil,onlyinuk,onlyingermany,onlyinindia,onlyinjapan,onlyinaustralia';
+#$track = $track . ',london,la,chicago,ny,nyc,newyork,toronto,atlanta,sf,sanfrancisco,boston,seattle,redmond,sydney';
 
 $params = array();
 $params['track'] = $track;
 
 $result = $tmhOAuth->streaming_request('POST', $method, $params, 'my_streaming_callback');
 if (!$result) {
-  var_dump($tmhOAuth);
+    var_dump($tmhOAuth);
 }
-
 ?>
