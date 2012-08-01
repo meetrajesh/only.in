@@ -24,8 +24,11 @@ class subin {
         // strip numerals from subin name
         $subin_name = preg_replace('/\d/', '', $subin_name);
 
-        $sql = 'INSERT INTO subins (name, slug, user_id) VALUES ("%s", "%s", %d)';
-        db::query($sql, $subin_name, slug_from_name($subin_name), (int) $user_id);
+        // capitalize the subin name
+        $subin_name = self::format_subin_name($subin_name);
+
+        $sql = 'INSERT INTO subins (name, slug, user_id, stamp) VALUES ("%s", "%s", %d, %d)';
+        db::query($sql, $subin_name, slug_from_name($subin_name), (int) $user_id, time());
         return db::insert_id();
     }
 
@@ -48,14 +51,18 @@ class subin {
     public static function slug_to_name($slug) {
         $slug = urldecode($slug);
         $slug = str_replace('-', ' ', $slug);
-        return ucwords($slug);
+        return self::format_subin_name($slug);
+    }
+
+    public static function format_subin_name($subin_name) {
+        return strlen($subin_name) <= 3 ? strtoupper($subin_name) : ucwords($subin_name);
     }
 
     public static function get_popular($num_days=10, $limit=10) {
         $num_days = (int) $num_days;
         $limit = (int) $limit;
 
-        // return the list of subins post to the most in the last 7 days
+        // return the list of subins posted to the most in the last 10 days
         $sql = 'SELECT s.subin_id, s.slug, s.name, (SELECT COUNT(*) FROM posts p WHERE s.subin_id=p.subin_id AND p.stamp > (UNIX_TIMESTAMP() - %d*86400)) AS num_posts FROM subins s
                 HAVING num_posts > 0
                 ORDER BY num_posts DESC
@@ -63,26 +70,29 @@ class subin {
 
         $result = db::fetch_all($sql, $num_days, $limit);
 
-        // sort the results by name
-        usort($result, function($a, $b) {
-                return strcmp(strtolower($a['name']), strtolower($b['name']));
-            });
-
         // augment with subin url
         foreach ($result as &$row) {
             $row['permalink'] = '/' . $row['slug'];
-            $row['name'] = ucwords(strtolower($row['name']));
+            $row['name'] = self::format_subin_name($row['name']);
             unset($row['slug']);
         }
         return $result;
     }
 
     public static function all_places() {
-        return db::fetch_all('SELECT s.subin_id, s.slug AS permalink, s.name, (SELECT COUNT(*) FROM posts p WHERE s.subin_id=p.subin_id) AS num_posts FROM subins s HAVING num_posts > 0 ORDER BY s.name ASC');
+        $results = db::fetch_all('SELECT s.subin_id, s.slug AS permalink, s.name, (SELECT COUNT(*) FROM posts p WHERE s.subin_id=p.subin_id) AS num_posts FROM subins s HAVING num_posts > 0 ORDER BY s.name ASC');
+        foreach ($results as $i => $row) {
+            $results[$i]['name'] = self::format_subin_name($row['name']);
+        }
+        return $results;
     }
 
     public static function search($str) {
-        return db::fetch_all('SELECT s.subin_id, s.slug AS permalink, s.name, (SELECT COUNT(*) FROM posts p WHERE s.subin_id=p.subin_id) AS num_posts FROM subins s WHERE name LIKE "%s%%" OR slug LIKE "%1$s%%" HAVING num_posts > 0 ORDER BY s.name ASC LIMIT 10', $str);
+        $results = db::fetch_all('SELECT s.subin_id, s.slug AS permalink, s.name, (SELECT COUNT(*) FROM posts p WHERE s.subin_id=p.subin_id) AS num_posts FROM subins s WHERE name LIKE "%s%%" OR slug LIKE "%1$s%%" HAVING num_posts > 0 ORDER BY s.name ASC LIMIT 10', $str);
+        foreach ($results as $i => $row) {
+            $results[$i]['name'] = self::format_subin_name($ow['name']);
+        }
+        return $results;
     }
 
 }
