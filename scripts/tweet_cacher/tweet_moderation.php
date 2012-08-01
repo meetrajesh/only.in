@@ -35,10 +35,13 @@ if (isset($_POST['tweet_id'])) {
             update_content_url($id, $content_url);
             if (isset($_POST['Accept_&_Tweet'])) {
                 $place_no_spaces = str_replace(' ', '', $place);
-                $place_dashes = str_replace(' ', '', $place);
+                $place_dashes = str_replace(' ', '-', $place);
+                if ($title) {
+                    $title_grabber = "$title (and more)";
+                }
                 $tweet = "@$user ";
-                $tweet = $tweet . "#onlyin$place_no_spaces : http://only.in/$place_dashes";
-                send_tweet($tweet);
+                $tweet = $tweet . "$title_grabber #onlyin$place_no_spaces : http://only.in/$place_dashes";
+                send_tweet($tweet, $id);
             }
         }
         #$post_id = $json['post_id'];
@@ -112,7 +115,7 @@ function custom_mysql_query($db, $query) {
   }
 }
 
-function send_tweet($text) {
+function send_tweet($text, $reply_to_id) {
     #0nlyin Twitter Account Info
     $tmhOAuth = new tmhOAuth(array(
       'consumer_key'    => TWEET_CONSUMER_KEY,
@@ -122,7 +125,8 @@ function send_tweet($text) {
     ));
 
     $code = $tmhOAuth->request('POST', $tmhOAuth->url('1/statuses/update'), array(
-        'status' => $text
+        'status' => $text,
+        'in_reply_to_status_id' => $reply_to_id
     ));
 
     if ($code == 200) {
