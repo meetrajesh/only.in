@@ -145,3 +145,9 @@ function spf($format, $args=array()) {
     }
     return vsprintf($format, $args);
 }
+
+function add_define($key, $val) {
+    if (!defined($key)) {
+        define($key, $val);
+    }
+}
