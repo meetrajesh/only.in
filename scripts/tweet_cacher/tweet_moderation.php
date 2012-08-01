@@ -114,10 +114,10 @@ function custom_mysql_query($db, $query) {
 function send_tweet($text) {
     #0nlyin Twitter Account Info
     $tmhOAuth = new tmhOAuth(array(
-      'consumer_key'    => '6jUhNPvNmlQqy9ubqCvAA',
-      'consumer_secret' => 'duQseGhqy0xdwJlxPsrAhxjyxSr6xAGBBkaZR3ANA',
-      'user_token'      => '618816718-InB5Wxg5TRi7RImDjakm47dov3gigdLMATHOfMiJ',
-      'user_secret'     => 'rBxm51hP803A5filcvAE1g1ex1YBsxYmSHsmOoJDAK0',
+      'consumer_key'    => TWEET_CONSUMER_KEY,
+      'consumer_secret' => TWEET_CONSUMER_SECRET,
+      'user_token'      => TWEET_USER_TOKEN,
+      'user_secret'     => TWEET_USER_SECRET,
     ));
 
     $code = $tmhOAuth->request('POST', $tmhOAuth->url('1/statuses/update'), array(
