@@ -26,7 +26,7 @@ if (isset($_POST['tweet_id'])) {
                       'title' => $title,
                       'content' => $content_url,
                       'caption' => $caption,
-                      'num_upvotes' => 4,
+                      'num_upvotes' => rand(2,7),
                       'num_downvotes' => 0);
 
         if (get_tweet_state($id) === 0) {
@@ -34,8 +34,9 @@ if (isset($_POST['tweet_id'])) {
             update_tweet_state($id, 1);
             update_content_url($id, $content_url);
             if (isset($_POST['Accept_&_Tweet'])) {
+                $place_no_spaces = str_replace(' ', '', $place);
                 $tweet = "@$user ";
-                $tweet = $tweet . "#onlyin$place : http://only.in/$place";
+                $tweet = $tweet . "#onlyin$place_no_spaces : http://only.in/$place";
                 send_tweet($tweet);
             }
         }
