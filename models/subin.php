@@ -21,6 +21,9 @@ class subin {
             return 'invalid/reserved subin name';
         }
 
+        // strip numerals from subin name
+        $subin_name = preg_replace('/\d/', '', $subin_name);
+
         $sql = 'INSERT INTO subins (name, slug, user_id) VALUES ("%s", "%s", %d)';
         db::query($sql, $subin_name, slug_from_name($subin_name), (int) $user_id);
         return db::insert_id();
