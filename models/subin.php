@@ -2,7 +2,7 @@
 
 class subin {
 
-    public static $RESERVED_SUBINS = array('404', 'places', 'popular', 'latest', 'debated', 'top', 'post', 'admin', 'user', 'subin');
+    public static $RESERVED_SUBINS = array('404', 'tos', 'contact', 'place', 'places', 'popular', 'latest', 'debated', 'top', 'post', 'admin', 'user', 'subin', 'subins');
 
     public static function create($subin_name, $user_id=0) {
         $subin_name = trim($subin_name);
