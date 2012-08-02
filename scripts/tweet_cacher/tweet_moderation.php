@@ -180,7 +180,7 @@ function display_tweets() {
         $tweet = $row['content'];
         $content_url = $row['content_url'];
         $user = $row['user'];
-        $tweet_without_link = remove_link($tweet) . ' <a href="https://twitter.com/' . strtolower($user) . '/status/' . $row['id'] . '" target="_blank">(tweet)</a>';
+        $tweet_without_link = remove_link($tweet) . ' https://twitter.com/' . strtolower($user) . '/status/' . $row['id'];
         $tweet_without_link = htmlspecialchars($tweet_without_link);
 
         # Format the HTML
