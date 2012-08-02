@@ -31,12 +31,12 @@ class vote {
         return ($score > 0 ? '+' : '') . number_format($score);
     }
 
-    public static function has_voted_before($post_id) {
+    public static function can_vote_again($post_id) {
         $ip = session::get_ip();
         if (empty($ip)) {
-            return false;
+            return true;
         }
-        return db::has_row('SELECT null FROM votes WHERE post_id=%d AND ip="%s"', (int)$post_id, $ip);
+        return MAX_VOTES_PER_IP > db::result_query('SELECT COUNT(*) FROM votes WHERE post_id=%d AND ip="%s"', (int)$post_id, $ip);
     }
 
 }
