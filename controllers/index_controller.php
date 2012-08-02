@@ -9,7 +9,9 @@ class IndexController extends BaseController {
         $uri = strtolower($uri);
         
         $routes = array('/$' => array('index', 'view', array('popular')), // empty route, just root domain
-                        '/404' => array('index', 'missing_404', array()),
+                        '/404' => array('index', 'misc_page', array('404')),
+                        '/tos' => array('index', 'misc_page', array('tos')),
+                        '/contact' => array('index', 'misc_page', array('contact')),
                         '/places' => array('subin', 'browse', array()),
                         '/popular' => array('index', 'view', array('popular')),
                         '/latest' => array('index', 'view', array('latest')),
@@ -76,9 +78,9 @@ class IndexController extends BaseController {
 
     }
 
-    // 404 handler
-    public function missing_404($args) {
-        $this->_render('404');
+    // 404, tos and contact pages
+    public function misc_page($args) {
+        $this->_render('misc/' . $args[0]);
     }
 
     public function view($args) {

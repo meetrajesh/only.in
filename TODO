@@ -19,7 +19,7 @@
  + use different api key for prod
  + crank up number of posts to 25
  = post page, upload buton
+ + make links clickable in caption field
+ + delete by post id
  - hide chrome auto complete box in quick post and search box
  - protect http://only.in/admin/delete
- - make links clickable in caption field
- + delete by post id
