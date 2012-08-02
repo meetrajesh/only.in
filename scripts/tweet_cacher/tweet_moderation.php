@@ -31,17 +31,22 @@ if (isset($_POST['tweet_id'])) {
 
         if (get_tweet_state($id) === 0) {
             $json = $api->call('/post/create', $data);
-            update_tweet_state($id, 1);
-            update_content_url($id, $content_url);
-            if (isset($_POST['Accept_&_Tweet'])) {
-                $place_no_spaces = str_replace(' ', '', $place);
-                $place_dashes = str_replace(' ', '-', $place);
-                if ($title) {
-                    $title_grabber = "$title (and more)";
+            $post_id = $json['post_id'];
+            if ($post_id) {
+                update_tweet_state($id, 1);
+                update_content_url($id, $content_url);
+                if (isset($_POST['Accept_&_Tweet'])) {
+                    $place_no_spaces = str_replace(' ', '', $place);
+                    $place_dashes = str_replace(' ', '-', $place);
+                    if ($title) {
+                        $title_grabber = "$title (and more)";
+                    }
+                    $tweet = "@$user ";
+                    $tweet = $tweet . "$title_grabber #onlyin$place_no_spaces : http://only.in/$place_dashes";
+                    send_tweet($tweet, $id);
                 }
-                $tweet = "@$user ";
-                $tweet = $tweet . "$title_grabber #onlyin$place_no_spaces : http://only.in/$place_dashes";
-                send_tweet($tweet, $id);
+            } else {
+                echo "Could not post." . PHP_EOL;
             }
         }
         #$post_id = $json['post_id'];

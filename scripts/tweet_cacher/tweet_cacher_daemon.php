@@ -14,7 +14,6 @@ date_default_timezone_set('America/New_York');
 
 function my_streaming_callback($data, $length, $metrics) {
     $data = json_decode($data, true);
-    var_dump($data);
     $tweet_text = str_replace(PHP_EOL, '', $data['text']);
     $user = $data['user']['screen_name'];
 
