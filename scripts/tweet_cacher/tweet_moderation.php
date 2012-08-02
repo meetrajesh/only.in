@@ -143,18 +143,6 @@ function remove_link($text) {
     return $text;
 }
 
-# TODO: Remove code duplication
-function make_links_clickable($text) {
-    if ($text) {
-        $text = trim($text);
-        while ($text != stripslashes($text)) { $text = stripslashes($text); }    
-        $text = strip_tags($text,"<b><i><u>");
-        $text = preg_replace("/(?<!http:\/\/)www\./","http://www.",$text);
-        $text = preg_replace( "/((http|ftp)+(s)?:\/\/[^<>\s]+)/i", "<a href=\"\\0\" target=\"_blank\">\\0</a>",$text);   
-    }
-    return $text;
-}
-
 function display_tweets() {
     // TODO: remove code duplication
     $db = tweet_db::get_tweet_db();
@@ -187,7 +175,7 @@ function display_tweets() {
       <td width="0%">Accept & Tweet</td>
       <td width="0%">Reject</td>
     </tr>';
-    
+
     while($result->fetch()) {
         $tweet = $row['content'];
         $content_url = $row['content_url'];
