@@ -22,7 +22,7 @@ class image {
 
     // does this site implement the og tag?
     public static function implements_og_tag($url) {
-        static $og_tag_sites = array('https?://www.flickr.com/photos/', 'http://instagram.com/p/');
+        static $og_tag_sites = array('https?://www.flickr.com/photos/', 'http://instagram.com/p/', 'http://yfrog.com/');
         foreach ($og_tag_sites as $og_tag_site) {
             if (preg_match("~^${og_tag_site}~i", $url)) {
                 return true;
