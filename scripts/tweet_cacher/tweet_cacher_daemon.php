@@ -27,12 +27,24 @@ function my_streaming_callback($data, $length, $metrics) {
     if ($has_link && !$onlyin_username && !$is_retweet) {
         # Format tweet for HTML output
         $link = get_link_from_text($tweet_text);
+        $tweet_text = make_links_clickable($tweet_text);
         $content_url = get_content_url($link);
         $id = $data['id'];
         if ($content_url) {
             tweet_db::insert_tweet($user, $tweet_text, $link, $content_url, $id);
         }
     }
+}
+
+function make_links_clickable($text) {
+    if ($text) {
+        $text = trim($text);
+        while ($text != stripslashes($text)) { $text = stripslashes($text); }    
+        $text = strip_tags($text,"<b><i><u>");
+        $text = preg_replace("/(?<!http:\/\/)www\./","http://www.",$text);
+        $text = preg_replace( "/((http|ftp)+(s)?:\/\/[^<>\s]+)/i", "<a href=\"\\0\" target=\"_blank\">\\0</a>",$text);   
+    }
+    return $text;
 }
 
 function get_content_url($url) {
