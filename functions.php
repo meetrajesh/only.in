@@ -91,8 +91,15 @@ function absolutize($relative) {
     return $url;
 }
 
-function filter_text($text) {
-    return '<p>' . str_replace(array("\n\n", "\n"), array('</p><p>', '<br>'), $text) . '</p>';
+function filter_text($text, $replace_urls=false) {
+    if ($replace_urls) {
+        $text = preg_replace('~(https?://twitter.com/.+/status/\d+)~i', '(<a href="\1">tweet</a>)', $text, -1, $count);
+        if ($count == 0) {
+            $text = preg_replace('~(https?://(?:.*\.)?(.+\.(us|in|org|com|net|info|biz|edu|gov|uk|ca|de|jp|fr|au|ru|ch|it|es|mil))\S*)~i', '(<a href="\1">\2</a>)', $text);
+        }
+    }
+    $text = '<p>' . str_replace(array("\n\n", "\n"), array('</p><p>', '<br>'), $text) . '</p>';
+    return $text;
 }
 
 // convert text to slug 
@@ -144,4 +151,10 @@ function spf($format, $args=array()) {
         $args = $args[0];
     }
     return vsprintf($format, $args);
+}
+
+function add_define($key, $val) {
+    if (!defined($key)) {
+        define($key, $val);
+    }
 }

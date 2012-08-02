@@ -61,26 +61,26 @@ class post {
         return db::has_row('SELECT null FROM posts WHERE post_id=%d AND is_deleted=0', (int)$post_id);
     }
 
-    public static function get_popular($subin_id=0, $page=1, $limit=10) {
+    public static function get_popular($subin_id=0, $page=1, $limit=DEFAULT_NUM_POSTS) {
         return self::_get_tab_posts('popular', $subin_id, $page, $limit);
     }
 
-    public static function get_debated($subin_id=0, $page=1, $limit=10) {
+    public static function get_debated($subin_id=0, $page=1, $limit=DEFAULT_NUM_POSTS) {
         return self::_get_tab_posts('debated', $subin_id, $page, $limit);
     }
 
-    public static function get_top($subin_id=0, $page=1, $limit=10) {
+    public static function get_top($subin_id=0, $page=1, $limit=DEFAULT_NUM_POSTS) {
         return self::_get_tab_posts('top', $subin_id, $page, $limit);
     }
 
-    private static function _get_tab_posts($tab, $subin_id=0, $page=1, $limit=10) {
+    private static function _get_tab_posts($tab, $subin_id=0, $page=1, $limit=DEFAULT_NUM_POSTS) {
 
         $page = (int)$page;
         $limit = (int)$limit;
 
         // set defaults
         $page = $page > 0 ? $page : 1;
-        $limit = $limit > 0 ? $limit : 10;
+        $limit = $limit > 0 ? $limit : DEFAULT_NUM_POSTS;
 
         $result = self::get_latest($subin_id, 0, 1, $page*$limit*3);
 
@@ -161,7 +161,7 @@ class post {
         return ($left - $right) / $under;
     }
 
-    public static function get_latest($subin_id=0, $post_id=0, $page=1, $limit=10) {
+    public static function get_latest($subin_id=0, $post_id=0, $page=1, $limit=DEFAULT_NUM_POSTS) {
         // sanitize input
         $subin_id = (int)$subin_id;
         $page = (int)$page;
@@ -169,7 +169,7 @@ class post {
 
         // set defaults
         $page = $page > 0 ? $page : 1;
-        $limit = $limit > 0 ? $limit : 10;
+        $limit = $limit > 0 ? $limit : DEFAULT_NUM_POSTS;
 
         $where_clause  = !empty($post_id) ? 'p.post_id=%d AND ' : '(%d OR 1) AND ';
         $where_clause .= !empty($subin_id) ? 'p.subin_id=%d' : '(%d OR 1)';
@@ -195,6 +195,8 @@ class post {
             // augment the result set with a permalink for each post
             $result[$i]['permalink'] = self::get_permalink($post);
 
+            $result[$i]['subin_name'] = subin::format_subin_name($post['subin_name']);
+
             // if the post is a youtube embed, mark it so
             if (preg_match('~youtube.com/watch\?.*v=([^\&]+)&?~i', $post['content'], $match) ||
                 preg_match('~youtu.be/(.+)\??~i', $post['content'], $match) ||
@@ -215,8 +217,14 @@ class post {
     }
 
     public static function delete_by_img_url($img_url) {
-        db::query('UPDATE posts SET is_deleted=1 WHERE img_url="%s"', $img_url);
-        return db::affected_rows() > 0;
+        $post_id = db::result_query('SELECT post_id FROM posts WHERE img_url="%s"', $img_url);
+        return ($post_id > 0) ? self::delete_by_id($post_id) : false;
+    }
+
+    public static function delete_by_id($post_id) {
+        $img_url = db::result_query('SELECT img_url FROM posts WHERE post_id=%d', (int)$post_id);
+        db::query('UPDATE posts SET is_deleted=1 WHERE post_id=%d', (int)$post_id);
+        return array(db::affected_rows() > 0, $post_id, $img_url);
     }
 
 }
