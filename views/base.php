@@ -48,7 +48,7 @@
     </header>
 
     <div class="container_12" id="main-content">
-        <div class="grid_8">
+        <div class="grid_8" id="all-posts">
             <ul class="pillbox cf" id="main-filter">
                 <? foreach (post::$PAGE_TABS as $tab => $tab_name): ?>
                     <li class="<?= (isset($data['tab']) && $data['tab'] == $tab) ? 'selected' : ''; ?>">
@@ -108,6 +108,7 @@
         $(document).data('api_url', '<?= API_BASE_URL; ?>');
         $(document).data('api_key', '<?= api_key(API_SECRET); ?>');
         $(document).data('subin_min_len', <?= (int)SUBIN_MIN_LEN ?>);
+        $(document).data('view_data', <?= json_encode(array('tab' => $data['tab'], 'subin_slug' => $data['subin_slug'])) ?>);
     </script>
     <? foreach ($this->_scripts as $script): ?>
         <script src="<?=PATH_PREFIX . $script?>"></script>

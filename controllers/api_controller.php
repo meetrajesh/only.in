@@ -49,6 +49,13 @@ class ApiController extends BaseController {
                                            'outputs' => array(array('vote_id' => 'int'),
                                                               array('score' => 'int'))),
 
+                     '/posts/get' => array('inputs' => array(array('subin_slug' => 'string (optional)'),
+                                                             array('tab' => 'string'),
+                                                             array('page' => 'int')),
+                                           'outputs' => array(array('subin_slug' => 'string'),
+                                                              array('tab' => 'string'),
+                                                              array('page' => 'int'))),
+
                      '/subins/popular' => array('inputs' => array(),
                                                 'outputs' => array('popular' => 'array')),
 
@@ -196,7 +203,7 @@ class ApiController extends BaseController {
 
     public function posts_get($data) {
 
-        $subin_name = notempty($data, 'subin_name');
+        $subin_slug = notempty($data, 'subin_slug');
         $tab = notempty($data, 'tab', 'popular');
         $page = notempty($data, 'page', 1);
 
@@ -205,11 +212,11 @@ class ApiController extends BaseController {
             $tab = 'popular';
         }
 
-        $data = SubinController::get_matching_posts($subin_name, $tab, $page);
+        $data = SubinController::get_matching_posts($subin_slug, $tab, $page);
         $data['api'] = true;
 
         $this->_render('posts/base', $data);
-        return array('subin_name' => $subin_name, 'tab' => $tab, 'page' => $page, 'html' => trim($this->_tpl->getblock('content')));
+        return array('subin_slug' => $subin_slug, 'tab' => $tab, 'page' => $page, 'html' => trim($this->_tpl->getblock('content')));
 
     }
 

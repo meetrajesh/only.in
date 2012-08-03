@@ -2,7 +2,7 @@
 
 class SubinController extends BaseController {
 
-    public static function get_matching_posts($subin_name, $tab, $page) {
+    public static function get_matching_posts($subin_slug, $tab, $page) {
 
         // set default tab if not provided
         if (!in_array($tab, array_keys(post::$PAGE_TABS))) {
@@ -12,7 +12,7 @@ class SubinController extends BaseController {
         // default page number
         $page = ($page > 0) ? (int) $page : 1;
 
-        $subin = subin::slug_to_subin($subin_name);
+        $subin = subin::slug_to_subin($subin_slug);
         $subin_id = empty($subin['subin_id']) ? 0 : $subin['subin_id'];
 
         $data = array();
@@ -37,9 +37,9 @@ class SubinController extends BaseController {
     public function view($args) {
         // grab the args
         $args = array_pad($args, 3, '');
-        list($subin_name, $tab, $page) = $args;
+        list($subin_slug, $tab, $page) = $args;
 
-        $data = self::get_matching_posts($subin_name, $tab, $page);
+        $data = self::get_matching_posts($subin_slug, $tab, $page);
         $this->_render('posts/base', $data);
     }
 
