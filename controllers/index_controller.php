@@ -24,8 +24,8 @@ class IndexController extends BaseController {
                         '/user/login' => array('user', 'login', array()),
                         '/user/logout' => array('user', 'logout', array()),
                         '/\D{' . SUBIN_MIN_LEN . ',}/\D+/?' => array('subin', 'view', array()), // arbitrary subin, particular tab
-                        '/.{' . SUBIN_MIN_LEN . ',}/(\d+)/?' => array('post', 'view', array()), // individual post
-                        '/.{' . SUBIN_MIN_LEN . ',}/?' => array('subin', 'view', array()), // arbitrary subin
+                        '/\D{' . SUBIN_MIN_LEN . ',}/(\d+)/?' => array('post', 'view', array()), // individual post
+                        '/\D{' . SUBIN_MIN_LEN . ',}/?' => array('subin', 'view', array()), // arbitrary subin
                         );
 
         foreach ($routes as $route => $dest) {
