@@ -188,7 +188,9 @@ function display_tweets() {
     while($result->fetch()) {
         $tweet = $row['content'];
         $content_url = $row['content_url'];
-        $user = $row['user'];
+        $user_extra = $row['user'];
+        preg_match('/([^ ]+) .*/', $user_extra, $match); // actual username is up to the first space
+        $user = $match[1];
         $tweet_without_link = remove_link($tweet) . ' https://twitter.com/' . strtolower($user) . '/status/' . $row['id'];
         $tweet_without_link = htmlspecialchars($tweet_without_link);
 
@@ -197,7 +199,7 @@ function display_tweets() {
         
         echo '<FORM NAME ="form1" METHOD ="POST" ACTION = "' . $_SERVER['PHP_SELF'] . '">
         <INPUT TYPE = "HIDDEN" name="tweet_id" value="' . $row["id"] . '"/>        
-        <INPUT TYPE = "HIDDEN" name="user" value="' . $user . '"/>';        
+        <INPUT TYPE = "HIDDEN" name="user" value="' . $user_extra . '"/>';        
         
         if ($content_url) {
             echo "<td><img src=\"$content_url\"/></td>";

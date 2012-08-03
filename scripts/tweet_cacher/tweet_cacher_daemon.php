@@ -18,7 +18,7 @@ function my_streaming_callback($data, $length, $metrics) {
     $user = $data['user']['screen_name'];
 
     $has_link = (strpos($tweet_text,'http') !== false);
-    $has_phrase = (strpos($tweet_text, 'onlyin')) || strpos($tweet_text, 'only in');
+    $has_phrase = (strpos($tweet_text, 'onlyin')) || strpos($tweet_text, 'only in ');
     $is_retweet = (strpos($tweet_text,'RT @') !== false);
     $onlyin_username = (strpos(strtolower($user), 'onlyin_') !== false) 
             || (strpos(strtolower($user), 'onlyinnycdotnet') !== false)
