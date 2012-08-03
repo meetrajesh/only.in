@@ -18,11 +18,18 @@ class template {
             $this->_blocks[$this->_block] = $content;
         }
 
+        $content = $this->_blocks[$this->_block];
+        unset($this->_block);
+
         if ($output) {
-            echo $this->_blocks[$this->_block];
+            echo $content;
         }
 
-        unset($this->_block);
+        return $content;
+    }
+    
+    public function getblock($block_name) {
+        return $this->_blocks[$block_name];
     }
 
     public function cycle(&$pointer, $list=array()) {

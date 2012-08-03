@@ -1,6 +1,7 @@
-<?
-    $this->_add_css('less/posts.less');
-    $this->_add_js('js/posts.js');
+<? 
+  $this->_add_css('less/posts.less');
+  $this->_add_js('js/posts.js');
+  $this->_add_js('js/scroll_posts.js'); 
 ?>
 
 <? $t->block('content'); ?>
@@ -9,4 +10,7 @@
     <? endforeach; ?>
 <? $t->endblock(); ?>
 
-<? $this->_render('base', $data); ?>
+<? if (!isset($data['api'])):
+     $this->_render('base', $data);
+   endif;
+?>

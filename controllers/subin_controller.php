@@ -2,10 +2,7 @@
 
 class SubinController extends BaseController {
 
-    public function view($args) {
-        // grab the args
-        $args = array_pad($args, 3, '');
-        list($subin_name, $tab, $page) = $args;
+    public static function get_matching_posts($subin_slug, $tab, $page) {
 
         // set default tab if not provided
         if (!in_array($tab, array_keys(post::$PAGE_TABS))) {
@@ -13,10 +10,12 @@ class SubinController extends BaseController {
         }
 
         // default page number
-        $page = (int)$page > 0 ? $page : 1;
+        $page = ($page > 0) ? (int) $page : 1;
 
-        $subin = subin::slug_to_subin($subin_name);
-        $subin_id = empty($subin['subin_id']) ? -1 : $subin['subin_id'];
+        $subin = subin::slug_to_subin($subin_slug);
+        $subin_id = empty($subin['subin_id']) ? 0 : $subin['subin_id'];
+
+        $data = array();
 
         if ($tab == 'latest') {
             $data['posts'] = post::get_latest($subin_id, 0, $page);
@@ -31,8 +30,17 @@ class SubinController extends BaseController {
         $data['subin_name'] = $subin['name'];
         $data['subin_slug'] = $subin['slug'];
 
-        $this->_render('posts/base', $data);
+        return $data;
 
+    }
+
+    public function view($args) {
+        // grab the args
+        $args = array_pad($args, 3, '');
+        list($subin_slug, $tab, $page) = $args;
+
+        $data = self::get_matching_posts($subin_slug, $tab, $page);
+        $this->_render('posts/base', $data);
     }
 
     public function browse() {

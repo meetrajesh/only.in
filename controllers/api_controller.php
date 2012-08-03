@@ -4,6 +4,7 @@ class ApiController extends BaseController {
 
     public function __construct() {
         // skip csrf check
+        $this->_tpl = new template();
     }
 
     public function help($data) {
@@ -47,6 +48,13 @@ class ApiController extends BaseController {
                                                              array('vote' => 'int')),
                                            'outputs' => array(array('vote_id' => 'int'),
                                                               array('score' => 'int'))),
+
+                     '/posts/get' => array('inputs' => array(array('subin_slug' => 'string (optional)'),
+                                                             array('tab' => 'string'),
+                                                             array('page' => 'int')),
+                                           'outputs' => array(array('subin_slug' => 'string'),
+                                                              array('tab' => 'string'),
+                                                              array('page' => 'int'))),
 
                      '/subins/popular' => array('inputs' => array(),
                                                 'outputs' => array('popular' => 'array')),
@@ -190,6 +198,25 @@ class ApiController extends BaseController {
 
         $vote_id = vote::add($user_id, $post_id, 0, $vote);
         return array('post_id' => $post_id, 'vote_id' => $vote_id, 'score' => vote::format_score(vote::get_score($post_id)));
+
+    }
+
+    public function posts_get($data) {
+
+        $subin_slug = notempty($data, 'subin_slug');
+        $tab = notempty($data, 'tab', 'popular');
+        $page = notempty($data, 'page', 1);
+
+        // set default tab if not provided
+        if (!in_array($tab, array_keys(post::$PAGE_TABS))) {
+            $tab = 'popular';
+        }
+
+        $data = SubinController::get_matching_posts($subin_slug, $tab, $page);
+        $data['api'] = true;
+
+        $this->_render('posts/base', $data);
+        return array('subin_slug' => $subin_slug, 'tab' => $tab, 'page' => $page, 'html' => trim($this->_tpl->getblock('content')));
 
     }
 

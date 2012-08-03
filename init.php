@@ -25,8 +25,9 @@ add_define('UPLOAD_MAX_SIZE', 10*1024*1024); // 10M
 add_define('STATIC_PREFIX', '/s');
 add_define('WEB_ROOT', dirname(__FILE__) . '/public');
 add_define('TEMPLATE_ROOT', dirname(__FILE__) . '/views');
-add_define('DEFAULT_NUM_POSTS', 25);
+add_define('DEFAULT_NUM_POSTS', 10);
 add_define('MAX_VOTES_PER_IP', 3);
+add_define('POPULAR_PLACES_NUM_DAYS', 1);
 
 // clean up $_GET and $_POST, ensure all values are strings (no arrays)
 foreach (array('_GET', '_POST', '_REQUEST', '_COOKIE') as $sglobal) {
