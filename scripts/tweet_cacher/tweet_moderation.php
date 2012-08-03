@@ -18,8 +18,9 @@ if (isset($_POST['tweet_id'])) {
         $caption = $_POST['caption'];
         #TODO: Figure out how this got inserted
         $caption = preg_replace('/\\\\"/','', $caption);
-                $user = $_POST['user'];
-
+        $user = $_POST['user'];
+        preg_match('/([^ ]+) .*/', $user, $match); // actual username is up to the first space
+        $user = $match[1];
         $api = new OnlyInAPI(API_SECRET);
         $data = array('subin_name' => $place,
                       'username' => 'anonymous',
@@ -32,7 +33,7 @@ if (isset($_POST['tweet_id'])) {
         if (get_tweet_state($id) === 0) {
             $json = $api->call('/post/create', $data);
             $post_id = $json['post_id'];
-            if ($post_id) {
+            if ($post_id || true) {
                 update_tweet_state($id, 1);
                 update_content_url($id, $content_url);
                 if (isset($_POST['Accept_&_Tweet'])) {
@@ -46,7 +47,10 @@ if (isset($_POST['tweet_id'])) {
                     send_tweet($tweet, $id);
                 }
             } else {
-                echo "Could not post." . PHP_EOL;
+                    $data = json_decode($json, true);
+
+		var_dump($data);
+		echo "Could not post." . PHP_EOL;
             }
         }
         #$post_id = $json['post_id'];

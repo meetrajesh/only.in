@@ -30,6 +30,9 @@ function my_streaming_callback($data, $length, $metrics) {
         $content_url = get_content_url($link);
         $id = $data['id'];
         if ($content_url) {
+            $num_followers = $data['user']['followers_count'];
+            $date_str = $data['created_at'];
+            $user = $user . " ($num_followers) at $date_str";
             tweet_db::insert_tweet($user, $tweet_text, $link, $content_url, $id);
         }
     }
