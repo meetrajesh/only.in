@@ -75,11 +75,24 @@ $tmhOAuth = new tmhOAuth(array(
 ));
 
 $method = 'https://stream.twitter.com/1/statuses/filter.json';
-$track = "onlyin,onlyinamerica,onlyinusa,onlyinwashington";
-$track = $track . ',onlyinlondon,onlyinla,onlyinchicago,onlyinny,onlyinnyc,onlyinnewyork,onlyintoronto,onlyinatlanta';
-$track = $track . ',onlyinsf,onlyinsanfran,onlyinthecity,onlyinsanfrancisco,onlyinboston,onlyinseattle,onlyinredmond,onlyinsydney';
-$track = $track . ',onlyincanada,onlyinbrazil,onlyinuk,onlyingermany,onlyinindia,onlyinjapan,onlyinaustralia';
-#$track = $track . ',london,la,chicago,ny,nyc,newyork,toronto,atlanta,sf,sanfrancisco,boston,seattle,redmond,sydney';
+
+# track place names
+$places=array('america','usa','washington','london','la','losangelas','chicago','ny','nyc','newyork','toronto','atlanta');
+array_push($places, 'sf','sanfrancisco','boston','seattle','redmond','sydney');
+array_push($places, 'canada','brazil','uk','germany','india','japan','australia');
+$places_with_spaces = array('los angelas', 'new york', 'san francisco');
+$phrases = array();
+foreach($places as &$p) {
+    array_push($phrases, "onlyin$p");
+    array_push($phrases, "only in $p");
+}
+foreach($places_with_spaces as &$p) {
+    array_push($phrases, "only in $p");
+}
+$track = '';
+foreach($phrases as &$p) {
+    $track .= $p . ',';
+}
 
 $params = array();
 $params['track'] = $track;
