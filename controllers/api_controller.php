@@ -4,6 +4,7 @@ class ApiController extends BaseController {
 
     public function __construct() {
         // skip csrf check
+        $this->_tpl = new template();
     }
 
     public function help($data) {
@@ -190,6 +191,25 @@ class ApiController extends BaseController {
 
         $vote_id = vote::add($user_id, $post_id, 0, $vote);
         return array('post_id' => $post_id, 'vote_id' => $vote_id, 'score' => vote::format_score(vote::get_score($post_id)));
+
+    }
+
+    public function posts_get($data) {
+
+        $subin_name = notempty($data, 'subin_name');
+        $tab = notempty($data, 'tab', 'popular');
+        $page = notempty($data, 'page', 1);
+
+        // set default tab if not provided
+        if (!in_array($tab, array_keys(post::$PAGE_TABS))) {
+            $tab = 'popular';
+        }
+
+        $data = SubinController::get_matching_posts($subin_name, $tab, $page);
+        $data['api'] = true;
+
+        $this->_render('posts/base', $data);
+        return array('subin_name' => $subin_name, 'tab' => $tab, 'page' => $page, 'html' => trim($this->_tpl->getblock('content')));
 
     }
 

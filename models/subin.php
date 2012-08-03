@@ -58,7 +58,7 @@ class subin {
         return strlen($subin_name) <= 3 ? strtoupper($subin_name) : ucwords($subin_name);
     }
 
-    public static function get_popular($num_days=1, $limit=10) {
+    public static function get_popular($num_days=POPULAR_PLACES_NUM_DAYS, $limit=10) {
         $num_days = (int) $num_days;
         $limit = (int) $limit;
 

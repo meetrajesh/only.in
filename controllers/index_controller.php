@@ -64,7 +64,6 @@ class IndexController extends BaseController {
     }
     
     public static function api_route() {
-
         $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
         $method = preg_replace($regex, '', $_SERVER['REQUEST_URI']); // strip the prefix hostname
 
@@ -73,9 +72,7 @@ class IndexController extends BaseController {
             return array('error' => 'missing or invalid api_key');
         }
 
-
         return api::call($method, $_REQUEST);
-
     }
 
     // 404, tos and contact pages
@@ -102,5 +99,6 @@ class IndexController extends BaseController {
 
         $data['tab'] = $tab;
         $this->_render('posts/base', $data);
+
     }
 }
