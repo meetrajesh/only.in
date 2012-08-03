@@ -18,12 +18,13 @@ function my_streaming_callback($data, $length, $metrics) {
     $user = $data['user']['screen_name'];
 
     $has_link = (strpos($tweet_text,'http') !== false);
+    $has_phrase = (strpos($tweet_text, 'onlyin')) || strpos($tweet_text, 'only in');
     $is_retweet = (strpos($tweet_text,'RT @') !== false);
     $onlyin_username = (strpos(strtolower($user), 'onlyin_') !== false) 
             || (strpos(strtolower($user), 'onlyinnycdotnet') !== false)
             || (strpos(strtolower($user), '0nlyin') !== false);
     
-    if ($has_link && !$onlyin_username && !$is_retweet) {
+    if ($has_link && !$onlyin_username && $has_phrase && !$is_retweet) {
         # Format tweet for HTML output
         $link = get_link_from_text($tweet_text);
         $tweet_text = make_links_clickable($tweet_text);
