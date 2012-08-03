@@ -111,7 +111,7 @@ class db {
         if (!self::$db) {
             self::$db = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             if (!self::$db) {
-                echo('failed to obtain db connection');
+                error('failed to obtain db connection');
             }
             self::$db->set_charset('utf8');
         }
