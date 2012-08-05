@@ -10,7 +10,4 @@
     <? endforeach; ?>
 <? $t->endblock(); ?>
 
-<? if (!isset($data['api'])):
-     $this->_render('base', $data);
-   endif;
-?>
+<? $this->_render('base', $data); ?>

@@ -213,10 +213,12 @@ class ApiController extends BaseController {
         }
 
         $data = SubinController::get_matching_posts($subin_slug, $tab, $page);
-        $data['api'] = true;
 
-        $this->_render('posts/base', $data);
-        return array('subin_slug' => $subin_slug, 'tab' => $tab, 'page' => $page, 'html' => trim($this->_tpl->getblock('content')));
+        $html = $this->_buffer('posts/api', $data);
+        return array('subin_slug' => $subin_slug,
+                     'tab' => $tab,
+                     'page' => $page,
+                     'html' => trim($html));
 
     }
 

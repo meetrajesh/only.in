@@ -22,6 +22,7 @@ class BaseController {
         $data['errors'] = $this->_errors;
         $data['msgs'] = $this->_msgs;
 
+        // set defaults
         $data['tab'] = checkreturn($data, 'tab');
         $data['subin_slug'] = checkreturn($data, 'subin_slug');
         $data['subin_name'] = checkreturn($data, 'subin_name');
@@ -30,6 +31,7 @@ class BaseController {
     }
 
     protected function _buffer($template, $data=array()) {
+        $t = $this->_tpl;
         ob_start();
         $this->_render($template, $data);
         return ob_get_clean();
