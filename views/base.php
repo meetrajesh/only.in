@@ -50,7 +50,7 @@
     <div class="container_12" id="main-content">
         <div class="grid_8" id="all-posts">
             <ul class="pillbox cf" id="main-filter">
-                <? foreach (post::$PAGE_TABS as $tab => $tab_name): ?>
+                <? foreach (post::$POST_TABS as $tab => $tab_name): ?>
                     <li class="<?= (isset($data['tab']) && $data['tab'] == $tab) ? 'selected' : ''; ?>">
                         <a href="<?= hsc(absolutize($t->notempty($data['subin_slug'], '/') . '/' . $tab)); ?>">
                             <? /* hsc($t->notempty(ucwords($data['subin_name']),  '', '/') . $tab_name) */ ?>

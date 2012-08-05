@@ -5,7 +5,7 @@ class SubinController extends BaseController {
     public static function get_matching_posts($subin_slug, $tab, $page) {
 
         // set default tab if not provided
-        if (!in_array($tab, array_keys(post::$PAGE_TABS))) {
+        if (!in_array($tab, array_keys(post::$POST_TABS))) {
             $tab = 'popular';
         }
 
@@ -19,7 +19,7 @@ class SubinController extends BaseController {
 
         if ($tab == 'latest') {
             $data['posts'] = post::get_latest($subin_id, 0, $page);
-        } elseif (in_array($tab, array_keys(post::$PAGE_TABS))) {
+        } elseif (in_array($tab, array_keys(post::$POST_TABS))) {
             $func = "get_${tab}";
             $data['posts'] = post::$func($subin_id, $page);
         } else {

@@ -2,7 +2,7 @@
 
 class post {
 
-    public static $PAGE_TABS = array('popular' => 'Popular',
+    public static $POST_TABS = array('popular' => 'Popular',
                                      'latest' => 'Latest',
                                      'debated' => 'Debated',
                                      'top' => 'Top');

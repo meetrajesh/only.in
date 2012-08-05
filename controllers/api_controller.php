@@ -208,7 +208,7 @@ class ApiController extends BaseController {
         $page = notempty($data, 'page', 1);
 
         // set default tab if not provided
-        if (!in_array($tab, array_keys(post::$PAGE_TABS))) {
+        if (!in_array($tab, array_keys(post::$POST_TABS))) {
             $tab = 'popular';
         }
 
