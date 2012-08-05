@@ -51,10 +51,10 @@ class ApiController extends BaseController {
 
                      '/posts/get' => array('inputs' => array(array('subin_slug' => 'string (optional)'),
                                                              array('tab' => 'string'),
-                                                             array('page' => 'int')),
+                                                             array('lt_id' => 'int')),
                                            'outputs' => array(array('subin_slug' => 'string'),
                                                               array('tab' => 'string'),
-                                                              array('page' => 'int'))),
+                                                              array('lt_id' => 'int'))),
 
                      '/subins/popular' => array('inputs' => array(),
                                                 'outputs' => array('popular' => 'array')),
@@ -205,19 +205,20 @@ class ApiController extends BaseController {
 
         $subin_slug = notempty($data, 'subin_slug');
         $tab = notempty($data, 'tab', 'popular');
-        $page = notempty($data, 'page', 1);
+        $lt_id = notempty($data, 'lt_id', 0);
 
         // set default tab if not provided
         if (!in_array($tab, array_keys(post::$POST_TABS))) {
             $tab = 'popular';
         }
 
-        $data = SubinController::get_matching_posts($subin_slug, $tab, $page);
+        $data = SubinController::get_matching_posts($subin_slug, $tab, $lt_id);
 
         $html = $this->_buffer('posts/api', $data);
         return array('subin_slug' => $subin_slug,
                      'tab' => $tab,
-                     'page' => $page,
+                     'lt_id' => $lt_id,
+                     'last_post_id' => $data['last_post_id'],
                      'html' => trim($html));
 
     }

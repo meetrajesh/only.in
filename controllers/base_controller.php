@@ -78,4 +78,16 @@ class BaseController {
         exit;
     }
 
+    protected function _get_view_data($data) {
+        $view_data = array('tab' => $data['tab'], 'subin_slug' => $data['subin_slug']);
+        $optional_keys = array('last_post_id');
+        // tack on the optional keys if they exist
+        foreach ($optional_keys as $optional_key) {
+            if (isset($data[$optional_key])) {
+                $view_data[$optional_key] = $data[$optional_key];
+            }
+        }
+        return $view_data;
+    }
+
 }

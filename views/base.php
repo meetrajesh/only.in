@@ -108,7 +108,7 @@
         $(document).data('api_url', '<?= API_BASE_URL; ?>');
         $(document).data('api_key', '<?= api_key(API_SECRET); ?>');
         $(document).data('subin_min_len', <?= (int)SUBIN_MIN_LEN ?>);
-        $(document).data('view_data', <?= json_encode(array('tab' => $data['tab'], 'subin_slug' => $data['subin_slug'])) ?>);
+        $(document).data('view_data', <?= json_encode($this->_get_view_data($data)); ?>);
     </script>
     <? foreach ($this->_scripts as $script): ?>
         <script src="<?=PATH_PREFIX . $script?>"></script>

@@ -24,8 +24,7 @@ class db {
         $args = func_get_args();
         $sql = array_shift($args);
         $sql = self::_bind_args($sql, $args);
-        v($sql);
-        exit;
+        die("<pre>${sql}</pre>");
     }
 
     private static function _bind_args($sql, $args) {

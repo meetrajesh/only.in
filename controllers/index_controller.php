@@ -82,22 +82,10 @@ class IndexController extends BaseController {
 
     public function view($args) {
 
-        // grab the args
-        $args = array_pad($args, 2, '');
-        list($tab, $page) = $args;
+        // grab the tab arg
+        $tab = notempty($args, 0, 'popular');
 
-        $page = !empty($page) && ctype_digit((string) $page) ? (int) $page : 1;
-
-        if ($tab == 'latest') {
-            $data['posts'] = post::get_latest(0, 0, $page);
-        } elseif (in_array($tab, array_keys(post::$POST_TABS))) {
-            $func = 'get_' . $tab;
-            $data['posts'] = post::$func(0, $page);
-        } else {
-            $data['posts'] = array();
-        }
-
-        $data['tab'] = $tab;
+        $data = SubinController::get_matching_posts('', $tab);
         $this->_render('posts/base', $data);
 
     }

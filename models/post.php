@@ -61,28 +61,28 @@ class post {
         return db::has_row('SELECT null FROM posts WHERE post_id=%d AND is_deleted=0', (int)$post_id);
     }
 
-    public static function get_popular($subin_id=0, $page=1, $limit=DEFAULT_NUM_POSTS) {
-        return self::_get_tab_posts('popular', $subin_id, $page, $limit);
+    public static function get_popular($subin_id=0, $lt_id=0, $limit=DEFAULT_NUM_POSTS) {
+        return self::_get_tab_posts('popular', $subin_id, $lt_id, $limit);
     }
 
-    public static function get_debated($subin_id=0, $page=1, $limit=DEFAULT_NUM_POSTS) {
-        return self::_get_tab_posts('debated', $subin_id, $page, $limit);
+    public static function get_debated($subin_id=0, $lt_id=0, $limit=DEFAULT_NUM_POSTS) {
+        return self::_get_tab_posts('debated', $subin_id, $lt_id, $limit);
     }
 
-    public static function get_top($subin_id=0, $page=1, $limit=DEFAULT_NUM_POSTS) {
-        return self::_get_tab_posts('top', $subin_id, $page, $limit);
+    public static function get_top($subin_id=0, $lt_id=0, $limit=DEFAULT_NUM_POSTS) {
+        return self::_get_tab_posts('top', $subin_id, $lt_id, $limit);
     }
 
-    private static function _get_tab_posts($tab, $subin_id=0, $page=1, $limit=DEFAULT_NUM_POSTS) {
+    private static function _get_tab_posts($tab, $subin_id=0, $lt_id=0, $limit=DEFAULT_NUM_POSTS) {
 
-        $page = (int)$page;
+        $lt_id = (int)$lt_id;
         $limit = (int)$limit;
 
         // set defaults
-        $page = $page > 0 ? $page : 1;
+        $lt_id = $lt_id > 0 ? $lt_id : 0;
         $limit = $limit > 0 ? $limit : DEFAULT_NUM_POSTS;
 
-        $result = self::get_latest($subin_id, 0, 1, $page*$limit*3);
+        $result = self::get_latest($subin_id, 0, $lt_id, $limit*3);
 
         // set the rank for each post
         $rank_func = "_calc_${tab}_rank";
@@ -100,7 +100,7 @@ class post {
             });
 
         // grab the top n posts
-        return array_slice($result, ($page-1)*$limit, $limit);
+        return array_slice($result, 0, $limit);
     }
     
     private static function _calc_popular_rank($post) {
@@ -161,18 +161,20 @@ class post {
         return ($left - $right) / $under;
     }
 
-    public static function get_latest($subin_id=0, $post_id=0, $page=1, $limit=DEFAULT_NUM_POSTS) {
+    public static function get_latest($subin_id=0, $post_id=0, $lt_id=0, $limit=DEFAULT_NUM_POSTS) {
         // sanitize input
         $subin_id = (int)$subin_id;
-        $page = (int)$page;
+        $post_id = (int)$post_id;
+        $lt_id = (int)$lt_id;
         $limit = (int)$limit;
 
         // set defaults
-        $page = $page > 0 ? $page : 1;
+        $lt_id = ($post_id == 0 && $lt_id > 0) ? $lt_id : 0;
         $limit = $limit > 0 ? $limit : DEFAULT_NUM_POSTS;
 
         $where_clause  = !empty($post_id) ? 'p.post_id=%d AND ' : '(%d OR 1) AND ';
-        $where_clause .= !empty($subin_id) ? 'p.subin_id=%d' : '(%d OR 1)';
+        $where_clause .= !empty($subin_id) ? 'p.subin_id=%d AND ' : '(%d OR 1) AND ';
+        $where_clause .= !empty($lt_id) ? 'p.post_id < %d' : '(%d OR 1)';
 
         $sql = 'SELECT p.post_id, p.user_id, p.title, p.content, p.caption, p.img_url, p.stamp, s.name AS subin_name, s.slug AS subin_slug, u.username,
                        (SELECT COUNT(*) FROM comments c WHERE c.post_id=p.post_id) AS num_comments,
@@ -184,11 +186,11 @@ class post {
                 WHERE  ' . $where_clause . ' AND p.is_deleted=0
                 GROUP BY p.post_id
                 ORDER BY stamp DESC
-                LIMIT %d, %d';
+                LIMIT %d';
 
         # can't use fetch_all() since it is only available as mysqlnd (nd=native driver)
         # return $result->fetch_all(MYSQLI_ASSOC);
-        $result = db::fetch_all($sql, $post_id, $subin_id, ($page-1)*$limit, $limit);
+        $result = db::fetch_all($sql, $post_id, $subin_id, $lt_id, $limit);
 
         // perform result set augmentation here
         foreach ($result as $i => $post) {
