@@ -42,7 +42,7 @@ if (isset($_POST['tweet_id'])) {
                     if ($title) {
                         $title_grabber = "$title (and more)";
                     }
-                    $tweet = "@$user ";
+                    #$tweet = "@$user ";
                     $tweet = $tweet . "$title_grabber #onlyin$place_no_spaces : http://only.in/$place_dashes";
                     send_tweet($tweet, $id);
                 }
@@ -135,7 +135,7 @@ function send_tweet($text, $reply_to_id) {
 
     $code = $tmhOAuth->request('POST', $tmhOAuth->url('1/statuses/update'), array(
         'status' => $text,
-        'in_reply_to_status_id' => $reply_to_id
+        #'in_reply_to_status_id' => $reply_to_id
     ));
 
     if ($code == 200) {
