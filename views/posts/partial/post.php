@@ -7,7 +7,7 @@
             <? endif; ?>
         </span>
     <? if (!empty($post['img_url'])) : ?>
-        <div class="post-image"><img src="<?=hsc($post['img_url'])?>" alt=""></div>
+        <div class="post-image"><a href="<?=hsc(absolutize($post['permalink']))?>"><img src="<?=hsc($post['img_url'])?>" alt=""></a></div>
     <? elseif(!empty($post['youtube_url'])): ?>
         <div class="post-video"><iframe alt="" width="560" height="315" src="<?=hsc($post['youtube_url'])?>" frameborder="0" allowfullscreen="1"></iframe></div>
     <? endif ?>
