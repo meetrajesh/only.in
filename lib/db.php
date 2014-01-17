@@ -37,10 +37,7 @@ class db {
                 $args[$key] = $db->escape_string($val);
             }
         }
-        if (count($args) > 0) {
-            $sql = vsprintf($sql, $args);
-        }
-        return $sql;
+        return (count($args) > 0) ? vsprintf($sql, $args) : $sql;
     }
     
     public static function fetch_query($sql, $args=array()) {
